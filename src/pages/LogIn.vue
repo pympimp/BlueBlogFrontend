@@ -1,64 +1,77 @@
 <template>
-  <q-page>
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <title>BlueBlog</title>
-      </head>
-      <body>
-        <header>
-          <img src="/public/blueblog-logo.png" alt="" class="logo" />
-          <nav class="navigation">
-            <q-input
-              rounded
-              outlined
-              v-model="text"
-              label="Search bar"
-              bg-color="white"
-              q-icon="search"
-              style="width: 200px"
-            />
-            <a href="#">Add</a>
-            <img
-              src="/public/profile-icon.png"
-              alt=""
-              style="width: 30px; height: 30px"
-            />
-          </nav>
-        </header>
-      </body>
-    </html>
+  <q-page class="flex flex-center">
+    <div class="container">
+      <h5>Login</h5>
+      <q-input
+        v-model="email"
+        filled
+        type="email"
+        placeholder="Email"
+        style="width: 250px"
+      />
+      <br />
+      <q-input
+        v-model="password"
+        filled
+        :type="isPwd ? 'password' : 'text'"
+        placeholder="Password"
+        style="width: 250px"
+      >
+        <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
+          />
+        </template>
+      </q-input>
+      Already Have an account? Click Here <br />
+      <q-btn push color="indigo-5" label="Submit" />
+    </div>
   </q-page>
 </template>
 
-<script></script>
+<script>
+import { ref } from "vue";
+
+export default {
+  setup() {
+    return {
+      password: ref(""),
+      isPwd: ref(true),
+      email: ref(""),
+      search: ref(""),
+      tel: ref(""),
+      url: ref(""),
+      time: ref(""),
+      date: ref(""),
+    };
+  },
+};
+</script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+.flex {
+  background-image: url(./public/background.jpg);
+  background-size: cover;
+  opacity: 0.9;
+  width: 100%;
+  height: auto;
 }
-.logo {
-  width: 40px;
-  height: 40px;
-  user-select: none;
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  opacity: 0.7;
+  width: 400px;
+  height: 400px;
+  padding: 50px 50px 50px 50px;
+  border-radius: 30px;
+  box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);
+  padding: 10px;
+  background: white;
 }
-
-.navigation a {
-  position: relative;
-  font-size: 1.1em;
-  color: #fff;
-  text-decoration: none;
-  font-weight: 500;
-  margin-left: 40px;
+.container:hover {
+  transform: scale(1.02);
 }
 </style>

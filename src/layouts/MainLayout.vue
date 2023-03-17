@@ -1,9 +1,12 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="bg-grey-1">
     <!-- <div class="row justify-around"> -->
-    <q-header elevated style="background-color: #1d366f" class="header">
+    <q-header elevated style="background-color: #1d366f" class="fullscreen">
       <div class="navbar" style="margin-top: 7px">
-        <q-toolbar style="display: flex; justify-content: space-around">
+        <q-toolbar
+          class="fixed"
+          style="display: flex; justify-content: space-around"
+        >
           <q-btn
             flat
             dense
