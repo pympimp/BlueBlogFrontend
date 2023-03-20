@@ -46,64 +46,13 @@
             </q-tooltip>
           </router-link>
 
-          <div class="dropdown">
-            <q-btn-dropdown
-              class="glossy"
-              color="white"
-              text-color="indigo-10"
-              label="Account"
-            >
-              <div class="row no-wrap q-pa-md">
-                <q-list style="min-width: 100px">
-                  <q-item clickable>
-                    <i
-                      class="fa-solid fa-user"
-                      style="margin-top: 7px; color: #406882"
-                    ></i>
-                    <q-item-section>&nbsp; &nbsp;My Profile</q-item-section>
-                  </q-item>
-                  <q-separator />
-                  <q-item clickable>
-                    <i
-                      class="fa-solid fa-pen"
-                      style="margin-top: 7px; color: #406882"
-                    ></i>
-                    <q-item-section>&nbsp; &nbsp;Manage Profile</q-item-section>
-                  </q-item>
-                  <q-separator />
-                  <q-item clickable>
-                    <i
-                      class="fa-solid fa-gear"
-                      style="margin-top: 7px; color: #406882"
-                    ></i>
-                    <q-item-section>&nbsp; &nbsp;Settings</q-item-section>
-                  </q-item>
-                </q-list>
-
-                <!-- เส้นขีดกั้นระหว่างโปรไฟล์กับเมนู -->
-                <q-separator vertical inset class="q-mx-lg" />
-
-                <div class="column items-center">
-                  <q-avatar size="72px">
-                    <img src="/public/profile-icon.png" />
-                  </q-avatar>
-
-                  <div class="text-subtitle1 q-mt-md q-mb-xs">
-                    Firstname Lastname
-                  </div>
-
-                  <q-btn
-                    color="deep-purple-5"
-                    label="Logout"
-                    push
-                    size="sm"
-                    v-close-popup
-                  >
-                  </q-btn>
-                </div>
-              </div>
-            </q-btn-dropdown>
-          </div>
+          <q-btn
+            to="login"
+            class="glossy"
+            color="white"
+            text-color="indigo-10"
+            label="Login / Sign Up"
+          />
         </q-toolbar>
       </div>
     </q-header>
@@ -136,7 +85,7 @@ const linksList = [
     title: "Main Menu",
     caption: "for all content",
     icon: "home",
-    name: "/addpost",
+    name: "/mainpage",
   },
   {
     title: "My Page",
@@ -170,8 +119,5 @@ export default defineComponent({
 <style>
 header {
   height: 70px;
-}
-#icon {
-  color: red;
 }
 </style>

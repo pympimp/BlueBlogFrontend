@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center">
     <div class="container">
-      <h5>Login</h5>
+      <h5>Sign Up</h5>
       <q-input
         v-model="email"
         filled
@@ -27,11 +27,11 @@
       </q-input>
       <br />
       <section>
-        <p style="display: inline">Don't have an account?</p>
-        <router-link to="/signup">Click</router-link>
+        <p style="display: inline">Already have an account?</p>
+        <router-link to="/login">Click</router-link>
       </section>
       <br />
-      <q-btn push color="indigo-5" label="Submit" to="mainpage" />
+      <q-btn push color="indigo-5" label="Submit" to="login" />
     </div>
   </q-page>
 </template>
