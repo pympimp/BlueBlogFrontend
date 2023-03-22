@@ -57,25 +57,28 @@
       <div class="q-pa-md q-gutter-sm">
         <q-editor :v-model="editor" min-height="5rem" style="width: 600px" />
       </div>
-      <!-- ปุ่มเลือกไฟล์ -->
-      <q-file
-        color="pink"
-        v-model="model"
-        label="Choose Image"
-        counter
-        style="
-          display: flex;
-          align-self: flex-start;
-          margin-left: 20px;
-          display: inline;
-        "
-      >
-        <template v-slot:prepend>
-          <q-icon name="attach_file" />
-        </template>
-      </q-file>
-      <!-- ปุ่มโพสต์ -->
-      <q-btn color="pink" glossy label="Submit" style="display: inline" />
+
+      <div style="display: flex">
+        <!-- ปุ่มเลือกไฟล์ -->
+        <q-file
+          color="pink"
+          v-model="model"
+          label="Choose Image"
+          borderless
+          style="padding-right: 400px; text-decoration: none"
+        >
+          <template v-slot:prepend>
+            <q-icon name="attach_file" />
+          </template>
+        </q-file>
+        <!-- ปุ่มโพสต์ -->
+        <q-btn
+          color="pink"
+          glossy
+          label="Submit"
+          style="height: 5px; margin-top: 15px"
+        />
+      </div>
     </div>
 
     <!-- Part Comment -->

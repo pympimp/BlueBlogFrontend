@@ -100,24 +100,26 @@
               verdana: 'Verdana',
             }"
           />
-          <q-input
-            @update:model-value="
-              (val) => {
-                files = val;
-              }
-            "
-            multiple
-            type="file"
-            hint="Native file (multiple)"
-            style="width: 200px; text-decoration: none"
-          />
+          <div style="display: flex; justify-content: space-between">
+            <q-input
+              @update:model-value="
+                (val) => {
+                  files = val;
+                }
+              "
+              multiple
+              type="file"
+              style="width: 200px,height: 0px;"
+              borderless
+            />
 
-          <q-btn
-            push
-            color="primary"
-            label="Post"
-            style="margin-left: 900px; display: inline"
-          />
+            <q-btn
+              push
+              color="primary"
+              label="Post"
+              style="height: 35px; width: 50px"
+            />
+          </div>
         </div>
       </div>
     </q-form>
