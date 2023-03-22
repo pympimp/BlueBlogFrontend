@@ -28,7 +28,7 @@
       <br />
       <section>
         <p style="display: inline">Don't have an account?</p>
-        <router-link to="/signup">Click</router-link>
+        <router-link to="/signup"> Click</router-link>
       </section>
       <br />
       <q-btn push color="indigo-5" label="Submit" to="mainpage" />
@@ -78,5 +78,10 @@ export default {
 }
 .container:hover {
   transform: scale(1.02);
+}
+
+a {
+  color: indigo;
+  text-decoration: none;
 }
 </style>
