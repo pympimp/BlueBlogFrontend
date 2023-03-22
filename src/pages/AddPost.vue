@@ -126,10 +126,15 @@
 
 <script>
 import { defineComponent } from "vue";
+import { ref } from "vue";
 
 export default defineComponent({
   name: "AddPost",
-
+  setup() {
+    return {
+      text: ref(null),
+    };
+  },
   // submitPost() {
   //   alert("Success!");
   // },
@@ -141,7 +146,6 @@ export default defineComponent({
   background-color: #d6e3ea;
   background-image: url(./public/background.jpg);
   background-size: cover;
-  opacity: 0.9;
   width: 100%;
   height: auto;
 }
@@ -149,7 +153,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   flex-direction: column;
-  opacity: 0.7;
+  opacity: 0.8;
   width: 1250px;
   height: 500px;
   padding: 50px 50px 50px 50px;

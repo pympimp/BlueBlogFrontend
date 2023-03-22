@@ -7,6 +7,7 @@
           class="fixed"
           style="display: flex; justify-content: space-around"
         >
+          <!-- แถบสามขีด เมนู MainPage, MyFeed -->
           <q-btn
             flat
             dense
@@ -15,6 +16,8 @@
             aria-label="Menu"
             @click="toggleLeftDrawer"
           />
+
+          <!-- โลโก้ คลิกกลับหน้าหลัก -->
           <router-link to="/">
             <q-avatar class="q-ml-md">
               <img src="/public/blueblog-logo.png" />
@@ -24,6 +27,7 @@
             </q-tooltip>
           </router-link>
 
+          <!-- แถบเสิร์ชบาร์ -->
           <q-input
             rounded
             outlined
@@ -34,18 +38,19 @@
             style="width: 300px; margin-left: 370px; margin-right: 370px"
           />
 
-          <!-- <q-icon name="add" color="white" style="margin-left: 300px" /> -->
+          <!-- ปุ่มเพิ่มโพส -->
           <router-link to="addpost">
             <img
               src="/public/add-white.png"
               alt=""
-              style="width: 30px; height: 30px"
+              style="width: 30px; height: 30px; margin-right: 15px"
             />
             <q-tooltip transition-show="scale" transition-hide="scale">
               Add New Post
             </q-tooltip>
           </router-link>
 
+          <!-- ปุ่มล็อกอิน -->
           <q-btn
             to="login"
             class="glossy"
