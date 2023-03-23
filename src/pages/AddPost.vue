@@ -2,7 +2,9 @@
   <q-page class="flex flex-center">
     <q-form>
       <div class="container">
-        <p style="font-size: 25px; font-weight: bolder">เพิ่มโพสต์ใหม่</p>
+        <p style="font-size: 25px; font-weight: bolder; color: #1a237e">
+          เพิ่มโพสต์ใหม่
+        </p>
 
         <!-- ส่วนของการใส่หัวข้อโพสต์ -->
         <q-input

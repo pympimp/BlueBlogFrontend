@@ -25,6 +25,7 @@
           style="margin-left: 735px; transform: scale(0.8) translate(90%, -40%)"
         >
           <q-fab-action
+            to="addpost"
             external-label
             color="pink-10"
             @click="onClick"
@@ -129,6 +130,7 @@
           style="margin-left: 650px; transform: scale(0.6) translate(60%, -80%)"
         >
           <q-fab-action
+            to="addpost"
             external-label
             color="pink-10"
             @click="onClick"

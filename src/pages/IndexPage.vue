@@ -2,7 +2,14 @@
   <q-page class="flex flex-center">
     <div class="container">
       <div class="q-pa-md">
-        <p style="font-size: 25px; font-weight: bolder; margin-bottom: -10px">
+        <p
+          style="
+            font-size: 25px;
+            font-weight: bolder;
+            margin-bottom: -10px;
+            color: #1a237e;
+          "
+        >
           หน้าหลัก
         </p>
         <q-btn-dropdown
