@@ -1,12 +1,12 @@
 <template>
   <q-page class="flex flex-center">
     <div class="container">
-      <h5>Login</h5>
+      <h5>เข้าสู่ระบบ</h5>
       <q-input
         v-model="email"
         filled
         type="email"
-        placeholder="Email"
+        placeholder="อีเมล"
         style="width: 250px"
       />
       <br />
@@ -14,7 +14,7 @@
         v-model="password"
         filled
         :type="isPwd ? 'password' : 'text'"
-        placeholder="Password"
+        placeholder="รหัสผ่าน"
         style="width: 250px"
       >
         <template v-slot:append>
@@ -27,11 +27,11 @@
       </q-input>
       <br />
       <section>
-        <p style="display: inline">Don't have an account?</p>
-        <router-link to="/signup"> Click</router-link>
+        <p style="display: inline">ยังไม่มีบัญชี?</p>
+        <router-link to="/signup"> คลิกเลย!</router-link>
       </section>
       <br />
-      <q-btn push color="indigo-5" label="Submit" to="mainpage" />
+      <q-btn push color="indigo-5" label="ยืนยัน" to="mainpage" />
     </div>
   </q-page>
 </template>
@@ -59,7 +59,6 @@ export default {
 .flex {
   background-image: url(./public/background.jpg);
   background-size: cover;
-  opacity: 0.9;
   width: 100%;
   height: auto;
 }
@@ -67,9 +66,9 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
-  opacity: 0.7;
-  width: 400px;
-  height: 400px;
+  opacity: 0.8;
+  width: 350px;
+  height: 390px;
   padding: 50px 50px 50px 50px;
   border-radius: 30px;
   box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);

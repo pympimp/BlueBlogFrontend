@@ -56,12 +56,12 @@
           </ion-avatar>
           &nbsp;
           <router-link
-            to="/postncomment"
+            to="/myprofile"
             style="text-decoration: none; color: black; font-weight: bolder"
             >User0001</router-link
           >
           &nbsp;
-          <p style="display: inline">3 March 2023</p>
+          <p style="display: inline">3 มีนาคม 2566</p>
           <hr style="width: 700px" />
         </section>
 
@@ -83,12 +83,12 @@
           </ion-avatar>
           &nbsp;
           <router-link
-            to="/postncomment"
+            to="/myprofile"
             style="text-decoration: none; color: black; font-weight: bolder"
             >User0002</router-link
           >
           &nbsp;
-          <p style="display: inline">9 May 2023</p>
+          <p style="display: inline">9 พฤษภาคม 2566</p>
           <hr style="width: 700px" />
         </section>
 
@@ -112,12 +112,12 @@
           </ion-avatar>
           &nbsp;
           <router-link
-            to="/postncomment"
+            to="/myprofile"
             style="text-decoration: none; color: black; font-weight: bolder"
             >User0003</router-link
           >
           &nbsp;
-          <p style="display: inline">17 August 2023</p>
+          <p style="display: inline">17 สิงหาคม 2566</p>
           <hr style="width: 700px" />
         </section>
 
@@ -139,12 +139,12 @@
           </ion-avatar>
           &nbsp;
           <router-link
-            to="/postncomment"
+            to="/myprofile"
             style="text-decoration: none; color: black; font-weight: bolder"
             >User0004</router-link
           >
           &nbsp;
-          <p style="display: inline">24 December 2023</p>
+          <p style="display: inline">24 ธันวาคม 2566</p>
         </section>
 
         <!-- ----------------------------------------------------------------------------------------------------------- -->

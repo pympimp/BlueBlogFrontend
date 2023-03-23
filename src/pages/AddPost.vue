@@ -2,16 +2,20 @@
   <q-page class="flex flex-center">
     <q-form>
       <div class="container">
-        <p style="font-size: 25px; font-weight: bolder">Create New Post</p>
+        <p style="font-size: 25px; font-weight: bolder">เพิ่มโพสต์ใหม่</p>
+
+        <!-- ส่วนของการใส่หัวข้อโพสต์ -->
         <q-input
           outlined
           v-model="text"
-          label="Title  "
+          label="หัวข้อโพสต์  "
           stack-label
           :dense="dense"
-          style="width: 1150px"
+          style="width: 760px"
         />
-        <div class="q-pa-md q-gutter-sm">
+
+        <!-- ส่วนของการจัดรูปแบบเนื้อหาโพสต์ -->
+        <div class="q-pa-md q-gutter-sm" style="width: 800px">
           <q-editor
             v-model="qeditor"
             style="height: 300px"
@@ -100,6 +104,8 @@
               verdana: 'Verdana',
             }"
           />
+
+          <!-- ส่วนของการแทรกไฟล์รูปภาพ -->
           <div style="display: flex; justify-content: space-between">
             <q-input
               @update:model-value="
@@ -113,10 +119,11 @@
               borderless
             />
 
+            <!-- ส่วนของปุ่มโพสต์ -->
             <q-btn
               push
               color="primary"
-              label="Post"
+              label="โพสต์"
               style="height: 35px; width: 50px"
             />
           </div>
@@ -156,7 +163,6 @@ export default defineComponent({
   align-items: center;
   flex-direction: column;
   opacity: 0.8;
-  width: 1250px;
   height: 500px;
   padding: 50px 50px 50px 50px;
   border-radius: 30px;
