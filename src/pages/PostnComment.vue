@@ -12,6 +12,34 @@
         ทำไมนรกต้องใช้กระทะทองแดง ทำไมไม่ใช้กระทะเงิน
         ซึ่งนำความร้อนได้ดีกว่า</Content
       >
+      <div class="q-mt-md" style="position: absolute">
+        <q-fab
+          glossy
+          v-model="fab2"
+          label="จัดการเพิ่มเติม"
+          external-label
+          vertical-actions-align="left"
+          color="pink"
+          icon="keyboard_arrow_down"
+          direction="down"
+          style="margin-left: 735px; transform: scale(0.8) translate(90%, -40%)"
+        >
+          <q-fab-action
+            external-label
+            color="pink-10"
+            @click="onClick"
+            icon="edit"
+            label="แก้ไขโพสต์"
+          />
+          <q-fab-action
+            external-label
+            color="pink-10"
+            @click="onClick"
+            icon="delete"
+            label="ลบโพสต์"
+          />
+        </q-fab>
+      </div>
       <q-img src="/public/img.png" class="img"></q-img> <br />
 
       <div class="details-user">
@@ -88,6 +116,34 @@
 
     <!-- Part Comment -->
     <div class="container-comment">
+      <div class="q-mt-md" style="position: absolute">
+        <q-fab
+          glossy
+          v-model="fab2"
+          label="จัดการเพิ่มเติม"
+          external-label
+          vertical-actions-align="left"
+          color="pink"
+          icon="keyboard_arrow_down"
+          direction="down"
+          style="margin-left: 650px; transform: scale(0.6) translate(60%, -80%)"
+        >
+          <q-fab-action
+            external-label
+            color="pink-10"
+            @click="onClick"
+            icon="edit"
+            label="แก้ไขโพสต์"
+          />
+          <q-fab-action
+            external-label
+            color="pink-10"
+            @click="onClick"
+            icon="delete"
+            label="ลบโพสต์"
+          />
+        </q-fab>
+      </div>
       <!-- หัวข้อคอมเมนต์ -->
       <p style="font-size: 15px; font-weight: bolder; margin-top: 10px">
         ความคิดเห็นที่ 1
