@@ -14,7 +14,7 @@
         </ion-avatar>
 
         <!-- ส่วนของการแทรกไฟล์รูปภาพ -->
-        <div style="display: inline">
+        <div style="position: absolute; right: 530px; top: 100px">
           <q-input
             @update:model-value="
               (val) => {
@@ -27,6 +27,15 @@
             borderless
           />
         </div>
+        <br />
+        <!-- ส่วนของการเปลี่ยนอีเมล -->
+        <b>อีเมล (Email) :</b>
+        <q-input
+          filled
+          v-model="text"
+          :dense="dense"
+          style="width: 350px; margin-bottom: 7px"
+        />
 
         <!-- ส่วนของการแก้ไข username -->
         <b>ชื่อผู้ใช้งาน (Username) :</b>
@@ -34,7 +43,7 @@
           filled
           v-model="text"
           :dense="dense"
-          style="width: 350px; margin-bottom: 15px"
+          style="width: 350px; margin-bottom: 7px"
         />
 
         <!-- ส่วนของการแก้ไข bio -->
@@ -79,9 +88,6 @@ export default {
 }
 
 .container {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
   opacity: 0.8;
   margin-bottom: 10px;
   border-radius: 30px;

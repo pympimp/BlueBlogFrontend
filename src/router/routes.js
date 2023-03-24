@@ -23,6 +23,27 @@ const routes = [
         path: "/postncomment",
         component: () => import("pages/PostnComment.vue"),
       },
+
+      {
+        path: "/addashboard",
+        component: () => import("pages/AdDashboard.vue"),
+      },
+      {
+        path: "/admanageuser",
+        component: () => import("pages/AdManageUser.vue"),
+      },
+      {
+        path: "/adedituser",
+        component: () => import("pages/AdEditUser.vue"),
+      },
+      {
+        path: "/adadduser",
+        component: () => import("pages/AdAddUser.vue"),
+      },
+      {
+        path: "/adprofile",
+        component: () => import("pages/AdProfile.vue"),
+      },
     ],
   },
 

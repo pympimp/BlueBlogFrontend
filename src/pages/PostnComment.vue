@@ -12,6 +12,9 @@
         ทำไมนรกต้องใช้กระทะทองแดง ทำไมไม่ใช้กระทะเงิน
         ซึ่งนำความร้อนได้ดีกว่า</Content
       >
+
+      <!-- ส่วนจัดการโพสต์ -->
+
       <div class="q-mt-md" style="position: absolute">
         <q-fab
           glossy
@@ -41,6 +44,8 @@
           />
         </q-fab>
       </div>
+
+      <!-- ส่วนของรูปภาพของโพสต์ -->
       <q-img src="/public/img.png" class="img"></q-img> <br />
 
       <div class="details-user">
@@ -50,6 +55,7 @@
         &nbsp;&nbsp;&nbsp;
         <b>User00001</b>
         <i><br />วันเสาร์ 3 มีนาคม 2566 15:30</i>
+
         <!-- ปุ่มไลก์โพส -->
         <q-btn
           round
@@ -59,6 +65,7 @@
           style="margin-left: 420px"
         />
         <br />
+
         <!-- จำนวนยอดไลก์โพสต์ -->
         <b
           style="

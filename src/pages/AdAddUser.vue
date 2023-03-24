@@ -2,29 +2,30 @@
   <q-page class="flex flex-center">
     <div class="container">
       <!-- หัวข้อ Edit Profile -->
-      <p style="font-size: 25px; font-weight: bolder">การตั้งค่า</p>
+      <p
+        style="
+          font-size: 25px;
+          font-weight: bolder;
+          margin-bottom: -10px;
+          display: flex;
+          justify-content: center;
+        "
+      >
+        ✧･ﾟ เพิ่มผู้ใช้ใหม่ ｡･✧
+      </p>
 
-      <!-- ส่วนของการแก้ไข password เก่า-->
-      <b style="margin-right: 130px">รหัสผ่านเก่า (Old Password) :</b>
+      <br />
+      <!-- ส่วนของการเปลี่ยนอีเมล -->
+      <b>อีเมล (Email) :</b>
       <q-input
-        v-model="password"
         filled
-        :type="isPwd ? 'password' : 'text'"
-        style="width: 300px"
-      >
-        <template v-slot:append>
-          <q-icon
-            :name="isPwd ? 'visibility_off' : 'visibility'"
-            class="cursor-pointer"
-            @click="isPwd = !isPwd"
-          />
-        </template>
-      </q-input>
+        v-model="text"
+        :dense="dense"
+        style="width: 300px; margin-bottom: 7px"
+      />
 
-      <!-- ส่วนของการแก้ไข password ใหม่-->
-      <b style="margin-right: 130px; margin-top: 10px"
-        >รหัสผ่านใหม่ (New Password) :</b
-      >
+      <!-- ส่วนของการแก้ไข username -->
+      <b>รหัสผ่าน (Password) :</b>
       <q-input
         v-model="password"
         filled
@@ -56,18 +57,10 @@
 import { defineComponent, ref } from "vue";
 
 export default {
-  name: "SettinG ",
+  name: "MyProfile ",
   setup() {
     return {
       text: ref(""),
-      password: ref(""),
-      isPwd: ref(true),
-      email: ref(""),
-      search: ref(""),
-      tel: ref(""),
-      url: ref(""),
-      time: ref(""),
-      date: ref(""),
     };
   },
 };
@@ -83,13 +76,11 @@ export default {
 }
 
 .container {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
   opacity: 0.8;
+  margin-bottom: 10px;
   border-radius: 30px;
   box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);
-  padding: 25px 30px 25px 30px;
+  padding: 25px 50px 25px 50px;
   background: white;
 }
 </style>
