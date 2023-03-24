@@ -2,8 +2,9 @@
   <q-page class="flex flex-center">
     <q-form>
       <div class="container">
+        <!-- ส่วนของหัวข้อ 'เพิ่มโพสต์ใหม่' -->
         <p style="font-size: 25px; font-weight: bolder; color: #1a237e">
-          เพิ่มโพสต์ใหม่
+          °˖ ✧◝ เพิ่มโพสต์ใหม่ ◜✧˖ °
         </p>
 
         <!-- ส่วนของการใส่หัวข้อโพสต์ -->
@@ -11,9 +12,10 @@
           outlined
           v-model="text"
           label="หัวข้อโพสต์  "
+          color="indigo-10"
           stack-label
           :dense="dense"
-          style="width: 760px"
+          style="width: 760px; color: #1a237e"
         />
 
         <!-- ส่วนของการจัดรูปแบบเนื้อหาโพสต์ -->
@@ -124,7 +126,7 @@
             <!-- ส่วนของปุ่มโพสต์ -->
             <q-btn
               push
-              color="primary"
+              color="indigo-5"
               label="โพสต์"
               style="height: 35px; width: 50px"
             />

@@ -31,7 +31,7 @@
         <router-link to="/login"> คลิกเลย!</router-link>
       </section>
       <br />
-      <q-btn push color="indigo-5" label="ยืนยัน" to="login" />
+      <q-btn push color="grey-7" label="ยืนยัน" to="login" />
     </div>
   </q-page>
 </template>

@@ -1,13 +1,13 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="bg-grey-1">
-    <!-- <div class="row justify-around"> -->
     <q-header elevated style="background-color: #1d366f" class="fullscreen">
+      <!-- ส่วนของ nav bar -->
       <div class="navbar">
         <q-toolbar
           class="fixed"
           style="display: flex; justify-content: space-around"
         >
-          <!-- แถบสามขีด เมนู MainPage, MyFeed -->
+          <!-- ส่วนของแถบสามขีด เมนู MainPage, MyFeed -->
           <q-btn
             flat
             dense
@@ -17,7 +17,7 @@
             @click="toggleLeftDrawer"
           />
 
-          <!-- โลโก้ คลิกกลับหน้าหลัก -->
+          <!-- ส่วนของโลโก้ คลิกกลับหน้าหลัก -->
           <router-link to="/">
             <q-avatar class="q-ml-md">
               <img src="/public/blueblog-logo.png" />
@@ -27,7 +27,7 @@
             </q-tooltip>
           </router-link>
 
-          <!-- แถบเสิร์ชบาร์ -->
+          <!-- ส่วนของแถบเสิร์ชบาร์ -->
           <q-input
             rounded
             outlined
@@ -39,7 +39,7 @@
             style="width: 300px; margin-left: 370px; margin-right: 370px"
           />
 
-          <!-- ปุ่มเพิ่มโพส -->
+          <!-- ส่วนของปุ่มเพิ่มโพส -->
           <router-link to="addpost">
             <img
               src="/public/add-white.png"
@@ -51,7 +51,7 @@
             </q-tooltip>
           </router-link>
 
-          <!-- ปุ่มล็อกอิน -->
+          <!-- ส่วนของปุ่มล็อกอิน -->
           <div class="q-pa-md">
             <q-btn-dropdown
               class="glossy"
@@ -68,47 +68,58 @@
                       class="fa-solid fa-user"
                       style="margin-top: 10px; color: #406882"
                     ></i>
-                    <q-item-section>&nbsp; &nbsp;บัญชีของฉัน</q-item-section>
+                    <q-item-section style="color: #1d366f"
+                      >&nbsp; &nbsp;บัญชีของฉัน</q-item-section
+                    >
                   </q-item>
                   <q-separator />
+
                   <!-- เมนู ManageProfile -->
                   <q-item clickable to="manageprofile">
                     <i
                       class="fa-solid fa-pen"
                       style="margin-top: 10px; color: #406882"
                     ></i>
-                    <q-item-section>&nbsp; &nbsp;แก้ไขโปรไฟล์</q-item-section>
+                    <q-item-section style="color: #1d366f"
+                      >&nbsp; &nbsp;แก้ไขโปรไฟล์</q-item-section
+                    >
                   </q-item>
                   <q-separator />
+
                   <!-- เมนู Setting -->
                   <q-item clickable to="setting">
                     <i
                       class="fa-solid fa-gear"
                       style="margin-top: 10px; color: #406882"
                     ></i>
-                    <q-item-section>&nbsp; &nbsp;การตั้งค่า</q-item-section>
+                    <q-item-section style="color: #1d366f"
+                      >&nbsp; &nbsp;การตั้งค่า</q-item-section
+                    >
                   </q-item>
                 </q-list>
 
                 <!-- เส้นกั้นแนวตั้ง -->
                 <q-separator vertical inset class="q-mx-lg" />
 
+                <!-- ส่วนของฝั่งขวา รูปโปรไฟล์, username และปุ่ม Logout -->
                 <div class="column items-center">
                   <q-avatar size="65px">
                     <img src="/public/pf1.png" />
                   </q-avatar>
-
-                  <div class="text-subtitle1 q-mt-md q-mb-xs">
+                  <div
+                    class="text-subtitle1 q-mt-md q-mb-xs"
+                    style="color: #c2185b; font-weight: bold"
+                  >
                     Username00009
                   </div>
                   <q-btn
                     to="login"
-                    color="primary"
+                    color="pink-4"
                     label="กลับหน้าเข้าสู่ระบบ "
                     push
                     size="m"
                     v-close-popup
-                    style="height: 30px"
+                    style="height: 30px; font-weight: lighter"
                   />
                 </div>
               </div>

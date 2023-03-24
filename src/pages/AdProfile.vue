@@ -2,23 +2,30 @@
   <q-page class="flex flex-center column">
     <!-- ส่วนข้อมูลหลักของผู้ใช้ -->
     <div class="container-header">
-      <!-- รูปโปรไฟล์ -->
-
+      <!-- ส่วนของรูปโปรไฟล์ -->
       <ion-avatar class="profile" style="display: inline">
-        <img src="/public/pf1.png" style="width: 70px; height: 70px" />
+        <img
+          src="/public/profile-icon.png"
+          style="width: 70px; height: 70px; margin-right: 15px; margin-top: 5px"
+        />
       </ion-avatar>
-      <!-- username และ bio -->
-      <div class="details" style="display: inline; margin-top: 10px">
-        <b> Username00009</b>
-        <p>" โย่ว"</p>
+
+      <!-- ส่วนของ username และ bio -->
+      <div class="details" style="margin-top: 10px; margin-right: 10px">
+        <b style="color: #1a237e"> Admin00001</b>
+        <p style="color: #5c6bc0; margin-left: 10px">
+          " ขออนุญาตประกาศเปิดใช้เว็บไซต์ Version Meta ในวันที่ 28 เมษายน 2566"
+        </p>
       </div>
+
+      <!-- ส่วนของปุ่มแก้ไข -->
       <q-btn
         to="manageprofile"
         glossy
         push
         color="pink"
-        label="แก้ไขโปรไฟล์"
-        style="height: 20px; margin-top: 150px; margin-right: 170px"
+        label="แก้ไข"
+        style="height: 20px"
       />
     </div>
   </q-page>

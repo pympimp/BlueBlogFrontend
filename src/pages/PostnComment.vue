@@ -5,10 +5,17 @@
   >
     <!-- Part Post -->
     <div class="container-post">
-      <p style="font-size: 25px; font-weight: bolder; margin-top: 10px">
+      <p
+        style="
+          font-size: 25px;
+          font-weight: bolder;
+          margin-top: 10px;
+          color: #1a237e;
+        "
+      >
         ทำไมนรกต้องใช้กระทะทองแดง
       </p>
-      <Content>
+      <Content style="color: #5c6bc0">
         ทำไมนรกต้องใช้กระทะทองแดง ทำไมไม่ใช้กระทะเงิน
         ซึ่งนำความร้อนได้ดีกว่า</Content
       >
@@ -53,8 +60,8 @@
           <img src="/public/pf1.png" style="width: 30px; height: 30px" />
         </ion-avatar>
         &nbsp;&nbsp;&nbsp;
-        <b>User00001</b>
-        <i><br />วันเสาร์ 3 มีนาคม 2566 15:30</i>
+        <b style="color: #1a237e">User00001</b>
+        <i style="color: #5c6bc0"><br />วันเสาร์ 3 มีนาคม 2566 15:30</i>
 
         <!-- ปุ่มไลก์โพส -->
         <q-btn
@@ -154,11 +161,20 @@
         </q-fab>
       </div>
       <!-- หัวข้อคอมเมนต์ -->
-      <p style="font-size: 15px; font-weight: bolder; margin-top: 10px">
+      <p
+        style="
+          font-size: 15px;
+          font-weight: bolder;
+          margin-top: 10px;
+          color: #1a237e;
+        "
+      >
         ความคิดเห็นที่ 1
       </p>
       <!-- เนื้อหาคอมเมนต์ -->
-      <Content style="margin-inline-end: auto; margin-left: 20px">
+      <Content
+        style="margin-inline-end: auto; margin-left: 20px; color: #5c6bc0"
+      >
         ด้วยราคาของเงินที่สูงกว่าทองแดงมาก แต่สมบัติการนำความร้อนไม่ต่างกันมาก
         การเลือกทองแดงเป็นกระทะจึงเป็นทางเลือกที่ดีกว่าเนื่องจากประหยัดกว่า</Content
       >
@@ -198,11 +214,17 @@
         <ion-avatar class="profile" style="display: inline">
           <img src="/public/pf2.png" style="width: 30px; height: 30px" />
         </ion-avatar>
-        <b style="margin-top: -5px; margin-left: 10px; margin-right: -10px"
+        <b
+          style="
+            margin-top: -5px;
+            margin-left: 10px;
+            margin-right: -10px;
+            color: #1a237e;
+          "
           >User00002</b
         >
         <br />
-        <i style="margin-top: 12px; margin-left: -60px"
+        <i style="margin-top: 12px; margin-left: -60px; color: #5c6bc0"
           >อาทิตย์ 4 มีนาคม 2566 10:12</i
         >
 

@@ -1,13 +1,13 @@
 <template>
   <q-page class="flex flex-center">
     <div class="container">
-      <h5>เข้าสู่ระบบ</h5>
+      <h5 style="font-weight: bold">เข้าสู่ระบบ</h5>
       <q-input
         v-model="email"
         filled
         type="email"
         placeholder="อีเมล"
-        style="width: 250px"
+        style="width: 250px; color: #1a237e"
       />
       <br />
       <q-input
@@ -31,7 +31,7 @@
         <router-link to="/signup"> คลิกเลย!</router-link>
       </section>
       <br />
-      <q-btn push color="indigo-5" label="ยืนยัน" to="mainpage" />
+      <q-btn push color="grey-7" label="ยืนยัน" to="mainpage" />
     </div>
   </q-page>
 </template>

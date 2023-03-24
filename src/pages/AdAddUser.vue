@@ -9,14 +9,15 @@
           margin-bottom: -10px;
           display: flex;
           justify-content: center;
+          color: #880e4f;
         "
       >
         ✧･ﾟ เพิ่มผู้ใช้ใหม่ ｡･✧
       </p>
-
       <br />
+
       <!-- ส่วนของการเปลี่ยนอีเมล -->
-      <b>อีเมล (Email) :</b>
+      <i style="color: #c51162">อีเมล (Email) :</i>
       <q-input
         filled
         v-model="text"
@@ -24,19 +25,20 @@
         style="width: 300px; margin-bottom: 7px"
       />
 
-      <!-- ส่วนของการแก้ไข username -->
-      <b>รหัสผ่าน (Password) :</b>
+      <!-- ส่วนของการแก้ไข password -->
+      <i style="color: #c51162">รหัสผ่าน (Password) :</i>
       <q-input
         v-model="password"
         filled
         :type="isPwd ? 'password' : 'text'"
-        style="width: 300px"
+        style="width: 300px; color: #c51162"
       >
         <template v-slot:append>
           <q-icon
             :name="isPwd ? 'visibility_off' : 'visibility'"
             class="cursor-pointer"
             @click="isPwd = !isPwd"
+            style="color: #c51162"
           />
         </template>
       </q-input>
@@ -45,7 +47,7 @@
       <q-btn
         glossy
         push
-        color="pink"
+        color="pink-10"
         label="บันทึก"
         style="margin-top: 20px; margin-left: 230px"
       />
@@ -61,6 +63,7 @@ export default {
   setup() {
     return {
       text: ref(""),
+      isPwd: ref(true),
     };
   },
 };

@@ -9,6 +9,7 @@
           margin-bottom: -10px;
           display: flex;
           justify-content: center;
+          color: #1a237e;
         "
       >
         ✧･ﾟ แก้ไขข้อมูลผู้ใช้ ｡･✧
@@ -16,7 +17,7 @@
 
       <br />
       <!-- ส่วนของการเปลี่ยนอีเมล -->
-      <b>อีเมล (Email) :</b>
+      <i style="color: #5c6bc0">อีเมล (Email) :</i>
       <q-input
         filled
         v-model="text"
@@ -24,8 +25,8 @@
         style="width: 300px; margin-bottom: 7px"
       />
 
-      <!-- ส่วนของการแก้ไข username -->
-      <b>รหัสผ่าน (Password) :</b>
+      <!-- ส่วนของการแก้ไข password -->
+      <i style="color: #5c6bc0">รหัสผ่าน (Password) :</i>
       <q-input
         v-model="password"
         filled
@@ -42,7 +43,7 @@
       </q-input>
 
       <!-- ปุ่ม toggle เปิด-ปิดสถานะผู้ใช้งาน -->
-      <b>สถานะผู้ใช้งาน (status)</b> <br />
+      <i style="color: #5c6bc0">สถานะผู้ใช้งาน (status)</i> <br />
       <q-toggle
         v-model="third"
         checked-icon="check"
@@ -54,7 +55,7 @@
       <q-btn
         glossy
         push
-        color="pink"
+        color="indigo-10"
         label="บันทึก"
         style="margin-top: -20px; margin-left: 180px"
       />
@@ -71,6 +72,7 @@ export default {
     return {
       text: ref(""),
       third: ref(false),
+      isPwd: ref(false),
     };
   },
 };

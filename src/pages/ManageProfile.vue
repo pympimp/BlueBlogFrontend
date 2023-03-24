@@ -2,7 +2,9 @@
   <q-page class="flex flex-center">
     <div class="container">
       <!-- หัวข้อ Edit Profile -->
-      <p style="font-size: 25px; font-weight: bolder">แก้ไขโปรไฟล์</p>
+      <p style="font-size: 25px; font-weight: bolder; color: #880e4f">
+        แก้ไขโปรไฟล์
+      </p>
 
       <!-- รูปโปรไฟล์ -->
       <div class="top" style="display: inline">
@@ -14,7 +16,9 @@
         </ion-avatar>
 
         <!-- ส่วนของการแทรกไฟล์รูปภาพ -->
-        <div style="position: absolute; right: 530px; top: 100px">
+        <div
+          style="position: absolute; right: 530px; top: 100px;color: color: #3949ab ;"
+        >
           <q-input
             @update:model-value="
               (val) => {
@@ -29,7 +33,7 @@
         </div>
         <br />
         <!-- ส่วนของการเปลี่ยนอีเมล -->
-        <b>อีเมล (Email) :</b>
+        <i style="color: #3949ab">อีเมล (Email) :</i>
         <q-input
           filled
           v-model="text"
@@ -38,7 +42,7 @@
         />
 
         <!-- ส่วนของการแก้ไข username -->
-        <b>ชื่อผู้ใช้งาน (Username) :</b>
+        <i style="color: #3949ab">ชื่อผู้ใช้งาน (Username) :</i>
         <q-input
           filled
           v-model="text"
@@ -47,7 +51,7 @@
         />
 
         <!-- ส่วนของการแก้ไข bio -->
-        <b style="">คำแนะนำตัว (Bio) :</b>
+        <i style="color: #3949ab">คำแนะนำตัว (Bio) :</i>
         <!-- <div class="q-pa-md" style="max-width: 1000px; width: 350px"> -->
         <q-input v-model="text" filled type="textarea" style="width: 359px" />
         <!-- </div> -->

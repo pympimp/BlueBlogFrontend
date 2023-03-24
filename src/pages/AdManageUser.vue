@@ -7,8 +7,10 @@
         style="
           font-size: 25px;
           font-weight: bolder;
+          margin-left: 20px;
           margin-bottom: -10px;
-          position: static;
+          position: absolute;
+          color: #880e4f;
         "
       >
         จัดการรายชื่อผู้ใช้งาน
@@ -19,10 +21,10 @@
         filled
         dense
         type="search"
-        style="width: 250px; position: relative; left: 380px; top: 40px"
+        style="width: 250px; position: absolute; right: 430px"
       >
         <template v-slot:append>
-          <q-icon name="search" />
+          <q-icon name="search" color="pink" />
         </template>
       </q-input>
 
@@ -30,9 +32,9 @@
       <q-btn
         to="adadduser"
         glossy
-        color="purple"
-        label="Add User"
-        style="bottom: -3px; left: 645px"
+        color="pink"
+        label="เพิ่มผู้ใช้"
+        style="bottom: -3px; left: 645px; margin-bottom: 5px"
       />
 
       <!-- เส้นขีด -->
@@ -41,6 +43,7 @@
           border: 0.6px thin gray;
           margin: 15px 15px 15px 15px;
           width: 720px;
+          color: #78728a;
         "
       />
 
@@ -50,28 +53,65 @@
           display: flex;
           justify-content: space-around;
           font-weight: bolder;
+          color: #1d366f;
         "
       >
-        <div>ID</div>
-        <div>Username</div>
-        <div>Email</div>
-        <div>img</div>
-        <div>type</div>
-        <div>status</div>
+        <div style="transform: scale(1) translate(-100%, 0%)">ID</div>
+        <div style="transform: scale(1) translate(-80%, 0%)">Username</div>
+        <div style="transform: scale(1) translate(-120%, 0%)">Email</div>
+        <div style="transform: scale(1) translate(-100%, 0%)">img</div>
+        <div style="transform: scale(1) translate(-175%, 0%)">type</div>
+        <div style="transform: scale(1) translate(-265%, 0%)">status</div>
       </div>
 
       <!-- ส่วนของรายชื่อสมาชิกไล่ลงไป -->
-      <div style="display: flex; justify-content: space-around">
-        <div>1</div>
-        <div>Username00001</div>
-        <div>user01@gmail.com</div>
-        <div>2491056.png</div>
-        <div>User</div>
-        <div>Active</div>
-        <i to="adedituser" class="fa-solid fa-pen"></i>
-        <i class="fa-solid fa-trash"></i>
-      </div>
+      <div class="q-ma-md">
+        <q-scroll-area style="height: 200px">
+          <div v-for="n in 100" :key="n" class="q-py-xs">
+            <div
+              style="
+                display: flex;
+                justify-content: space-around;
+                color: #78728a;
+              "
+            >
+              <div>1</div>
+              <div>Username00001</div>
+              <div>user01@gmail.com</div>
+              <div>2491056.png</div>
+              <div>User</div>
+              <div>Active</div>
+              <router-link to="adedituser"
+                ><i class="fa-solid fa-pen" style="color: #78728a"></i
+              ></router-link>
+              <i class="fa-solid fa-trash" style="margin-top: 4px"></i>
+            </div>
 
+            <div
+              style="
+                display: flex;
+                justify-content: space-around;
+                color: #78728a;
+              "
+            >
+              <div>2</div>
+              <div>Username00002</div>
+              <div>user02@gmail.com</div>
+              <div>2491056.png</div>
+              <div>User</div>
+              <div>Active</div>
+              <router-link to="adedituser"
+                ><i class="fa-solid fa-pen" style="color: #78728a">
+                  <q-tooltip transition-show="scale" transition-hide="scale">
+                    เพิ่มโพสต์ใหม่
+                  </q-tooltip></i
+                ></router-link
+              >
+              <i class="fa-solid fa-trash" style="margin-top: 4px"></i>
+            </div>
+          </div>
+        </q-scroll-area>
+      </div>
       <br />
     </div>
   </q-page>
@@ -103,7 +143,7 @@ export default {
   opacity: 0.8;
   margin-bottom: 10px;
   border-radius: 30px;
-  padding: 20px 20px 20px 20px;
+  padding: 20px 20px 5px 20px;
   box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);
   background: white;
 }

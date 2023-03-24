@@ -7,10 +7,11 @@
             font-size: 25px;
             font-weight: bolder;
             margin-bottom: -10px;
-            color: #1a237e;
+
+            color: #880e4f;
           "
         >
-          หน้าหลัก
+          🏠&nbsp;หน้าหลัก
         </p>
         <q-btn-dropdown
           split
@@ -50,11 +51,16 @@
         <section class="post">
           <router-link
             to="/postncomment"
-            style="text-decoration: none; color: black; font-weight: bolder"
+            style="
+              text-decoration: none;
+              color: black;
+              font-weight: bolder;
+              color: #1a237e;
+            "
             >? ทำไมนรกต้องใช้กระทะทองแดง</router-link
           >
           <br />
-          <Content
+          <Content style="color: #5c6bc0"
             >ทำไมนรกต้องใช้กระทะทองแดง ทำไมไม่ใช้กระทะเงิน
             ซึ่งนำความร้อนได้ดีกว่า</Content
           ><br />
@@ -64,11 +70,25 @@
           &nbsp;
           <router-link
             to="/myprofile"
-            style="text-decoration: none; color: black; font-weight: bolder"
+            style="
+              text-decoration: none;
+              color: black;
+              font-weight: bolder;
+              color: #1a237e;
+            "
             >User0001</router-link
           >
           &nbsp;
-          <p style="display: inline">3 มีนาคม 2566</p>
+          <!-- ส่วนของไลก์และคอมเมนต์ -->
+          <p style="display: inline; color: #5c6bc0">3 มีนาคม 2566</p>
+          <i
+            class="fa-solid fa-heart"
+            style="color: #880e4f; margin-left: 420px"
+          ></i>
+          <i style="color: #880e4f; margin-right: 10px">24</i>
+          <i class="fa-solid fa-comment" style="color: #880e4f"></i>
+          <i style="color: #880e4f; margin-right: 10px">20</i>
+
           <hr style="width: 700px" />
         </section>
 
@@ -77,11 +97,16 @@
         <section class="post">
           <router-link
             to="/postncomment"
-            style="text-decoration: none; color: black; font-weight: bolder"
+            style="
+              text-decoration: none;
+              color: black;
+              font-weight: bolder;
+              color: #1a237e;
+            "
             >? ต้นมะนาวบนหลุมศพหมาที่โดนงูเห่ากัด</router-link
           >
           <br />
-          <Content
+          <Content style="color: #5c6bc0"
             >ปลูกต้นมะนาวไว้บนหลุมศพหมาที่โดนงูเห่ากัด กินได้ไหมคะ
             มีอันตรายจากพิษงูไหม</Content
           ><br />
@@ -91,11 +116,25 @@
           &nbsp;
           <router-link
             to="/myprofile"
-            style="text-decoration: none; color: black; font-weight: bolder"
+            style="
+              text-decoration: none;
+              color: black;
+              font-weight: bolder;
+              color: #1a237e;
+            "
             >User0002</router-link
           >
           &nbsp;
-          <p style="display: inline">9 พฤษภาคม 2566</p>
+          <p style="display: inline; color: #5c6bc0">9 พฤษภาคม 2566</p>
+
+          <!-- ส่วนของไลก์และคอมเมนต์ -->
+          <i
+            class="fa-solid fa-heart"
+            style="color: #880e4f; margin-left: 420px"
+          ></i>
+          <i style="color: #880e4f; margin-right: 10px">24</i>
+          <i class="fa-solid fa-comment" style="color: #880e4f"></i>
+          <i style="color: #880e4f; margin-right: 10px">20</i>
           <hr style="width: 700px" />
         </section>
 
@@ -105,12 +144,17 @@
           <router-link
             to="/postncomment"
             class="post"
-            style="text-decoration: none; color: black; font-weight: bolder"
+            style="
+              text-decoration: none;
+              color: black;
+              font-weight: bolder;
+              color: #1a237e;
+            "
             >?
             พ่อขุนรามนี่ถือว่าได้เป็นอัจฉริยะทางภาษาหรือเปล่าครับ</router-link
           >
           <br />
-          <Content
+          <Content style="color: #5c6bc0"
             >หลักการสร้างตัวอักษรและการสะกดคำ ท่านได้แนวคิดมาจากไหน
             มีเหตุจำเป็นอะไรที่ต้องสร้างอักษรไทย</Content
           ><br />
@@ -120,11 +164,25 @@
           &nbsp;
           <router-link
             to="/myprofile"
-            style="text-decoration: none; color: black; font-weight: bolder"
+            style="
+              text-decoration: none;
+              color: black;
+              font-weight: bolder;
+              color: #1a237e;
+            "
             >User0003</router-link
           >
           &nbsp;
-          <p style="display: inline">17 สิงหาคม 2566</p>
+          <p style="display: inline; color: #5c6bc0">17 สิงหาคม 2566</p>
+
+          <!-- ส่วนของไลก์และคอมเมนต์ -->
+          <i
+            class="fa-solid fa-heart"
+            style="color: #880e4f; margin-left: 420px"
+          ></i>
+          <i style="color: #880e4f; margin-right: 10px">24</i>
+          <i class="fa-solid fa-comment" style="color: #880e4f"></i>
+          <i style="color: #880e4f; margin-right: 10px">20</i>
           <hr style="width: 700px" />
         </section>
 
@@ -132,11 +190,16 @@
         <section class="post">
           <router-link
             to="/postncomment"
-            style="text-decoration: none; color: black; font-weight: bolder"
+            style="
+              text-decoration: none;
+              color: black;
+              font-weight: bolder;
+              color: #1a237e;
+            "
             >แบ่งปัน 7 ไอเทมเด็ดที่ควรมีติดกระเป๋า!</router-link
           >
           <br />
-          <Content
+          <Content style="color: #5c6bc0"
             >สวัสดีชาวบลูทุกท่านค่ะ
             วันนี้เราจะมาแบ่งปันไอเทมที่มีติดกระเป๋าแล้วชีวิตง่ายขึ้นแบบ
             200%</Content
@@ -147,11 +210,24 @@
           &nbsp;
           <router-link
             to="/myprofile"
-            style="text-decoration: none; color: black; font-weight: bolder"
+            style="
+              text-decoration: none;
+              color: black;
+              font-weight: bolder;
+              color: #1a237e;
+            "
             >User0004</router-link
           >
           &nbsp;
-          <p style="display: inline">24 ธันวาคม 2566</p>
+          <p style="display: inline; color: #5c6bc0">24 ธันวาคม 2566</p>
+          <!-- ส่วนของไลก์และคอมเมนต์ -->
+          <i
+            class="fa-solid fa-heart"
+            style="color: #880e4f; margin-left: 420px"
+          ></i>
+          <i style="color: #880e4f; margin-right: 10px">24</i>
+          <i class="fa-solid fa-comment" style="color: #880e4f"></i>
+          <i style="color: #880e4f; margin-right: 10px">20</i>
         </section>
 
         <!-- ----------------------------------------------------------------------------------------------------------- -->

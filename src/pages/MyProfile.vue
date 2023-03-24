@@ -12,8 +12,8 @@
         class="details"
         style="display: inline; margin-left: -150px; margin-top: 10px"
       >
-        <b> Username00009</b>
-        <p>" โย่ว"</p>
+        <b style="color: #1a237e"> Username00009</b>
+        <p style="color: #5c6bc0">" โย่ว"</p>
       </div>
       <q-btn
         to="manageprofile"
@@ -35,39 +35,61 @@
           display: flex;
           justify-content: space-around;
           font-weight: bolder;
+          color: #880e4f;
         "
       >
         <div>โพสต์ที่ตั้ง</div>
         <div>โพสต์ที่ตอบกลับ</div>
         <div>โพสต์ที่ถูกใจ</div>
       </div>
-      <hr style="border: 0.6px thin gray; margin: 15px 15px 15px 15px" />
+      <hr
+        style="
+          border: 1px thin gray;
+          margin: 15px 15px 15px 15px;
+          color: #880e4f;
+        "
+      />
 
       <!-- ส่วนของโพสต์ต่างๆของผู้ใช้ -->
       <div class="post">
         <router-link
           to="postncomment"
-          style="text-decoration: none; color: black; font-weight: bolder"
+          style="
+            text-decoration: none;
+            color: black;
+            font-weight: bolder;
+            color: #1a237e;
+          "
           >ร้านค้าที่รับแต่เงินสด ไม่เสียดายลูกค้าบ้างหรอครับ
         </router-link>
-        <p>28 กุมภาพันธ์ 2566</p>
+        <p style="color: #5c6bc0">28 กุมภาพันธ์ 2566</p>
         <!-- <hr style="border: 0.5px thin gray" /> -->
 
         <router-link
           to="postncomment"
-          style="text-decoration: none; color: black; font-weight: bolder"
+          style="
+            text-decoration: none;
+            color: black;
+            font-weight: bolder;
+            color: #1a237e;
+          "
           >ไปเที่ยวเกาะหมากนอนรีสอร์ตไหนดี?</router-link
         >
-        <p>5 มีนาคม 2566</p>
+        <p style="color: #5c6bc0">5 มีนาคม 2566</p>
 
         <!-- <hr style="border: 0.5px thin gray" /> -->
 
         <router-link
           to="postncomment"
-          style="text-decoration: none; color: black; font-weight: bolder"
+          style="
+            text-decoration: none;
+            color: black;
+            font-weight: bolder;
+            color: #1a237e;
+          "
           >โอนเงินจากทรูมันนี่ไปธนาคารเลขบัญชีผิดทำอย่างไรดี</router-link
         >
-        <p>18 สิงหาคม 2566</p>
+        <p style="color: #5c6bc0">18 สิงหาคม 2566</p>
       </div>
     </div>
   </q-page>

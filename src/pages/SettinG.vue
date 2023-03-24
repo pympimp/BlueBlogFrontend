@@ -2,10 +2,14 @@
   <q-page class="flex flex-center">
     <div class="container">
       <!-- หัวข้อ Edit Profile -->
-      <p style="font-size: 25px; font-weight: bolder">การตั้งค่า</p>
+      <p style="font-size: 25px; font-weight: bolder; color: #880e4f">
+        การตั้งค่า
+      </p>
 
       <!-- ส่วนของการแก้ไข password เก่า-->
-      <b style="margin-right: 130px">รหัสผ่านเก่า (Old Password) :</b>
+      <i style="margin-right: 130px; color: #3949ab"
+        >รหัสผ่านเก่า (Old Password) :</i
+      >
       <q-input
         v-model="password"
         filled
@@ -22,8 +26,8 @@
       </q-input>
 
       <!-- ส่วนของการแก้ไข password ใหม่-->
-      <b style="margin-right: 130px; margin-top: 10px"
-        >รหัสผ่านใหม่ (New Password) :</b
+      <i style="margin-right: 130px; margin-top: 10px; color: #3949ab"
+        >รหัสผ่านใหม่ (New Password) :</i
       >
       <q-input
         v-model="password"
