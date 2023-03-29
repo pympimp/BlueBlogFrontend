@@ -23,7 +23,7 @@
               <img src="/public/blueblog-logo.png" />
             </q-avatar>
             <q-tooltip transition-show="scale" transition-hide="scale">
-              กลับเมนูหลัก
+              {{ t("BacktoMain") }}
             </q-tooltip>
           </router-link>
 
@@ -32,22 +32,47 @@
             rounded
             outlined
             v-model="text"
-            label="ช่องค้นหา"
+            :label="t('SearchBar')"
             bg-color="white"
             q-icon="search"
             dense
             style="width: 300px; margin-left: 370px; margin-right: 370px"
           />
 
+          <!-- ปุ่มเปลี่ยนภาษา -->
+          <div>
+            <q-icon :name="biTranslate"></q-icon> &nbsp;{{ locale
+            }}<q-menu>
+              <q-list style="min-width: 100px">
+                <q-item
+                  v-for="(item, index) in localeList"
+                  :key="index"
+                  clickable
+                  v-close-popup
+                  @click="locale = item.locale"
+                >
+                  <q-item-section>{{ item.text }}</q-item-section>
+                  <!-- ไอคอน Check -->
+                  <q-item-section v-if="item.locale == locale" avatar>
+                    <q-icon color="indigo-12" :name="biCheck" />
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+            <q-tooltip transition-show="scale" transition-hide="scale">
+              {{ $t("Translate") }}
+            </q-tooltip>
+          </div>
+
           <!-- ส่วนของปุ่มเพิ่มโพส -->
           <router-link to="addpost">
             <img
               src="/public/add-white.png"
               alt=""
-              style="width: 30px; height: 30px; margin-right: 15px"
+              style="width: 30px; height: 30px; margin-left: 12px"
             />
             <q-tooltip transition-show="scale" transition-hide="scale">
-              เพิ่มโพสต์ใหม่
+              {{ $t("AddPost") }}
             </q-tooltip>
           </router-link>
 
@@ -57,8 +82,8 @@
               class="glossy"
               color="white"
               text-color="indigo-10"
-              label="บัญชี"
-              style="padding: 7px 7px 7px 7px; width: 90px; font-weight: bold"
+              :label="t('Account')"
+              style="padding: 7px 7px 7px 7px; width: 110px; font-weight: bold"
             >
               <div class="row no-wrap q-pa-md">
                 <q-list style="min-width: 100px">
@@ -69,7 +94,7 @@
                       style="margin-top: 10px; color: #406882"
                     ></i>
                     <q-item-section style="color: #1d366f"
-                      >&nbsp; &nbsp;บัญชีของฉัน</q-item-section
+                      >&nbsp; &nbsp;{{ $t("MyAccount") }}</q-item-section
                     >
                   </q-item>
                   <q-separator />
@@ -81,7 +106,7 @@
                       style="margin-top: 10px; color: #406882"
                     ></i>
                     <q-item-section style="color: #1d366f"
-                      >&nbsp; &nbsp;แก้ไขโปรไฟล์</q-item-section
+                      >&nbsp; &nbsp;{{ $t("ManageProfile") }}</q-item-section
                     >
                   </q-item>
                   <q-separator />
@@ -93,7 +118,7 @@
                       style="margin-top: 10px; color: #406882"
                     ></i>
                     <q-item-section style="color: #1d366f"
-                      >&nbsp; &nbsp;การตั้งค่า</q-item-section
+                      >&nbsp; &nbsp;{{ $t("Setting") }}</q-item-section
                     >
                   </q-item>
                 </q-list>
@@ -115,7 +140,7 @@
                   <q-btn
                     to="login"
                     color="pink-4"
-                    label="กลับหน้าเข้าสู่ระบบ "
+                    :label="t('Login')"
                     push
                     size="m"
                     v-close-popup
@@ -130,13 +155,18 @@
     </q-header>
     <!-- </div> -->
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+    <q-drawer
+      v-model="leftDrawerOpen"
+      show-if-above
+      bordered
+      class="text-indigo-10"
+    >
       <q-list>
         <q-item-label
           header
-          style="color: black; font-weight: bolder; font-size: 20px"
+          style="color: #1d366f; font-weight: bolder; font-size: 20px"
         >
-          เมนู
+          {{ t("Menu") }}
         </q-item-label>
 
         <EssentialLink
@@ -154,23 +184,9 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import EssentialLink from "components/EssentialLink.vue";
-
-const linksList = [
-  {
-    title: "หน้าหลัก",
-    caption: "แสดงทุกโพสต์บนเว็บไซต์",
-    icon: "home",
-    name: "/mainpage",
-  },
-  {
-    title: "คนที่ฉันติดตาม",
-    caption: "แสดงโพสต์จากคนที่ติดตาม",
-    icon: "group",
-    link: "https://github.com/quasarframework",
-  },
-];
-
+import { useLang } from "src/composables/useLang";
 export default defineComponent({
   name: "MainLayout",
 
@@ -180,9 +196,28 @@ export default defineComponent({
 
   setup() {
     const leftDrawerOpen = ref(false);
-
+    const { localeList, t, locale } = useLang();
+    const linksList = [
+      {
+        title: t("MainPage"),
+        caption: t("MainDes"),
+        icon: "home",
+        name: "/mainpage",
+      },
+      {
+        title: t("FolPage"),
+        caption: t("FolDes"),
+        icon: "group",
+        link: "https://github.com/quasarframework",
+      },
+    ];
     return {
+      localeList,
+      t,
+      locale,
+      biCheck,
       essentialLinks: linksList,
+      biTranslate,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;

@@ -12,69 +12,109 @@
           color: #1a237e;
         "
       >
-        ✧･ﾟ แก้ไขข้อมูลผู้ใช้ ｡･✧
+        ✧･ﾟ {{ t("EditUser") }} ｡･✧
       </p>
 
       <br />
       <!-- ส่วนของการเปลี่ยนอีเมล -->
-      <i style="color: #5c6bc0">อีเมล (Email) :</i>
-      <q-input
-        filled
-        v-model="text"
-        :dense="dense"
-        style="width: 300px; margin-bottom: 7px"
-      />
+      <q-spinner v-if="loading == true" color="primary" size="3em" />
+      <template v-else>
+        <q-card-section v-if="entityItem">
+          <i style="color: #5c6bc0">{{ t("Email") }} :</i>
+          <q-input
+            filled
+            v-model="entityItem.email"
+            :dense="dense"
+            style="width: 300px; margin-bottom: 7px"
+        /></q-card-section>
 
-      <!-- ส่วนของการแก้ไข password -->
-      <i style="color: #5c6bc0">รหัสผ่าน (Password) :</i>
-      <q-input
-        v-model="password"
-        filled
-        :type="isPwd ? 'password' : 'text'"
-        style="width: 300px; margin-bottom: 20px"
-      >
-        <template v-slot:append>
-          <q-icon
-            :name="isPwd ? 'visibility_off' : 'visibility'"
-            class="cursor-pointer"
-            @click="isPwd = !isPwd"
-          />
-        </template>
-      </q-input>
+        <!-- ส่วนของการแก้ไข password -->
+        <i style="color: #5c6bc0; margin-left: 15px">{{ t("Password") }} :</i>
+        <q-input
+          v-model="password"
+          filled
+          :type="isPwd ? 'password' : 'text'"
+          style="width: 300px; margin-bottom: 20px; margin-left: 15px"
+        >
+          <template v-slot:append>
+            <q-icon
+              :name="isPwd ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwd = !isPwd"
+            />
+          </template>
+        </q-input>
 
-      <!-- ปุ่ม toggle เปิด-ปิดสถานะผู้ใช้งาน -->
-      <i style="color: #5c6bc0">สถานะผู้ใช้งาน (status)</i> <br />
-      <q-toggle
-        v-model="third"
-        checked-icon="check"
-        color="green"
-        unchecked-icon="clear"
-      />
+        <!-- ปุ่ม toggle เปิด-ปิดสถานะผู้ใช้งาน -->
+        <i style="color: #5c6bc0; margin-left: 15px">{{ t("UserStatus") }}</i>
+        <br />
+        <q-toggle
+          v-model="third"
+          checked-icon="check"
+          color="green"
+          unchecked-icon="clear"
+        />
 
-      <!-- ส่วนของปุ่ม Submit -->
-      <q-btn
-        glossy
-        push
-        color="indigo-10"
-        label="บันทึก"
-        style="margin-top: -20px; margin-left: 180px"
-      />
+        <!-- ส่วนของปุ่ม Submit -->
+        <q-btn
+          type="submit"
+          glossy
+          push
+          color="indigo-10"
+          style="margin-top: -20px; margin-left: 100px"
+          >{{ $t("okay") }}</q-btn
+        >
+        <!-- ส่วนของปุ่มยกเลิก -->
+        <q-btn
+          to="/admanageuser"
+          glossy
+          push
+          color="indigo-10"
+          style="margin-top: -20px; margin-left: 10px"
+          >{{ $t("cancel") }}</q-btn
+        >
+      </template>
     </div>
   </q-page>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
+<script setup>
+import { ref, onMounted, onUnmounted, watch } from "vue";
+import { useMeta } from "quasar";
+import { useLang } from "src/composables/useLang";
+import { UserApi } from "src/api/UserApi";
+import { useRoute } from "vue-router";
+const route = useRoute();
+const { t } = useLang();
+const { getOne } = UserApi();
+useMeta({ title: "Edit User" });
 
-export default {
-  name: "MyProfile ",
-  setup() {
-    return {
-      text: ref(""),
-      third: ref(false),
-      isPwd: ref(false),
-    };
-  },
+const value = ref(true);
+const userId = ref();
+const entityItem = ref();
+const loading = ref(false);
+onMounted(() => {
+  if (route.params.userId) {
+    userId.value = route.params.userId;
+  }
+
+  if (userId.value) {
+    fethData();
+  }
+  console.log("get userId ", userId.value);
+});
+
+const fethData = async () => {
+  loading.value = true;
+  const respone = await getOne(userId.value);
+  loading.value = false;
+  console.log("fethData", respone);
+  if (respone) {
+    entityItem.value = respone.entity;
+  }
+};
+const onSubmit = () => {
+  console.log("onSubmit", entityItem.value);
 };
 </script>
 

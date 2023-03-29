@@ -26,7 +26,7 @@
         <q-fab
           glossy
           v-model="fab2"
-          label="จัดการเพิ่มเติม"
+          label=""
           external-label
           vertical-actions-align="left"
           color="pink"
@@ -40,14 +40,14 @@
             color="pink-10"
             @click="onClick"
             icon="edit"
-            label="แก้ไขโพสต์"
+            :label="t('EditPost')"
           />
           <q-fab-action
             external-label
             color="pink-10"
             @click="onClick"
             icon="delete"
-            label="ลบโพสต์"
+            :label="t('DeletePost')"
           />
         </q-fab>
       </div>
@@ -82,7 +82,7 @@
             font-size: 15px;
           "
         >
-          24k ถูกใจ</b
+          24k {{ t("Like") }}</b
         >
       </div>
     </div>
@@ -98,7 +98,7 @@
           color: #b03367;
         "
       >
-        แสดงความคิดเห็น
+        {{ t("AddComment") }}
       </p>
       <br />
       <!-- ช่องจัดรูปแบบของการเขียนคอมเมนต์ -->
@@ -111,7 +111,7 @@
         <q-file
           color="pink"
           v-model="model"
-          label="เลือกไฟล์รูปภาพ"
+          :label="t('ChooseFile')"
           borderless
           style="padding-right: 400px; text-decoration: none"
         >
@@ -123,7 +123,7 @@
         <q-btn
           color="pink"
           glossy
-          label="ยืนยัน"
+          :label="t('Submit')"
           style="height: 5px; margin-top: 15px"
         />
       </div>
@@ -135,7 +135,7 @@
         <q-fab
           glossy
           v-model="fab2"
-          label="จัดการเพิ่มเติม"
+          label=""
           external-label
           vertical-actions-align="left"
           color="pink"
@@ -149,14 +149,14 @@
             color="pink-10"
             @click="onClick"
             icon="edit"
-            label="แก้ไขโพสต์"
+            :label="t('EditPost')"
           />
           <q-fab-action
             external-label
             color="pink-10"
             @click="onClick"
             icon="delete"
-            label="ลบโพสต์"
+            :label="t('DeletePost')"
           />
         </q-fab>
       </div>
@@ -207,7 +207,7 @@
             margin-top: 4px;
           "
         >
-          10 Likes</b
+          10 {{ t("Like") }}</b
         >
 
         <!-- ข้อมูลผู้คอมเมนต์ -->
@@ -236,17 +236,32 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
+import { useLang } from "src/composables/useLang";
 
 export default {
-  name: "PostnComment ",
+  name: "DashBoard",
   setup() {
+    const { localeList, t, locale } = useLang();
+    const leftDrawerOpen = ref(false);
+    function toggleLeftDrawer() {
+      leftDrawerOpen.value = !leftDrawerOpen.value;
+    }
     return {
+      localeList,
+      t,
+      locale,
+      text: ref(""),
+      third: ref(false),
+      isPwd: ref(true),
       editor: ref("What you see is <b>what</b> you get."),
+
+      toggleLeftDrawer,
+      links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
     };
   },
 };
 </script>
-
 <style scoped>
 .flex {
   background-color: #d6e3ea;

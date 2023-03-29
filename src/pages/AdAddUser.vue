@@ -12,12 +12,12 @@
           color: #880e4f;
         "
       >
-        ✧･ﾟ เพิ่มผู้ใช้ใหม่ ｡･✧
+        ✧･ﾟ {{ t("AddUser") }} ｡･✧
       </p>
       <br />
 
       <!-- ส่วนของการเปลี่ยนอีเมล -->
-      <i style="color: #c51162">อีเมล (Email) :</i>
+      <i style="color: #c51162">{{ t("Email") }} :</i>
       <q-input
         filled
         v-model="text"
@@ -26,7 +26,7 @@
       />
 
       <!-- ส่วนของการแก้ไข password -->
-      <i style="color: #c51162">รหัสผ่าน (Password) :</i>
+      <i style="color: #c51162">{{ t("Password") }} :</i>
       <q-input
         v-model="password"
         filled
@@ -48,7 +48,7 @@
         glossy
         push
         color="pink-10"
-        label="บันทึก"
+        :label="t('Save')"
         style="margin-top: 20px; margin-left: 230px"
       />
     </div>
@@ -57,18 +57,31 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
+import { useLang } from "src/composables/useLang";
 
 export default {
-  name: "MyProfile ",
+  name: "DashBoard",
   setup() {
+    const { localeList, t, locale } = useLang();
+    const leftDrawerOpen = ref(false);
+    function toggleLeftDrawer() {
+      leftDrawerOpen.value = !leftDrawerOpen.value;
+    }
     return {
+      localeList,
+      t,
+      locale,
       text: ref(""),
+      third: ref(false),
       isPwd: ref(true),
+
+      toggleLeftDrawer,
+      links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
     };
   },
 };
 </script>
-
 <style scoped>
 .flex {
   background-color: #d6e3ea;

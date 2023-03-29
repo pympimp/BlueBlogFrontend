@@ -3,7 +3,7 @@
     <div class="container">
       <!-- หัวข้อ Edit Profile -->
       <p style="font-size: 25px; font-weight: bolder; color: #880e4f">
-        แก้ไขโปรไฟล์
+        {{ t("ManageProfile") }}
       </p>
 
       <!-- รูปโปรไฟล์ -->
@@ -33,7 +33,7 @@
         </div>
         <br />
         <!-- ส่วนของการเปลี่ยนอีเมล -->
-        <i style="color: #3949ab">อีเมล (Email) :</i>
+        <i style="color: #3949ab">{{ t("Email") }} :</i>
         <q-input
           filled
           v-model="text"
@@ -42,7 +42,7 @@
         />
 
         <!-- ส่วนของการแก้ไข username -->
-        <i style="color: #3949ab">ชื่อผู้ใช้งาน (Username) :</i>
+        <i style="color: #3949ab">{{ t("Password") }} :</i>
         <q-input
           filled
           v-model="text"
@@ -51,7 +51,7 @@
         />
 
         <!-- ส่วนของการแก้ไข bio -->
-        <i style="color: #3949ab">คำแนะนำตัว (Bio) :</i>
+        <i style="color: #3949ab">{{ t("Bio") }} :</i>
         <!-- <div class="q-pa-md" style="max-width: 1000px; width: 350px"> -->
         <q-input v-model="text" filled type="textarea" style="width: 359px" />
         <!-- </div> -->
@@ -61,7 +61,7 @@
           glossy
           push
           color="pink"
-          label="บันทึก"
+          :label="t('Save')"
           style="margin-top: 20px; margin-left: 300px"
         />
       </div>
@@ -71,12 +71,27 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
+import { useLang } from "src/composables/useLang";
 
 export default {
-  name: "MyProfile ",
+  name: "ManageProfile",
   setup() {
+    const { localeList, t, locale } = useLang();
+    const leftDrawerOpen = ref(false);
+    function toggleLeftDrawer() {
+      leftDrawerOpen.value = !leftDrawerOpen.value;
+    }
     return {
+      localeList,
+      t,
+      locale,
       text: ref(""),
+      third: ref(false),
+      isPwd: ref(true),
+
+      toggleLeftDrawer,
+      links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
     };
   },
 };

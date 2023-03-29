@@ -4,14 +4,14 @@
       <div class="container">
         <!-- ส่วนของหัวข้อ 'เพิ่มโพสต์ใหม่' -->
         <p style="font-size: 25px; font-weight: bolder; color: #1a237e">
-          °˖ ✧◝ เพิ่มโพสต์ใหม่ ◜✧˖ °
+          °˖ ✧◝ {{ t("AddPost") }} ◜✧˖ °
         </p>
 
         <!-- ส่วนของการใส่หัวข้อโพสต์ -->
         <q-input
           outlined
           v-model="text"
-          label="หัวข้อโพสต์  "
+          :label="t('PostHead')"
           color="indigo-10"
           stack-label
           :dense="dense"
@@ -127,7 +127,7 @@
             <q-btn
               push
               color="indigo-5"
-              label="โพสต์"
+              :label="t('Postbtn')"
               style="height: 35px; width: 50px"
             />
           </div>
@@ -138,22 +138,32 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import { ref } from "vue";
+import { defineComponent, ref } from "vue";
+import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
+import { useLang } from "src/composables/useLang";
 
-export default defineComponent({
-  name: "AddPost",
+export default {
+  name: "DashBoard",
   setup() {
+    const { localeList, t, locale } = useLang();
+    const leftDrawerOpen = ref(false);
+    function toggleLeftDrawer() {
+      leftDrawerOpen.value = !leftDrawerOpen.value;
+    }
     return {
+      localeList,
+      t,
+      locale,
       text: ref(null),
+      third: ref(false),
+      isPwd: ref(true),
+
+      toggleLeftDrawer,
+      links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
     };
   },
-  // submitPost() {
-  //   alert("Success!");
-  // },
-});
+};
 </script>
-
 <style scoped>
 .flex {
   background-color: #d6e3ea;

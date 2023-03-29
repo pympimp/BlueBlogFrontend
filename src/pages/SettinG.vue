@@ -3,12 +3,12 @@
     <div class="container">
       <!-- หัวข้อ Edit Profile -->
       <p style="font-size: 25px; font-weight: bolder; color: #880e4f">
-        การตั้งค่า
+        {{ t("Setting") }}
       </p>
 
       <!-- ส่วนของการแก้ไข password เก่า-->
-      <i style="margin-right: 130px; color: #3949ab"
-        >รหัสผ่านเก่า (Old Password) :</i
+      <i style="margin-right: 220px; color: #3949ab"
+        >{{ t("OldPassword") }} :</i
       >
       <q-input
         v-model="password"
@@ -26,8 +26,8 @@
       </q-input>
 
       <!-- ส่วนของการแก้ไข password ใหม่-->
-      <i style="margin-right: 130px; margin-top: 10px; color: #3949ab"
-        >รหัสผ่านใหม่ (New Password) :</i
+      <i style="margin-right: 220px; margin-top: 10px; color: #3949ab"
+        >{{ t("NewPassword") }} :</i
       >
       <q-input
         v-model="password"
@@ -49,7 +49,7 @@
         glossy
         push
         color="pink"
-        label="บันทึก"
+        :label="t('Save')"
         style="margin-top: 20px; margin-left: 230px"
       />
     </div>
@@ -58,25 +58,38 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
+import { useLang } from "src/composables/useLang";
 
 export default {
-  name: "SettinG ",
+  name: "SettinG",
   setup() {
+    const { localeList, t, locale } = useLang();
+    const leftDrawerOpen = ref(false);
+    function toggleLeftDrawer() {
+      leftDrawerOpen.value = !leftDrawerOpen.value;
+    }
     return {
+      localeList,
+      t,
+      locale,
       text: ref(""),
-      password: ref(""),
+      third: ref(false),
       isPwd: ref(true),
+      password: ref(""),
       email: ref(""),
       search: ref(""),
       tel: ref(""),
       url: ref(""),
       time: ref(""),
       date: ref(""),
+
+      toggleLeftDrawer,
+      links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
     };
   },
 };
 </script>
-
 <style scoped>
 .flex {
   background-color: #d6e3ea;

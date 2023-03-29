@@ -20,7 +20,7 @@
         glossy
         push
         color="pink"
-        label="แก้ไขโปรไฟล์"
+        :label="t('Manage')"
         style="height: 20px"
       />
     </div>
@@ -38,9 +38,9 @@
           color: #880e4f;
         "
       >
-        <div>โพสต์ที่ตั้ง</div>
-        <div>โพสต์ที่ตอบกลับ</div>
-        <div>โพสต์ที่ถูกใจ</div>
+        <div>{{ t("Posted") }}</div>
+        <div>{{ t("Replied") }}</div>
+        <div>{{ t("Liked") }}</div>
       </div>
       <hr
         style="
@@ -97,11 +97,28 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
+import { useLang } from "src/composables/useLang";
 
 export default {
-  name: "MyProfile ",
+  name: "MyProfile",
   setup() {
-    return {};
+    const { localeList, t, locale } = useLang();
+    const leftDrawerOpen = ref(false);
+    function toggleLeftDrawer() {
+      leftDrawerOpen.value = !leftDrawerOpen.value;
+    }
+    return {
+      localeList,
+      t,
+      locale,
+      text: ref(""),
+      third: ref(false),
+      isPwd: ref(true),
+
+      toggleLeftDrawer,
+      links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
+    };
   },
 };
 </script>

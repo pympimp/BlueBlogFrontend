@@ -11,38 +11,39 @@
             color: #880e4f;
           "
         >
-          🏠&nbsp;หน้าหลัก
+          🏠&nbsp; {{ $t("MainPage") }}
         </p>
+
         <q-btn-dropdown
           split
           glossy
           color="pink"
           rounded
-          label="คัดกรองโพสต์"
+          :label="t('FilterPost')"
           style="display: inline; margin-bottom: 20px; margin-left: 580px"
         >
           <q-list>
             <q-item clickable v-close-popup>
               <q-item-section>
-                <q-item-label>โพสต์เก่า - ใหม่</q-item-label>
+                <q-item-label>{{ $t("PostOld") }}</q-item-label>
               </q-item-section>
             </q-item>
 
             <q-item clickable v-close-popup>
               <q-item-section>
-                <q-item-label>โพสต์ใหม่ - เก่า</q-item-label>
+                <q-item-label>{{ $t("PostNew") }}</q-item-label>
               </q-item-section>
             </q-item>
 
             <q-item clickable v-close-popup>
               <q-item-section>
-                <q-item-label>ความนิยมน้อย - มาก</q-item-label>
+                <q-item-label>{{ $t("PopMore") }}</q-item-label>
               </q-item-section>
             </q-item>
 
             <q-item clickable v-close-popup>
               <q-item-section>
-                <q-item-label>ความนิยมมาก - น้อย</q-item-label>
+                <q-item-label>{{ $t("PopLess") }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -237,11 +238,40 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { ref } from "vue";
+import { fabYoutube } from "@quasar/extras/fontawesome-v6";
+import { biTranslate, biGlobe, biCheck } from "@quasar/extras/bootstrap-icons";
+import { useLang } from "src/composables/useLang";
 
-export default defineComponent({
-  name: "IndexPage",
-});
+export default {
+  name: "MyLayout",
+  setup() {
+    const { localeList, t, locale } = useLang();
+    const leftDrawerOpen = ref(false);
+    const search = ref("");
+    function toggleLeftDrawer() {
+      leftDrawerOpen.value = !leftDrawerOpen.value;
+    }
+    return {
+      localeList,
+      t,
+      locale,
+      biGlobe,
+      biCheck,
+      biTranslate,
+      fabYoutube,
+      leftDrawerOpen,
+      search,
+      toggleLeftDrawer,
+      links1: [
+        { icon: "home", text: "Home", link: "/" },
+        { icon: "whatshot", text: "List Page", link: "/list-page" },
+        { icon: "subscriptions", text: "Subscriptions" },
+        { icon: biTranslate, text: "Translate", link: "/locale-page" },
+      ],
+    };
+  },
+};
 </script>
 
 <style scoped>

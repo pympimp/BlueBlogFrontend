@@ -1,12 +1,12 @@
 <template>
   <q-page class="flex flex-center">
     <div class="container">
-      <h5>สมัครสมาชิก</h5>
+      <h5>{{ t("Signup") }}</h5>
       <q-input
         v-model="email"
         filled
         type="email"
-        placeholder="อีเมล"
+        :label="t('Email')"
         style="width: 250px"
       />
       <br />
@@ -14,7 +14,7 @@
         v-model="password"
         filled
         :type="isPwd ? 'password' : 'text'"
-        placeholder="รหัสผ่าน"
+        :label="t('Password')"
         style="width: 250px"
       >
         <template v-slot:append>
@@ -27,29 +27,45 @@
       </q-input>
       <br />
       <section>
-        <p style="display: inline">มีบัญชีอยู่แล้ว?</p>
-        <router-link to="/login"> คลิกเลย!</router-link>
+        <p style="display: inline">{{ t("NoAccount") }}</p>
+        <router-link to="/login">&nbsp; {{ t("Click") }}</router-link>
       </section>
       <br />
-      <q-btn push color="grey-7" label="ยืนยัน" to="login" />
+      <q-btn push color="grey-7" :label="t('Submit')" to="login" />
     </div>
   </q-page>
 </template>
 
 <script>
-import { ref } from "vue";
+import { defineComponent, ref } from "vue";
+import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
+import { useLang } from "src/composables/useLang";
 
 export default {
+  name: "LogIn",
   setup() {
+    const { localeList, t, locale } = useLang();
+    const leftDrawerOpen = ref(false);
+    function toggleLeftDrawer() {
+      leftDrawerOpen.value = !leftDrawerOpen.value;
+    }
     return {
-      password: ref(""),
+      localeList,
+      t,
+      locale,
+      text: ref(""),
+      third: ref(false),
       isPwd: ref(true),
+      password: ref(""),
       email: ref(""),
       search: ref(""),
       tel: ref(""),
       url: ref(""),
       time: ref(""),
       date: ref(""),
+
+      toggleLeftDrawer,
+      links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
     };
   },
 };

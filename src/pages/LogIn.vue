@@ -1,12 +1,12 @@
 <template>
   <q-page class="flex flex-center">
     <div class="container">
-      <h5 style="font-weight: bold">เข้าสู่ระบบ</h5>
+      <h5 style="">{{ t("Login") }}</h5>
       <q-input
         v-model="email"
         filled
         type="email"
-        placeholder="อีเมล"
+        :label="t('Email')"
         style="width: 250px; color: #1a237e"
       />
       <br />
@@ -14,7 +14,7 @@
         v-model="password"
         filled
         :type="isPwd ? 'password' : 'text'"
-        placeholder="รหัสผ่าน"
+        :label="t('Password')"
         style="width: 250px"
       >
         <template v-slot:append>
@@ -27,29 +27,45 @@
       </q-input>
       <br />
       <section>
-        <p style="display: inline">ยังไม่มีบัญชี?</p>
-        <router-link to="/signup"> คลิกเลย!</router-link>
+        <p style="display: inline">{{ t("NoAccount") }}</p>
+        <router-link to="/signup">&nbsp; {{ t("Click") }}</router-link>
       </section>
       <br />
-      <q-btn push color="grey-7" label="ยืนยัน" to="mainpage" />
+      <q-btn push color="grey-7" :label="t('Submit')" to="mainpage" />
     </div>
   </q-page>
 </template>
 
 <script>
-import { ref } from "vue";
+import { defineComponent, ref } from "vue";
+import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
+import { useLang } from "src/composables/useLang";
 
 export default {
+  name: "LogIn",
   setup() {
+    const { localeList, t, locale } = useLang();
+    const leftDrawerOpen = ref(false);
+    function toggleLeftDrawer() {
+      leftDrawerOpen.value = !leftDrawerOpen.value;
+    }
     return {
-      password: ref(""),
+      localeList,
+      t,
+      locale,
+      text: ref(""),
+      third: ref(false),
       isPwd: ref(true),
+      password: ref(""),
       email: ref(""),
       search: ref(""),
       tel: ref(""),
       url: ref(""),
       time: ref(""),
       date: ref(""),
+
+      toggleLeftDrawer,
+      links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
     };
   },
 };

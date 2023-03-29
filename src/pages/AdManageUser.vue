@@ -13,7 +13,7 @@
           color: #880e4f;
         "
       >
-        จัดการรายชื่อผู้ใช้งาน
+        {{ t("ManageUser") }}
       </p>
       <!-- ส่วนของเสิร์ชบาร์ -->
       <q-input
@@ -33,101 +33,115 @@
         to="adadduser"
         glossy
         color="pink"
-        label="เพิ่มผู้ใช้"
+        :label="t('Add')"
         style="bottom: -3px; left: 645px; margin-bottom: 5px"
       />
 
-      <!-- เส้นขีด -->
-      <hr
-        style="
-          border: 0.6px thin gray;
-          margin: 15px 15px 15px 15px;
-          width: 720px;
-          color: #78728a;
-        "
-      />
-
       <!-- ส่วนของหัวข้ออย่างเช่น ID Username etc. -->
-      <div
-        style="
-          display: flex;
-          justify-content: space-around;
-          font-weight: bolder;
-          color: #1d366f;
-        "
+
+      <q-markup-table
+        style="margin-top: 20px; border-radius: 10px; padding: 5px 0px 10px 0px"
       >
-        <div style="transform: scale(1) translate(-100%, 0%)">ID</div>
-        <div style="transform: scale(1) translate(-80%, 0%)">Username</div>
-        <div style="transform: scale(1) translate(-120%, 0%)">Email</div>
-        <div style="transform: scale(1) translate(-100%, 0%)">img</div>
-        <div style="transform: scale(1) translate(-175%, 0%)">type</div>
-        <div style="transform: scale(1) translate(-265%, 0%)">status</div>
+        <thead>
+          <tr style="font-weight: bold">
+            <th class="text-center">{{ t("Profile") }}</th>
+            <th class="text-center">{{ t("Id") }}</th>
+            <th class="text-center">{{ t("Username") }}</th>
+            <th class="text-center">{{ t("Email") }}</th>
+            <th class="text-center">{{ t("Type") }}</th>
+            <th class="text-center">{{ t("Status") }}</th>
+            <th class="text-center">{{ t("Tools") }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in userList" :key="index">
+            <td class="text-center">
+              <q-avatar size="35px" rounded v-if="item.picture">
+                <img :src="item.picture.x" />
+              </q-avatar>
+            </td>
+            <td class="text-center">{{ item.id }}</td>
+            <td class="text-center">{{ item.username }}</td>
+            <td class="text-center">{{ item.email }}</td>
+            <td class="text-center">{{ item.userRoles }}</td>
+            <td class="text-center">{{ item.status }}</td>
+            <td>
+              <q-btn
+                :icon="biPencil"
+                :to="'/adedituser/' + item.id"
+                flat
+                color="pink"
+              >
+                <q-tooltip> {{ t("edit") }} </q-tooltip></q-btn
+              >
+              <q-btn :icon="biTrash" flat color="pink">
+                <q-tooltip> {{ t("delete") }} </q-tooltip></q-btn
+              >
+            </td>
+          </tr>
+        </tbody>
+      </q-markup-table>
+
+      <br />
+      <div class="q-gutter-md" style="display: flex; justify-content: center">
+        <q-pagination
+          v-model="currentPage"
+          :max="totalPage"
+          direction-links
+          flat
+          color="grey"
+          active-color="pink"
+        />
       </div>
 
       <!-- ส่วนของรายชื่อสมาชิกไล่ลงไป -->
-      <div class="q-ma-md">
-        <q-scroll-area style="height: 200px">
-          <div v-for="n in 100" :key="n" class="q-py-xs">
-            <div
-              style="
-                display: flex;
-                justify-content: space-around;
-                color: #78728a;
-              "
-            >
-              <div>1</div>
-              <div>Username00001</div>
-              <div>user01@gmail.com</div>
-              <div>2491056.png</div>
-              <div>User</div>
-              <div>Active</div>
-              <router-link to="adedituser"
-                ><i class="fa-solid fa-pen" style="color: #78728a"></i
-              ></router-link>
-              <i class="fa-solid fa-trash" style="margin-top: 4px"></i>
-            </div>
-
-            <div
-              style="
-                display: flex;
-                justify-content: space-around;
-                color: #78728a;
-              "
-            >
-              <div>2</div>
-              <div>Username00002</div>
-              <div>user02@gmail.com</div>
-              <div>2491056.png</div>
-              <div>User</div>
-              <div>Active</div>
-              <router-link to="adedituser"
-                ><i class="fa-solid fa-pen" style="color: #78728a">
-                  <q-tooltip transition-show="scale" transition-hide="scale">
-                    เพิ่มโพสต์ใหม่
-                  </q-tooltip></i
-                ></router-link
-              >
-              <i class="fa-solid fa-trash" style="margin-top: 4px"></i>
-            </div>
-          </div>
-        </q-scroll-area>
-      </div>
-      <br />
     </div>
   </q-page>
+  <br />
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
+<script setup>
+import { biPencil, biPlus, biTrash } from "@quasar/extras/bootstrap-icons";
+import { ref, onMounted, onUnmounted, watch } from "vue";
+import { useMeta } from "quasar";
+import { useLang } from "src/composables/useLang";
+import { useAxios } from "src/composables/useAxios";
+import { UserApi } from "src/api/UserApi";
+const { getUserList } = UserApi();
 
-export default {
-  name: "MyProfile ",
-  setup() {
-    return {
-      search: ref(""),
-    };
-  },
+const loading = ref(false);
+const currentPage = ref(1);
+const recordPerPage = ref(6);
+const totalPage = ref(0);
+const userList = ref([]);
+
+const { t } = useLang();
+useMeta({ title: t("userList") });
+
+//onload เมื่อโหลดหน้านี้ ให้ทำคำสั่งเหล่านี้ออโต้
+onMounted(async () => {
+  fetchList();
+});
+
+const fetchList = async () => {
+  loading.value = true;
+  const response = await getUserList({
+    page: currentPage.value,
+    perPage: recordPerPage.value,
+  });
+  loading.value = false;
+  if (response) {
+    userList.value = response.dataList;
+    totalPage.value = response.appPagination;
+  }
+
+  console.log("response", response);
 };
+
+watch(currentPage, async (newVal, oldVal) => {
+  fetchList();
+  console.log("currentPage changed :", newVal);
+});
 </script>
 
 <style scoped>
@@ -143,7 +157,8 @@ export default {
   opacity: 0.8;
   margin-bottom: 10px;
   border-radius: 30px;
-  padding: 20px 20px 5px 20px;
+  width: 800px;
+  padding: 20px 20px 20px 20px;
   box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);
   background: white;
 }
