@@ -238,22 +238,27 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { defineAsyncComponent, defineComponent, ref } from "vue";
 import { fabYoutube } from "@quasar/extras/fontawesome-v6";
 import { biTranslate, biGlobe, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 
+const MyChart = defineAsyncComponent(() => import("components/MyChart.vue"));
+
 export default {
   name: "MyLayout",
+  components: {},
   setup() {
     const { localeList, t, locale } = useLang();
     const leftDrawerOpen = ref(false);
     const search = ref("");
+
     function toggleLeftDrawer() {
       leftDrawerOpen.value = !leftDrawerOpen.value;
     }
     return {
       localeList,
+      MyChart,
       t,
       locale,
       biGlobe,

@@ -13,10 +13,18 @@
             margin-bottom: -10px;
             display: flex;
             justify-content: center;
+            color: #f48a1e;
           "
         >
-          Total User
+          [ {{ t("TotalUser") }} ]
         </p>
+        <br /><br />
+        <img
+          src="public/ad-user.png"
+          style="width: 70px; height: 70px; margin-left: 42px"
+        />
+        <br /><br />
+        <p style="margin-left: 66px; color: #827b7e">{{ t("UserAm") }}</p>
       </div>
 
       <!-- ส่วนของ Total Post -->
@@ -28,37 +36,61 @@
             margin-bottom: -10px;
             display: flex;
             justify-content: center;
+            color: #d4397a;
           "
         >
-          Total Post
+          [ {{ t("TotalPost") }} ]
         </p>
+        <br />
+        <br />
+        <img
+          src="public/ad-post.png"
+          alt=""
+          style="width: 70px; height: 70px; margin-left: 42px"
+        />
+        <br /><br />
+        <p style="margin-left: 60px; color: #827b7e">{{ t("PostAm") }}</p>
       </div>
     </div>
 
     <!-- ส่วนของ User Statistics -->
-    <div class="container" style="width: 600px; height: 520px">
-      <p
+    <div
+      class="container"
+      style="width: 600px; height: 520px; padding: 30px 50px 0px 50px"
+    >
+      <b
         style="
-          font-size: 20px;
+          font-size: 30px;
+          color: #2786d7;
           font-weight: bolder;
-          margin-bottom: -10px;
           display: flex;
           justify-content: center;
+          margin-bottom: 10px;
         "
+        >[ {{ t("UserStatis") }} ]</b
       >
-        User Statistics
+      <p></p>
+      <p></p>
+      <useChart></useChart>
+      <p style="margin-left: 150px; color: #827b7e">
+        {{ t("AllUser") }}
       </p>
     </div>
   </q-page>
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, defineAsyncComponent, ref } from "vue";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 
+const useChart = defineAsyncComponent(() => import("components/MyChart.vue"));
+
 export default {
   name: "DashBoard",
+  components: {
+    useChart,
+  },
   setup() {
     const { localeList, t, locale } = useLang();
     const leftDrawerOpen = ref(false);

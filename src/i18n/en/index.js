@@ -96,4 +96,12 @@ export default {
   EditPost: "Edit Post",
   DeletePost: "Delete Post",
   ChooseFile: "Choose Image",
+
+  //DashBoard
+  TotalUser: "Total User",
+  UserAm: "user",
+  TotalPost: "Total Posts",
+  PostAm: "posts",
+  UserStatis: "User Statistics",
+  AllUser: "Amount of user for April 2023",
 };

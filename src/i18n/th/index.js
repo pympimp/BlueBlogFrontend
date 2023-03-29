@@ -93,4 +93,12 @@ export default {
   EditPost: "แก้ไขโพสต์",
   DeletePost: "ลบโพสต์",
   ChooseFile: "เลือกไฟล์รูปภาพ",
+
+  //DashBoard
+  TotalUser: "จำนวนผู้ใช้",
+  UserAm: "คน",
+  TotalPost: "จำนวนโพสต์",
+  PostAm: "โพสต์",
+  UserStatis: "สถิติผู้ใช้",
+  AllUser: "จำนวนผู้ใช้ประจำเดือนเมษายน 2566",
 };
