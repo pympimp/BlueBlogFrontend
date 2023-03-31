@@ -40,7 +40,7 @@
           />
 
           <!-- ปุ่มเปลี่ยนภาษา -->
-          <div>
+          <div style="cursor: pointer">
             <q-icon :name="biTranslate"></q-icon> &nbsp;{{ locale
             }}<q-menu>
               <q-list style="min-width: 100px">

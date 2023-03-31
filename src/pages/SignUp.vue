@@ -31,7 +31,13 @@
         <router-link to="/login">&nbsp; {{ t("Click") }}</router-link>
       </section>
       <br />
-      <q-btn push color="grey-7" :label="t('Submit')" to="login" />
+      <q-btn
+        v-on:click="signUp"
+        push
+        color="grey-7"
+        :label="t('Submit')"
+        to="login"
+      />
     </div>
   </q-page>
 </template>
@@ -40,9 +46,10 @@
 import { defineComponent, ref } from "vue";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
+import axios from "src/boot/axios";
 
 export default {
-  name: "LogIn",
+  name: "signUp",
   setup() {
     const { localeList, t, locale } = useLang();
     const leftDrawerOpen = ref(false);
@@ -66,6 +73,21 @@ export default {
 
       toggleLeftDrawer,
       links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
+
+      methods: {
+        async signUp() {
+          let result = await axios.post("/user", {
+            email: this.email,
+            password: this.password,
+          });
+
+          console.warn(result);
+          if (result.status == 201) {
+            alert("sign-up");
+            localStorage.setItem("user-info", JSON.stringify(result.data));
+          }
+        },
+      },
     };
   },
 };

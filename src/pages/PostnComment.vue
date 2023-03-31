@@ -64,14 +64,10 @@
         <i style="color: #5c6bc0"><br />วันเสาร์ 3 มีนาคม 2566 15:30</i>
 
         <!-- ปุ่มไลก์โพส -->
-        <q-btn
-          round
-          color="pink"
-          glossy
-          icon="fa-solid fa-heart"
-          style="margin-left: 420px"
-        />
-        <br />
+        <button @click="toggleLike">
+          <span v-if="liked"> <i class="fas fa-heart"></i> Unlike </span>
+          <span v-else> <i class="far fa-heart"></i> Like </span>
+        </button>
 
         <!-- จำนวนยอดไลก์โพสต์ -->
         <b
@@ -182,6 +178,7 @@
       <!-- ปุ่มไลก์คอมเมนต์ -->
       <div class="comment-like" style="display: flex">
         <q-btn
+          @click="like"
           style="
             margin-left: -40px;
             padding-top: 7px;
@@ -207,7 +204,7 @@
             margin-top: 4px;
           "
         >
-          10 {{ t("Like") }}</b
+          {{ likes }} {{ t("Like") }}</b
         >
 
         <!-- ข้อมูลผู้คอมเมนต์ -->
@@ -248,6 +245,7 @@ export default {
       leftDrawerOpen.value = !leftDrawerOpen.value;
     }
     return {
+      liked: false,
       localeList,
       t,
       locale,
@@ -258,6 +256,17 @@ export default {
 
       toggleLeftDrawer,
       links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
+
+      methods: {
+        toggleLike() {
+          this.liked = !this.liked;
+          if (this.liked) {
+            // handle like functionality
+          } else {
+            // handle unlike functionality
+          }
+        },
+      },
     };
   },
 };

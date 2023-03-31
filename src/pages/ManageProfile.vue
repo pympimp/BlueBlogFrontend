@@ -17,7 +17,7 @@
 
         <!-- ส่วนของการแทรกไฟล์รูปภาพ -->
         <div
-          style="position: absolute; right: 530px; top: 100px;color: color: #3949ab ;"
+          style="position: absolute; right: 600px; top: 135px;color: color: #3949ab ;"
         >
           <q-input
             @update:model-value="

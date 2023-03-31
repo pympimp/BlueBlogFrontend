@@ -50,6 +50,11 @@ const routes = [
         path: "/adprofile",
         component: () => import("src/pages/AdProfile.vue"),
       },
+
+      {
+        path: "/managelist",
+        component: () => import("src/pages/ManageList.vue"),
+      },
     ],
   },
 
