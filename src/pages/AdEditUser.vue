@@ -49,9 +49,10 @@
         <i style="color: #5c6bc0; margin-left: 15px">{{ t("UserStatus") }}</i>
         <br />
         <q-toggle
-          v-model="third"
+          v-model="fourth"
           checked-icon="check"
-          color="green"
+          color="red"
+          label="Different icon for each state"
           unchecked-icon="clear"
         />
 

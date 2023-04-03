@@ -42,7 +42,7 @@
         />
 
         <!-- ส่วนของการแก้ไข username -->
-        <i style="color: #3949ab">{{ t("Password") }} :</i>
+        <i style="color: #3949ab">{{ t("Username") }} :</i>
         <q-input
           filled
           v-model="text"

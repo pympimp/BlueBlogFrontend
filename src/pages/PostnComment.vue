@@ -64,22 +64,45 @@
         <i style="color: #5c6bc0"><br />วันเสาร์ 3 มีนาคม 2566 15:30</i>
 
         <!-- ปุ่มไลก์โพส -->
-        <button @click="toggleLike">
-          <span v-if="liked"> <i class="fas fa-heart"></i> Unlike </span>
-          <span v-else> <i class="far fa-heart"></i> Like </span>
-        </button>
+        <div class="comment-like" style="display: flex; margin-left: 450px">
+          <div style="display: inline">
+            <q-btn
+              class="like__btn"
+              style="
+                background-color: #b46f8f;
+                font-size: 15px;
+                border-radius: 50px;
+                border: none;
+              "
+            >
+              <span id="icon"
+                ><i
+                  class="fa-regular fa-thumbs-up"
+                  style="color: white; height: -20px; color: white"
+                ></i>
+              </span>
+            </q-btn>
+            &nbsp;
+            <span
+              id="count"
+              style="display: inline; color: #b46f8f; text-weight: bolder"
+              >0</span
+            >
+            <!-- จำนวนยอดไลก์โพสต์ -->
+            <b
+              style="
+                color: #b46f8f;
+                margin-left: 10px;
+                margin-top: 10px;
+                font-size: 15px;
+              "
+            >
+              {{ t("Like") }}
+            </b>
+          </div>
 
-        <!-- จำนวนยอดไลก์โพสต์ -->
-        <b
-          style="
-            color: #b03367;
-            margin-left: 10px;
-            margin-top: 10px;
-            font-size: 15px;
-          "
-        >
-          24k {{ t("Like") }}</b
-        >
+          <br />
+        </div>
       </div>
     </div>
 
@@ -99,7 +122,12 @@
       <br />
       <!-- ช่องจัดรูปแบบของการเขียนคอมเมนต์ -->
       <div class="q-pa-md q-gutter-sm">
-        <q-editor :v-model="editor" min-height="5rem" style="width: 600px" />
+        <q-editor
+          :v-model="editor"
+          min-height="5rem"
+          style="width: 600px"
+          :model-value="null"
+        />
       </div>
 
       <div style="display: flex">
@@ -175,41 +203,51 @@
         การเลือกทองแดงเป็นกระทะจึงเป็นทางเลือกที่ดีกว่าเนื่องจากประหยัดกว่า</Content
       >
       <br />
-      <!-- ปุ่มไลก์คอมเมนต์ -->
-      <div class="comment-like" style="display: flex">
-        <q-btn
-          @click="like"
-          style="
-            margin-left: -40px;
-            padding-top: 7px;
-            font-size: 10px;
-            width: 10px;
-            height: 10px;
-            display: inline;
-          "
-          round
-          color="pink"
-          glossy
-          icon="fa-solid fa-heart"
-        />
 
-        <!-- จำนวนยอดไลก์คอมเมนต์ -->
-        <b
-          style="
-            display: inline;
-            color: #b03367;
-            font-size: 15px;
-            margin-left: 5px;
-            margin-right: 350px;
-            margin-top: 4px;
-          "
-        >
-          {{ likes }} {{ t("Like") }}</b
-        >
+      <!-- ปุ่มไลก์คอมเมนต์ -->
+      <div class="comment-like2" style="display: flex">
+        <div style="display: inline">
+          <q-btn
+            class="like__btn2"
+            style="
+              background-color: #b46f8f;
+              font-size: 15px;
+              border-radius: 50px;
+              border: none;
+            "
+          >
+            <span id="icon2"
+              ><i
+                class="fa-regular fa-thumbs-up"
+                style="color: white; height: -20px; color: white"
+              ></i>
+            </span>
+          </q-btn>
+          &nbsp;
+          <span
+            id="count2"
+            style="display: inline; color: #b46f8f; text-weight: bolder"
+            >0</span
+          >
+          <!-- จำนวนยอดไลก์โพสต์ -->
+          <b
+            style="
+              color: #b46f8f;
+              margin-left: 10px;
+              margin-top: 10px;
+              font-size: 15px;
+            "
+          >
+            {{ t("Like") }}
+          </b>
+        </div>
 
         <!-- ข้อมูลผู้คอมเมนต์ -->
-        <ion-avatar class="profile" style="display: inline">
-          <img src="/public/pf2.png" style="width: 30px; height: 30px" />
+        <ion-avatar class="profile">
+          <img
+            src="/public/pf2.png"
+            style="width: 30px; height: 30px; margin-left: 369px"
+          />
         </ion-avatar>
         <b
           style="
@@ -238,6 +276,42 @@ import { useLang } from "src/composables/useLang";
 
 export default {
   name: "DashBoard",
+  mounted() {
+    const likeBtn = document.querySelector(".like__btn");
+    let likeIcon = document.querySelector("#icon");
+    let count = document.querySelector("#count");
+    const likeBtn2 = document.querySelector(".like__btn2");
+    let likeIcon2 = document.querySelector("#icon2");
+    let count2 = document.querySelector("#count2");
+
+    //btn clicked
+    let clicked = false;
+    let clicked2 = false;
+
+    likeBtn.addEventListener("click", () => {
+      if (!clicked) {
+        clicked = true;
+        likeIcon.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
+        count.textContent++;
+      } else {
+        clicked = false;
+        likeIcon.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
+        count.textContent--;
+      }
+    });
+
+    likeBtn2.addEventListener("click", () => {
+      if (!clicked2) {
+        clicked2 = true;
+        likeIcon2.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
+        count2.textContent++;
+      } else {
+        clicked2 = false;
+        likeIcon2.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
+        count2.textContent--;
+      }
+    });
+  },
   setup() {
     const { localeList, t, locale } = useLang();
     const leftDrawerOpen = ref(false);
@@ -256,17 +330,6 @@ export default {
 
       toggleLeftDrawer,
       links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
-
-      methods: {
-        toggleLike() {
-          this.liked = !this.liked;
-          if (this.liked) {
-            // handle like functionality
-          } else {
-            // handle unlike functionality
-          }
-        },
-      },
     };
   },
 };
@@ -367,7 +430,12 @@ p {
   transform: translate(0%, 7%);
 }
 
-/* .flex .container-add-comment{
-  wid
-} */
+/* ตกแต่งปุ่มไลก์โพสต์ */
+.like__btn {
+  padding: 10px 15px;
+  background: #be6e8d;
+  font-size: 18px;
+  color: #d6e3ea;
+  cursor: pointer;
+}
 </style>
