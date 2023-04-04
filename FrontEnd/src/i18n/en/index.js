@@ -20,7 +20,7 @@ export default {
 
   //Main Layout
   BacktoMain: "Main Page",
-  SearchBar: "Search Bar",
+  SearchBar: "Search User",
   Account: "Account",
   MyAccount: "My account",
   AddPost: "Add Post",
