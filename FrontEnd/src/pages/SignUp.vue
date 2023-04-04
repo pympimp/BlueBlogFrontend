@@ -1,95 +1,107 @@
 <template>
   <q-page class="flex flex-center">
     <div class="container">
-      <h5>{{ t("Signup") }}</h5>
-      <q-input
-        v-model="email"
-        filled
-        type="email"
-        :label="t('Email')"
-        style="width: 250px"
-      />
-      <br />
-      <q-input
-        v-model="password"
-        filled
-        :type="isPwd ? 'password' : 'text'"
-        :label="t('Password')"
-        style="width: 250px"
-      >
-        <template v-slot:append>
-          <q-icon
-            :name="isPwd ? 'visibility_off' : 'visibility'"
-            class="cursor-pointer"
-            @click="isPwd = !isPwd"
+      <h5 style="margin-top: 30px">{{ t("Signup") }}</h5>
+      <q-form @submit="onSubmit" class="q-px-sm" style="margin-top: -15px">
+        <q-input
+          :readonly="loading"
+          v-model="email"
+          filled
+          type="email"
+          :label="t('Email')"
+          style="width: 250px; color: #1a237e"
+          :rules="[(val) => !!val || 'Email is required']"
+        />
+        <br />
+        <q-input
+          v-model="password"
+          :readonly="loading"
+          filled
+          :type="showPassword ? 'text' : 'password'"
+          :label="t('Password')"
+          style="width: 250px; margin-top: -10px"
+          :rules="[(val) => !!val || 'Password is required']"
+        >
+          <template v-slot:append>
+            <q-icon
+              :name="showPassword ? biEye : biEyeSlash"
+              class="cursor-pointer"
+              @click="showPassword = !showPassword"
+            />
+          </template>
+        </q-input>
+
+        <br />
+        <section style="margin-top: -5px; margin-bottom: 10px">
+          <p style="display: inline">{{ t("NoAccount") }}</p>
+          <router-link to="/auth/login">&nbsp; {{ t("Click") }}</router-link>
+        </section>
+
+        <q-card-actions>
+          <q-btn
+            unelevated
+            :loading="loading"
+            size="lg"
+            color="indigo-6"
+            class="full-width text-white"
+            :label="t('Submit')"
+            type="submit"
+            style="border-radius: 20px; text-size: 2px"
           />
-        </template>
-      </q-input>
-      <br />
-      <section>
-        <p style="display: inline">{{ t("NoAccount") }}</p>
-        <router-link to="/login">&nbsp; {{ t("Click") }}</router-link>
-      </section>
-      <br />
-      <q-btn
-        v-on:click="signUp"
-        push
-        color="grey-7"
-        :label="t('Submit')"
-        to="login"
-      />
+        </q-card-actions>
+      </q-form>
+
+      <q-card-section class="q-mt-lg text-center">
+        <div :class="$q.dark.isActive ? 'text-indigo-1' : 'text-indigo-1'">
+          {{ `@ 2023 ${t("appName")}` }}
+        </div>
+      </q-card-section>
+
+      <q-inner-loading :showing="loading" label="Please wait..." />
     </div>
   </q-page>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
-import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
+<script setup>
+import { ref } from "vue";
+import { useMeta, useQuasar } from "quasar";
 import { useLang } from "src/composables/useLang";
-import axios from "src/boot/axios";
+import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
+import { AuthenApi } from "src/api/AuthenApi";
+import { useAuthenStore } from "src/stores/authen";
 
-export default {
-  name: "signUp",
-  setup() {
-    const { localeList, t, locale } = useLang();
-    const leftDrawerOpen = ref(false);
-    function toggleLeftDrawer() {
-      leftDrawerOpen.value = !leftDrawerOpen.value;
-    }
-    return {
-      localeList,
-      t,
-      locale,
-      text: ref(""),
-      third: ref(false),
-      isPwd: ref(true),
-      password: ref(""),
-      email: ref(""),
-      search: ref(""),
-      tel: ref(""),
-      url: ref(""),
-      time: ref(""),
-      date: ref(""),
+const authenStore = useAuthenStore();
+const { loginProcess } = AuthenApi();
+const { t, localeList, locale } = useLang();
 
-      toggleLeftDrawer,
-      links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
+const $q = useQuasar();
+useMeta({ title: "Login Page" });
 
-      methods: {
-        async signUp() {
-          let result = await axios.post("/user", {
-            email: this.email,
-            password: this.password,
-          });
+const email = ref("");
+const password = ref("");
+const showPassword = ref(false);
+const loading = ref(false);
 
-          console.warn(result);
-          if (result.status == 201) {
-            alert("sign-up");
-            localStorage.setItem("user-info", JSON.stringify(result.data));
-          }
-        },
-      },
-    };
-  },
+const onSubmit = async () => {
+  loading.value = true;
+  const response = await loginProcess({
+    _u: email.value,
+    _p: password.value,
+  });
+  console.log("loginProcess", response);
+  loading.value = false;
+
+  // if logined success
+  if (response && response.userData && response.userData.apiKey) {
+    authenStore.setAuthen(response.userData);
+    $q.notify({
+      message: "Login Success!!",
+      avatar: response.userData.picture.path,
+    });
+    setTimeout(() => {
+      window.location.replace("/");
+    }, 500);
+  }
 };
 </script>
 
@@ -112,9 +124,6 @@ export default {
   box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);
   padding: 10px;
   background: white;
-}
-.container:hover {
-  transform: scale(1.02);
 }
 
 a {

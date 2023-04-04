@@ -34,7 +34,7 @@
         <br />
         <section style="margin-top: -5px; margin-bottom: 10px">
           <p style="display: inline">{{ t("NoAccount") }}</p>
-          <router-link to="/signup">&nbsp; {{ t("Click") }}</router-link>
+          <router-link to="/auth/signup">&nbsp; {{ t("Click") }}</router-link>
         </section>
 
         <q-card-actions>
@@ -42,11 +42,11 @@
             unelevated
             :loading="loading"
             size="lg"
-            color="pink-10"
+            color="indigo-6"
             class="full-width text-white"
-            label="Login"
+            :label="t('Submit')"
             type="submit"
-            style="border-radius: 20px"
+            style="border-radius: 20px; text-size: 2px"
           />
         </q-card-actions>
       </q-form>

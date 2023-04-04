@@ -3,16 +3,15 @@
     <!-- ส่วนข้อมูลหลักของผู้ใช้ -->
     <div class="container-header">
       <!-- รูปโปรไฟล์ -->
-
-      <ion-avatar class="profile" style="display: inline">
-        <img src="/public/pf1.png" style="width: 70px; height: 70px" />
-      </ion-avatar>
+      <q-avatar v-if="authenStore.auth.picture" size="65px" class="shadow-5">
+        <q-img :src="authenStore.auth.picture.path" />
+      </q-avatar>
       <!-- username และ bio -->
       <div
         class="details"
         style="display: inline; margin-left: -150px; margin-top: 10px"
       >
-        <b style="color: #1a237e"> Username00009</b>
+        <b style="color: #1a237e"> {{ authenStore.auth.username }}</b>
         <p style="color: #5c6bc0">" โย่ว"</p>
       </div>
       <q-btn
@@ -99,16 +98,24 @@
 import { defineComponent, ref } from "vue";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
+import { useAuthenStore } from "src/stores/authen";
+import { AuthenApi } from "src/api/AuthenApi";
+import { useQuasar } from "quasar";
 
 export default {
   name: "MyProfile",
   setup() {
     const { localeList, t, locale } = useLang();
     const leftDrawerOpen = ref(false);
+    const authenStore = useAuthenStore();
     function toggleLeftDrawer() {
       leftDrawerOpen.value = !leftDrawerOpen.value;
     }
     return {
+      authenStore,
+      useAuthenStore,
+      AuthenApi,
+      useQuasar,
       localeList,
       t,
       locale,

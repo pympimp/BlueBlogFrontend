@@ -10,7 +10,6 @@ const routes = [
         component: () => import("src/pages/AddPost.vue"),
       },
       { path: "/mainpage", component: () => import("pages/MainPage.vue") },
-      { path: "/signup", component: () => import("pages/SignUp.vue") },
       {
         path: "/myprofile",
         component: () => import("src/pages/MyProfile.vue"),
@@ -67,6 +66,7 @@ const routes = [
     component: () => import("layouts/BlankLayout.vue"),
     children: [
       { path: "login", component: () => import("src/pages/LogIn.vue") },
+      { path: "signup", component: () => import("pages/SignUp.vue") },
     ],
   },
 

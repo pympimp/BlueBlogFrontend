@@ -17,6 +17,7 @@ export default {
   signpls: "We can't find your saved recipes until you sign in",
   delete: "Delete",
   edit: "Edit",
+  Logout: "Logout",
 
   //Main Layout
   BacktoMain: "Main Page",

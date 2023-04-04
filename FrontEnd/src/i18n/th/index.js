@@ -14,6 +14,7 @@ export default {
   signpls: "กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ",
   delete: "ลบ",
   edit: "แก้ไข",
+  Logout: "ออกจากระบบ",
 
   //Main Layout
   BacktoMain: "กลับหน้าหลัก",

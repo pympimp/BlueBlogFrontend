@@ -151,7 +151,7 @@
                     size="m"
                     style="height: 30px; font-weight: lighter"
                   >
-                    {{ t("logout") }}
+                    {{ t("Logout") }}
                   </q-btn>
                 </div>
               </div>
