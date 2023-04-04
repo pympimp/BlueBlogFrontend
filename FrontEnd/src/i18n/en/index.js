@@ -104,4 +104,8 @@ export default {
   PostAm: "posts",
   UserStatis: "User Statistics",
   AllUser: "Amount of user for April 2023",
+
+  logoutCf: "Please promise you'll comeback to our website",
+  k: "Promise",
+  n: "Nope",
 };

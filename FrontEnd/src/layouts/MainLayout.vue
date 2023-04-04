@@ -128,24 +128,31 @@
 
                 <!-- ส่วนของฝั่งขวา รูปโปรไฟล์, username และปุ่ม Logout -->
                 <div class="column items-center">
-                  <q-avatar size="65px">
-                    <img src="/public/pf1.png" />
+                  <q-avatar
+                    v-if="authenStore.auth.picture"
+                    size="65px"
+                    class="shadow-5"
+                  >
+                    <q-img :src="authenStore.auth.picture.path" />
                   </q-avatar>
                   <div
                     class="text-subtitle1 q-mt-md q-mb-xs"
                     style="color: #c2185b; font-weight: bold"
                   >
-                    Username00009
+                    {{ authenStore.auth.email }}
                   </div>
+
                   <q-btn
-                    to="login"
                     color="pink-4"
-                    :label="t('Login')"
+                    clickable
+                    v-close-popup
+                    @click="logoutConfirm"
                     push
                     size="m"
-                    v-close-popup
                     style="height: 30px; font-weight: lighter"
-                  />
+                  >
+                    {{ t("logout") }}
+                  </q-btn>
                 </div>
               </div>
             </q-btn-dropdown>
@@ -183,11 +190,23 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { ref } from "vue";
+import { fabYoutube } from "@quasar/extras/fontawesome-v6";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
-import EssentialLink from "components/EssentialLink.vue";
 import { useLang } from "src/composables/useLang";
-export default defineComponent({
+import { useAuthenStore } from "src/stores/authen";
+import { AuthenApi } from "src/api/AuthenApi";
+import { useQuasar } from "quasar";
+// const $q = useQuasar();
+// const { userLogout } = AuthenApi();
+// const authenStore = useAuthenStore();
+// const { localeList, t, locale } = useLang();
+
+const leftDrawerOpen = ref(false);
+const search = ref("");
+import EssentialLink from "components/EssentialLink.vue";
+
+export default {
   name: "MainLayout",
 
   components: {
@@ -195,8 +214,55 @@ export default defineComponent({
   },
 
   setup() {
-    const leftDrawerOpen = ref(false);
+    const $q = useQuasar();
+    const { userLogout } = AuthenApi();
+    const authenStore = useAuthenStore();
     const { localeList, t, locale } = useLang();
+
+    const logoutConfirm = async () => {
+      $q.dialog({
+        title: t("appName"),
+        message: t("logoutCf"),
+        cancel: true,
+        ok: {
+          label: t("k"),
+          flat: true,
+          outline: true,
+          color: "positive",
+        },
+        cancel: {
+          label: t("n"),
+          flat: true,
+          color: "negative",
+        },
+      })
+        .onOk(() => {
+          console.log("OK");
+          logoutProcess();
+        })
+        .onCancel(() => {
+          console.log("Cancel");
+        });
+    };
+
+    const logoutProcess = async () => {
+      const response = await userLogout();
+      console.log("userLogout", response);
+      if (response && response.status) {
+        //clear aut key on localStorage
+        authenStore.logout();
+        $q.notify({
+          message: response.message,
+        });
+
+        //redirect to login page
+        setTimeout(() => {
+          authenStore.logout();
+          window.location.replace("/");
+        }, 500);
+      }
+    };
+
     const linksList = [
       {
         title: t("MainPage"),
@@ -211,7 +277,14 @@ export default defineComponent({
         link: "https://github.com/quasarframework",
       },
     ];
+
     return {
+      useAuthenStore,
+      authenStore,
+      AuthenApi,
+      useQuasar,
+      logoutConfirm,
+      logoutProcess,
       localeList,
       t,
       locale,
@@ -224,7 +297,7 @@ export default defineComponent({
       },
     };
   },
-});
+};
 </script>
 
 <style>

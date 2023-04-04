@@ -1,10 +1,10 @@
 const routes = [
   {
     path: "/",
+    meta: { requireAuth: true },
     component: () => import("layouts/MainLayout.vue"),
     children: [
       { path: "", component: () => import("pages/IndexPage.vue") },
-      { path: "/login", component: () => import("pages/LogIn.vue") },
       {
         path: "/addpost",
         component: () => import("src/pages/AddPost.vue"),
@@ -55,6 +55,18 @@ const routes = [
         path: "/managelist",
         component: () => import("src/pages/ManageList.vue"),
       },
+
+      {
+        path: "/login2",
+        component: () => import("src/pages/LogIn.vue"),
+      },
+    ],
+  },
+  {
+    path: "/auth",
+    component: () => import("layouts/BlankLayout.vue"),
+    children: [
+      { path: "login", component: () => import("src/pages/LogIn.vue") },
     ],
   },
 
