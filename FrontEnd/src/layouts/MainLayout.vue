@@ -27,17 +27,100 @@
             </q-tooltip>
           </router-link>
 
-          <!-- ส่วนของแถบเสิร์ชบาร์ -->
-          <q-input
-            rounded
-            outlined
-            v-model="text"
-            :label="t('SearchBar')"
-            bg-color="white"
-            q-icon="search"
-            dense
-            style="width: 300px; margin-left: 370px; margin-right: 370px"
-          />
+          <!-- serch user -->
+          <div class="q-pa-md">
+            <div class="q-gutter-xl">
+              <q-select
+                v-model="model"
+                use-input
+                rounded
+                outlined
+                hide-selected
+                fill-input
+                bg-color="white"
+                q-icon="search"
+                dense
+                input-debounce="0"
+                :label="t('SearchBar')"
+                :options="options"
+                @filter="filterFn"
+                @filter-abort="abortFilterFn"
+                style="width: 300px; margin-left: 370px; margin-right: 370px"
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">
+                      ไม่พบข้อมูล
+                    </q-item-section>
+                  </q-item>
+                </template>
+                <template v-slot:option="{ opt }">
+                  <router-link
+                    :to="'/myprofile/' + opt.id"
+                    style="text-decoration: none"
+                  >
+                    <div
+                      class="q-pa-md q-gutter-md"
+                      style="display: flex; align-items: center"
+                    >
+                      <q-avatar class="q-mr-sm">
+                        <img :src="opt.picture.x" />
+                      </q-avatar>
+                      <div
+                        style="
+                          display: flex;
+                          flex-direction: column;
+                          margin-left: 10px;
+                        "
+                      >
+                        <div style="font-weight: bolder; color: #1a237e">
+                          {{ opt.id }} - {{ opt.username }}
+                        </div>
+                        <div style="color: gray">{{ opt.email }}</div>
+                        <div style="color: gray">{{ opt.bio }}</div>
+                      </div>
+                    </div>
+                  </router-link>
+                </template>
+
+                <template v-slot:selected="{ opt }">
+                  <router-link
+                    :to="'/myprofile/' + opt.id"
+                    style="text-decoration: none"
+                  >
+                    <div
+                      class="q-pa-md q-gutter-md"
+                      style="display: flex; align-items: center"
+                    >
+                      <q-avatar class="q-mr-auto">
+                        <img :src="opt.picture.x" />
+                      </q-avatar>
+                      <div
+                        style="
+                          display: flex;
+                          flex-direction: column;
+                          margin-left: 5px;
+                        "
+                      >
+                        <div style="font-weight: bolder; color: #1a237e">
+                          {{ opt.id }} - {{ opt.username }}
+                        </div>
+                        <div style="color: gray">{{ opt.email }}</div>
+                        <div style="color: gray">{{ opt.bio }}</div>
+                      </div>
+                    </div>
+                  </router-link>
+                  <div class="q-pa-md q-gutter-sm">
+                    <div style="display: inline">
+                      {{ opt.id }} - {{ opt.username }}
+                    </div>
+                    {{ opt.email }}
+                  </div>
+                </template>
+              </q-select>
+            </div>
+          </div>
+          <!-- search user -->
 
           <!-- ปุ่มเปลี่ยนภาษา -->
           <div style="cursor: pointer">
@@ -202,6 +285,17 @@ import { useQuasar } from "quasar";
 // const authenStore = useAuthenStore();
 // const { localeList, t, locale } = useLang();
 
+/* Search user */
+// นำเข้าฟังก์ชัน useAxios จากไฟล์ useAxios.js เพื่อใช้ในการเรียกใช้ API
+import { useAxios } from "src/composables/useAxios";
+// นำเข้า class UserApi จากไฟล์ UserApi.js เพื่อใช้ในการเรียกใช้ API
+import { UserApi } from "src/api/UserApi";
+// เรียกใช้เมธอด getUserList จาก class UserApi และเก็บไว้ในตัวแปร getUserList
+const { getUserList } = UserApi();
+// const userList = ref([]);
+// สร้างตัวแปร stringUserOption เป็น reactive variable และกำหนดค่าเริ่มต้นเป็น []
+const stringUserOption = ref([]);
+
 const leftDrawerOpen = ref(false);
 const search = ref("");
 import EssentialLink from "components/EssentialLink.vue";
@@ -278,6 +372,21 @@ export default {
       },
     ];
 
+    /* Search user */
+    // สร้าง async function fetch สำหรับเรียก API และเก็บผลลัพธ์ในตัวแปร stringUserOption
+    const fetch = async () => {
+      const response = await getUserList({});
+      if (response) {
+        stringUserOption.value = response.dataList;
+      }
+      console.log("response", response);
+    };
+    // เรียกใช้ฟังก์ชัน fetch เมื่อ component ถูกสร้าง
+    fetch();
+
+    // สร้าง reactive variable options โดยกำหนดค่าเริ่มต้นเป็นค่าของ stringUserOption
+    const options = ref(stringUserOption.value);
+
     return {
       useAuthenStore,
       authenStore,
@@ -294,6 +403,38 @@ export default {
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
+      },
+
+/* search user */
+model: ref(null), //reactive variable ที่เก็บค่าที่เลือกจาก dropdown menu
+      options, //reactive variable ที่เก็บค่า options สำหรับ dropdown menu
+      fetch, //function สำหรับเรียก API และอัปเดตค่าใน options
+
+      // function สำหรับ filter options ใน dropdown menu โดยใช้คำค้นหา val
+      filterFn(val, update, abort) {
+        // call abort() at any time if you can't retrieve data somehow
+
+        setTimeout(() => {
+          update(() => {
+            if (val === "") {
+              options.value = stringUserOption.value;
+            } else {
+              const needle = val.toLowerCase();
+              options.value = stringUserOption.value.filter((v) => {
+                return (
+                  v.username.toLowerCase().indexOf(needle) > -1 ||
+                  v.email.toLowerCase().indexOf(needle) > -1 ||
+                  v.id.toString().toLowerCase().indexOf(needle) > -1 // เพิ่มเงื่อนไขการกรองข้อมูลตาม id
+                );
+              });
+            }
+          });
+        }, 1500);
+      },
+
+      //function สำหรับยกเลิกการ filter options ใน dropdown menu ที่มีการ delay
+      abortFilterFn() {
+        console.log("delayed filter aborted");
       },
     };
   },

@@ -18,7 +18,7 @@ export default {
 
   //Main Layout
   BacktoMain: "กลับหน้าหลัก",
-  SearchBar: "ช่องค้นหา",
+  SearchBar: "ค้นหาผู้ใช้งาน",
   Account: "บัญชี",
   MyAccount: "บัญชีของฉัน",
   AddPost: "เพิ่มโพสต์ใหม่",
