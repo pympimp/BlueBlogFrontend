@@ -5,11 +5,12 @@ export const PostApi = () => {
     req = {
       page: 1,
       perPage: 10,
+      body: "",
     }
   ) => {
     return await callApi({
       method: "GET",
-      url: `/findAllByCreateDateDesc?page=${req.page}&perPage=${req.perPage}`,
+      url: `/findAllBy${req.body}?page=${req.page}&perPage=${req.perPage}`,
     });
   };
 
