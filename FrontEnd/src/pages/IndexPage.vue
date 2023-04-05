@@ -22,25 +22,25 @@
           style="display: inline; margin-bottom: 20px; margin-left: 580px"
         >
           <q-list>
-            <q-item clickable v-close-popup>
+            <q-item clickable v-close-popup @click="change('CreateDateASC')">
               <q-item-section>
                 <q-item-label>{{ $t("PostOld") }}</q-item-label>
               </q-item-section>
             </q-item>
 
-            <q-item clickable v-close-popup>
+            <q-item clickable v-close-popup @click="change('CreateDateDesc')">
               <q-item-section>
                 <q-item-label>{{ $t("PostNew") }}</q-item-label>
               </q-item-section>
             </q-item>
 
-            <q-item clickable v-close-popup>
+            <q-item clickable v-close-popup @click="change('PopularAsc')">
               <q-item-section>
                 <q-item-label>{{ $t("PopMore") }}</q-item-label>
               </q-item-section>
             </q-item>
 
-            <q-item clickable v-close-popup>
+            <q-item clickable v-close-popup @click="change('PopularDesc')">
               <q-item-section>
                 <q-item-label>{{ $t("PopLess") }}</q-item-label>
               </q-item-section>
@@ -103,7 +103,7 @@
               <i style="color: #880e4f; margin-right: 5px">
                 {{ item.comment_count }}
               </i>
-              <hr style="width: 700px" />
+              <hr style="width: 650px" />
             </section>
             <!-- post -->
 
@@ -114,7 +114,7 @@
               v-intersection="handleScrolledToBottom"
             >
               <q-spinner-dots
-                v-if="loding === false"
+                v-if="loading === false"
                 color="primary"
                 size="40px"
               />
@@ -164,11 +164,14 @@ export default {
     // จำนวนรายการ
     const recordPerPage = ref(3);
     const totalPage = ref(0);
-    const loding = ref(false);
+    const loading = ref(false);
 
     const { localeList, t, locale } = useLang();
     const leftDrawerOpen = ref(false);
     const search = ref("");
+
+    // คัดเลือกโพสต์
+    const url = ref("CreateDateDesc");
 
     function toggleLeftDrawer() {
       leftDrawerOpen.value = !leftDrawerOpen.value;
@@ -178,18 +181,56 @@ export default {
       fetchList();
     });
 
+    // const fetchList = async () => {
+    //   const response = await getPostList({
+    //     page: currentPage.value, //method: "GET",
+    //     perPage: recordPerPage.value,
+    //     body: url.value,
+    //   });
+    //   if (response) {
+    //     // postList.value = response.dataList;
+    //     postList.value.push(...response.dataList);
+    //     totalPage.value = response.appPagination;
+    //     console.log(response);
+    //   }
+    // };
+
+    // change url
+    const change = async (value) => {
+      // กำหนดให้ postList.value เป็น array ว่าง
+      postList.value = [];
+
+      // เปลี่ยน url
+      url.value = value;
+
+      // recordPerPage.value = 3;
+      currentPage.value = 1;
+
+      // โหลดข้อมูลใหม่
+      // await fetchList();
+    };
+
     const fetchList = async () => {
       const response = await getPostList({
-        page: currentPage.value, //method: "GET",
+        page: currentPage.value,
         perPage: recordPerPage.value,
+        body: url.value,
       });
+
       if (response) {
-        // postList.value = response.dataList;
+        // เก็บข้อมูลใหม่ลงใน postList.value
         postList.value.push(...response.dataList);
+
+        // อัปเดตค่า totalPage.value
         totalPage.value = response.appPagination;
         console.log(response);
       }
     };
+
+    // fetchList();
+    watch(url, () => {
+      fetchList();
+    });
 
     // watch(currentPage, async (newVal, oldVal) => {
     //   fetchList();
@@ -198,7 +239,7 @@ export default {
     // เมื่อเลื่อน Scroll ลงมา
     const handleScrolledToBottom = (isVisible) => {
       setTimeout(() => {
-        loding.value = true;
+        loading.value = true;
         if (!isVisible) {
           return;
         }
@@ -207,11 +248,11 @@ export default {
         }
         // เพิ่มหน้ารายการ ทีละ 2 รายการ
         currentPage.value++;
-        recordPerPage.value = 2;
+        // recordPerPage.value = 2;
         fetchList();
         // ถ้าหมดแล้วจะ timelog
         console.log("timeout");
-        loding.value = false;
+        loading.value = false;
         // มีการรอ loading
       }, 2000);
     };
@@ -232,7 +273,7 @@ export default {
       // fetchList,
       toggleLeftDrawer,
       handleScrolledToBottom,
-      loding,
+      loading,
       links1: [
         { icon: "home", text: "Home", link: "/" },
         { icon: "whatshot", text: "List Page", link: "/list-page" },
@@ -240,6 +281,9 @@ export default {
         { icon: biTranslate, text: "Translate", link: "/locale-page" },
       ],
       postList,
+      // คัดเลือกโพสต์
+      change,
+      url,
     };
   },
 };
