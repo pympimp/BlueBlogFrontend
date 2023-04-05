@@ -14,6 +14,7 @@ export default {
   signpls: "กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ",
   delete: "ลบ",
   edit: "แก้ไข",
+  Logout: "ออกจากระบบ",
 
   //Main Layout
   BacktoMain: "กลับหน้าหลัก",
@@ -85,7 +86,7 @@ export default {
   // SideBar
   MainPage: "หน้าหลัก",
   MainDes: "แสดงทุกโพสต์บนเว็บไซต์",
-  FolPage: "คนที่ฉันติดตาม",
+  FolPage: "โพสต์คนที่ฉันติดตาม",
   FolDes: "แสดงโพสต์จากคนที่ติดตาม",
 
   //PostnComment
@@ -105,4 +106,8 @@ export default {
   logoutCf: "สัญญานะ ว่าออกจากระบบแล้วจะกลับมาใหม่วันหลัง",
   k: "สัญญา",
   n: "ไม่",
+
+  errorLogin:
+    "เข้าสู่ระบบไม่สำเร็จ ติดต่อผู้ดูแลระบบได้ที่ Facebook : BlueBlog",
+  RegisSuc: "สมัครสมาชิกสำเร็จ",
 };

@@ -17,6 +17,7 @@ export default {
   signpls: "We can't find your saved recipes until you sign in",
   delete: "Delete",
   edit: "Edit",
+  Logout: "Logout",
 
   //Main Layout
   BacktoMain: "Main Page",
@@ -108,4 +109,7 @@ export default {
   logoutCf: "Please promise you'll comeback to our website",
   k: "Promise",
   n: "Nope",
+
+  errorLogin: "Login fail, Contact admin through Facebook : BlueBlog",
+  RegisSuc: "Sign Up Success",
 };

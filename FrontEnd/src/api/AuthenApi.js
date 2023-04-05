@@ -21,9 +21,18 @@ export const AuthenApi = () => {
     });
   };
 
+  const registerUser = async (req = {}) => {
+    return await callApi({
+      method: "POST",
+      url: "userSignUp",
+      body: req,
+    });
+  };
+
   return {
     loginProcess,
     getUserDataByAuth,
     userLogout,
+    registerUser,
   };
 };

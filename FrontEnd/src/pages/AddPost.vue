@@ -19,7 +19,7 @@
         />
 
         <!-- ส่วนของการจัดรูปแบบเนื้อหาโพสต์ -->
-        <div class="q-pa-md q-gutter-sm" style="width: 800px">
+        <div class="q-pa-sm q-gutter-sm" style="width: 800px">
           <q-editor
             v-model="qeditor"
             style="height: 300px"
