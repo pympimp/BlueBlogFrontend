@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="window-height row justify-center items-center">
     <div class="container">
       <!-- หัวข้อ Edit Profile -->
       <p

@@ -1,6 +1,11 @@
 <template>
-  <q-layout view="lHh Lpr lFf" class="bg-grey-1">
-    <q-header elevated style="background-color: #1d366f" class="fullscreen">
+  <q-layout view="hHh lpR fFf" class="bg-white-1">
+    <q-header
+      elevated
+      class="text-white-8 q-py-xs"
+      height-hint="58"
+      style="background-color: #1d366f"
+    >
       <!-- ส่วนของ nav bar -->
       <div class="navbar">
         <q-toolbar
@@ -10,11 +15,10 @@
           <!-- ส่วนของแถบสามขีด เมนู MainPage, MyFeed -->
           <q-btn
             flat
-            dense
             round
+            dense
             icon="menu"
-            aria-label="Menu"
-            @click="toggleLeftDrawer"
+            @click="leftDrawerOpen = !leftDrawerOpen"
           />
 
           <!-- ส่วนของโลโก้ คลิกกลับหน้าหลัก -->
@@ -247,35 +251,48 @@
 
     <q-drawer
       v-model="leftDrawerOpen"
-      show-if-above
       bordered
-      class="text-indigo-10"
+      class="bg-grey-2"
+      :width="240"
+      overlay
     >
-      <q-list>
-        <q-item-label
-          header
-          style="color: #1d366f; font-weight: bolder; font-size: 20px"
-        >
-          {{ t("Menu") }}
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
+      <q-scroll-area class="fit">
+        <q-list padding>
+          <q-item
+            v-for="link in menuList"
+            :key="link.text"
+            :to="link.link"
+            v-ripple
+            clickable
+          >
+            <q-item-section avatar>
+              <q-icon :name="link.icon" style="color: #1d366f" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label style="color: #963165; font-weight: bold">{{
+                link.text
+              }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-scroll-area>
     </q-drawer>
+
+    <!-- แสดงผล -->
     <q-page-container>
       <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
 import { fabYoutube } from "@quasar/extras/fontawesome-v6";
-import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
+import {
+  biTranslate,
+  biCheck,
+  biPersonFill,
+} from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { useAuthenStore } from "src/stores/authen";
 import { AuthenApi } from "src/api/AuthenApi";
@@ -298,146 +315,101 @@ const stringUserOption = ref([]);
 
 const leftDrawerOpen = ref(false);
 const search = ref("");
-import EssentialLink from "components/EssentialLink.vue";
 
-export default {
-  name: "MainLayout",
+const $q = useQuasar();
+const { userLogout } = AuthenApi();
+const authenStore = useAuthenStore();
+const { localeList, t, locale } = useLang();
 
-  components: {
-    EssentialLink,
-  },
+const logoutConfirm = async () => {
+  $q.dialog({
+    title: t("appName"),
+    message: t("logoutCf"),
+    cancel: true,
+    ok: {
+      label: t("k"),
+      flat: true,
+      outline: true,
+      color: "positive",
+    },
+    cancel: {
+      label: t("n"),
+      flat: true,
+      color: "negative",
+    },
+  })
+    .onOk(() => {
+      console.log("OK");
+      logoutProcess();
+    })
+    .onCancel(() => {
+      console.log("Cancel");
+    });
+};
 
-  setup() {
-    const $q = useQuasar();
-    const { userLogout } = AuthenApi();
-    const authenStore = useAuthenStore();
-    const { localeList, t, locale } = useLang();
+const logoutProcess = async () => {
+  const response = await userLogout();
+  console.log("userLogout", response);
+  if (response && response.status) {
+    //clear aut key on localStorage
+    authenStore.logout();
+    $q.notify({
+      message: response.message,
+    });
 
-    const logoutConfirm = async () => {
-      $q.dialog({
-        title: t("appName"),
-        message: t("logoutCf"),
-        cancel: true,
-        ok: {
-          label: t("k"),
-          flat: true,
-          outline: true,
-          color: "positive",
-        },
-        cancel: {
-          label: t("n"),
-          flat: true,
-          color: "negative",
-        },
-      })
-        .onOk(() => {
-          console.log("OK");
-          logoutProcess();
-        })
-        .onCancel(() => {
-          console.log("Cancel");
+    //redirect to login page
+    setTimeout(() => {
+      authenStore.logout();
+      window.location.replace("/");
+    }, 500);
+  }
+};
+
+const menuList = [
+  { icon: "home", text: t("MainPage"), link: "/" },
+  { icon: biPersonFill, text: t("FolPage"), link: "/" },
+];
+
+/* Search user */
+// สร้าง async function fetch สำหรับเรียก API และเก็บผลลัพธ์ในตัวแปร stringUserOption
+const fetch = async () => {
+  const response = await getUserList({});
+  if (response) {
+    stringUserOption.value = response.dataList;
+  }
+  console.log("response", response);
+};
+// เรียกใช้ฟังก์ชัน fetch เมื่อ component ถูกสร้าง
+fetch();
+
+// สร้าง reactive variable options โดยกำหนดค่าเริ่มต้นเป็นค่าของ stringUserOption
+const options = ref(stringUserOption.value);
+
+// function สำหรับ filter options ใน dropdown menu โดยใช้คำค้นหา val
+const filterFn = (val, update, abort) => {
+  // call abort() at any time if you can't retrieve data somehow
+
+  setTimeout(() => {
+    update(() => {
+      if (val === "") {
+        options.value = stringUserOption.value;
+      } else {
+        const needle = val.toLowerCase();
+        options.value = stringUserOption.value.filter((v) => {
+          return (
+            v.username.toLowerCase().indexOf(needle) > -1 ||
+            v.email.toLowerCase().indexOf(needle) > -1 ||
+            v.id.toString().toLowerCase().indexOf(needle) > -1 // เพิ่มเงื่อนไขการกรองข้อมูลตาม id
+          );
         });
-    };
-
-    const logoutProcess = async () => {
-      const response = await userLogout();
-      console.log("userLogout", response);
-      if (response && response.status) {
-        //clear aut key on localStorage
-        authenStore.logout();
-        $q.notify({
-          message: response.message,
-        });
-
-        //redirect to login page
-        setTimeout(() => {
-          authenStore.logout();
-          window.location.replace("/");
-        }, 500);
       }
-    };
+    });
+  }, 1500);
+};
 
-    const linksList = [
-      {
-        title: t("MainPage"),
-        caption: t("MainDes"),
-        icon: "home",
-        name: "/mainpage",
-      },
-      {
-        title: t("FolPage"),
-        caption: t("FolDes"),
-        icon: "group",
-        link: "https://github.com/quasarframework",
-      },
-    ];
-
-    /* Search user */
-    // สร้าง async function fetch สำหรับเรียก API และเก็บผลลัพธ์ในตัวแปร stringUserOption
-    const fetch = async () => {
-      const response = await getUserList({});
-      if (response) {
-        stringUserOption.value = response.dataList;
-      }
-      console.log("response", response);
-    };
-    // เรียกใช้ฟังก์ชัน fetch เมื่อ component ถูกสร้าง
-    fetch();
-
-    // สร้าง reactive variable options โดยกำหนดค่าเริ่มต้นเป็นค่าของ stringUserOption
-    const options = ref(stringUserOption.value);
-
-    return {
-      useAuthenStore,
-      authenStore,
-      AuthenApi,
-      useQuasar,
-      logoutConfirm,
-      logoutProcess,
-      localeList,
-      t,
-      locale,
-      biCheck,
-      essentialLinks: linksList,
-      biTranslate,
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
-
-/* search user */
-model: ref(null), //reactive variable ที่เก็บค่าที่เลือกจาก dropdown menu
-      options, //reactive variable ที่เก็บค่า options สำหรับ dropdown menu
-      fetch, //function สำหรับเรียก API และอัปเดตค่าใน options
-
-      // function สำหรับ filter options ใน dropdown menu โดยใช้คำค้นหา val
-      filterFn(val, update, abort) {
-        // call abort() at any time if you can't retrieve data somehow
-
-        setTimeout(() => {
-          update(() => {
-            if (val === "") {
-              options.value = stringUserOption.value;
-            } else {
-              const needle = val.toLowerCase();
-              options.value = stringUserOption.value.filter((v) => {
-                return (
-                  v.username.toLowerCase().indexOf(needle) > -1 ||
-                  v.email.toLowerCase().indexOf(needle) > -1 ||
-                  v.id.toString().toLowerCase().indexOf(needle) > -1 // เพิ่มเงื่อนไขการกรองข้อมูลตาม id
-                );
-              });
-            }
-          });
-        }, 1500);
-      },
-
-      //function สำหรับยกเลิกการ filter options ใน dropdown menu ที่มีการ delay
-      abortFilterFn() {
-        console.log("delayed filter aborted");
-      },
-    };
-  },
+//function สำหรับยกเลิกการ filter options ใน dropdown menu ที่มีการ delay
+const abortFilterFn = () => {
+  console.log("delayed filter aborted");
 };
 </script>
 

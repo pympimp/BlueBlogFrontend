@@ -86,7 +86,7 @@ export default {
   // SideBar
   MainPage: "หน้าหลัก",
   MainDes: "แสดงทุกโพสต์บนเว็บไซต์",
-  FolPage: "คนที่ฉันติดตาม",
+  FolPage: "โพสต์คนที่ฉันติดตาม",
   FolDes: "แสดงโพสต์จากคนที่ติดตาม",
 
   //PostnComment
