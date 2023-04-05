@@ -1,5 +1,5 @@
 <template>
-  <q-page class="window-height row justify-center items-center">
+  <q-page class="window row justify-center items-center">
     <div class="container">
       <!-- หัวข้อ Edit Profile -->
       <p
@@ -83,7 +83,7 @@ export default {
 };
 </script>
 <style scoped>
-.flex {
+.window {
   background-color: #d6e3ea;
   background-image: url(./public/background.jpg);
   background-size: cover;
