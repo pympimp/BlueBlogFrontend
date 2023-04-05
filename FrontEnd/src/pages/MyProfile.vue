@@ -12,7 +12,7 @@
         style="display: inline; margin-left: -150px; margin-top: 10px"
       >
         <b style="color: #1a237e"> {{ authenStore.auth.username }}</b>
-        <p style="color: #5c6bc0">" โย่ว"</p>
+        <p style="color: #5c6bc0">{{ authenStore.auth.bio }}</p>
       </div>
       <q-btn
         to="manageprofile"
@@ -100,7 +100,6 @@ import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { useAuthenStore } from "src/stores/authen";
 import { AuthenApi } from "src/api/AuthenApi";
-import { useQuasar } from "quasar";
 
 export default {
   name: "MyProfile",
@@ -115,7 +114,6 @@ export default {
       authenStore,
       useAuthenStore,
       AuthenApi,
-      useQuasar,
       localeList,
       t,
       locale,

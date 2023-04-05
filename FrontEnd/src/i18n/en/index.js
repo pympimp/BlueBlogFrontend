@@ -109,4 +109,7 @@ export default {
   logoutCf: "Please promise you'll comeback to our website",
   k: "Promise",
   n: "Nope",
+
+  errorLogin: "Login fail, Contact admin through Facebook : BlueBlog",
+  RegisSuc: "Sign Up Success",
 };

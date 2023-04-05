@@ -8,17 +8,12 @@
 
       <!-- รูปโปรไฟล์ -->
       <div class="top" style="display: inline">
-        <ion-avatar class="profile" style="">
-          <img
-            src="/public/pf1.png"
-            style="width: 50px; height: 50px; margin-bottom: 10px"
-          />
-        </ion-avatar>
+        <q-avatar v-if="authenStore.auth.picture" size="60px" class="shadow-5">
+          <q-img :src="authenStore.auth.picture.path" />
+        </q-avatar>
 
         <!-- ส่วนของการแทรกไฟล์รูปภาพ -->
-        <div
-          style="position: absolute; right: 600px; top: 135px;color: color: #3949ab ;"
-        >
+        <div style="margin-top: 10px; color: #3949ab">
           <q-input
             @update:model-value="
               (val) => {
@@ -31,7 +26,6 @@
             borderless
           />
         </div>
-        <br />
         <!-- ส่วนของการเปลี่ยนอีเมล -->
         <i style="color: #3949ab">{{ t("Email") }} :</i>
         <q-input
@@ -73,16 +67,22 @@
 import { defineComponent, ref } from "vue";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
+import { useAuthenStore } from "src/stores/authen";
+import { AuthenApi } from "src/api/AuthenApi";
 
 export default {
   name: "ManageProfile",
   setup() {
     const { localeList, t, locale } = useLang();
     const leftDrawerOpen = ref(false);
+    const authenStore = useAuthenStore();
     function toggleLeftDrawer() {
       leftDrawerOpen.value = !leftDrawerOpen.value;
     }
     return {
+      authenStore,
+      AuthenApi,
+      useAuthenStore,
       localeList,
       t,
       locale,

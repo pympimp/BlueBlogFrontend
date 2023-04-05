@@ -2,24 +2,39 @@
   <q-page class="flex flex-center">
     <div class="container">
       <h5 style="margin-top: 30px">{{ t("Signup") }}</h5>
-      <q-form @submit="onSubmit" class="q-px-sm" style="margin-top: -15px">
+      <q-form
+        @submit.prevent="Saveinfo"
+        class="q-px-sm"
+        style="margin-top: -15px"
+      >
         <q-input
           :readonly="loading"
-          v-model="email"
+          v-model="model.entity.username"
+          filled
+          type="username"
+          :label="t('Username')"
+          style="width: 250px; color: #1a237e"
+          :rules="[(val) => !!val || 'Username is required']"
+        />
+
+        <q-input
+          :readonly="loading"
+          v-model="model.entity.email"
           filled
           type="email"
           :label="t('Email')"
           style="width: 250px; color: #1a237e"
           :rules="[(val) => !!val || 'Email is required']"
         />
+
         <br />
         <q-input
-          v-model="password"
+          v-model="model.entity.password"
           :readonly="loading"
           filled
           :type="showPassword ? 'text' : 'password'"
           :label="t('Password')"
-          style="width: 250px; margin-top: -10px"
+          style="width: 250px; margin-top: -20px"
           :rules="[(val) => !!val || 'Password is required']"
         >
           <template v-slot:append>
@@ -66,40 +81,36 @@
 import { ref } from "vue";
 import { useMeta, useQuasar } from "quasar";
 import { useLang } from "src/composables/useLang";
-import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { AuthenApi } from "src/api/AuthenApi";
 import { useAuthenStore } from "src/stores/authen";
-
-const authenStore = useAuthenStore();
-const { loginProcess } = AuthenApi();
+const { registerUser } = AuthenApi();
 const { t, localeList, locale } = useLang();
-
 const $q = useQuasar();
-useMeta({ title: "Login Page" });
 
-const email = ref("");
-const password = ref("");
 const showPassword = ref(false);
 const loading = ref(false);
 
-const onSubmit = async () => {
-  loading.value = true;
-  const response = await loginProcess({
-    _u: email.value,
-    _p: password.value,
-  });
-  console.log("loginProcess", response);
-  loading.value = false;
+const model = ref({
+  entity: {
+    username: "",
+    email: "",
+    password: "",
+  },
+});
 
-  // if logined success
-  if (response && response.userData && response.userData.apiKey) {
-    authenStore.setAuthen(response.userData);
+console.log(model);
+const Login = () => {
+  router.push("/signin/");
+};
+
+const Saveinfo = async () => {
+  const data = await registerUser(model.value.entity);
+  if (data) {
     $q.notify({
-      message: "Login Success!!",
-      avatar: response.userData.picture.path,
+      message: t("RegisSuc"),
     });
     setTimeout(() => {
-      window.location.replace("/");
+      window.location.replace("/#/auth/login");
     }, 500);
   }
 };
@@ -118,7 +129,7 @@ const onSubmit = async () => {
   flex-direction: column;
   opacity: 0.8;
   width: 350px;
-  height: 390px;
+  height: 470px;
   padding: 50px 50px 50px 50px;
   border-radius: 30px;
   box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);
