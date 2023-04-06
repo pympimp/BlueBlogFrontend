@@ -50,81 +50,50 @@
       />
 
       <!-- ส่วนของโพสต์ต่างๆของผู้ใช้ -->
-      <div class="post">
-        <router-link
-          to="postncomment"
-          style="
-            text-decoration: none;
-            color: black;
-            font-weight: bolder;
-            color: #1a237e;
-          "
-          >ร้านค้าที่รับแต่เงินสด ไม่เสียดายลูกค้าบ้างหรอครับ
-        </router-link>
-        <p style="color: #5c6bc0">28 กุมภาพันธ์ 2566</p>
-        <!-- <hr style="border: 0.5px thin gray" /> -->
-
-        <router-link
-          to="postncomment"
-          style="
-            text-decoration: none;
-            color: black;
-            font-weight: bolder;
-            color: #1a237e;
-          "
-          >ไปเที่ยวเกาะหมากนอนรีสอร์ตไหนดี?</router-link
-        >
-        <p style="color: #5c6bc0">5 มีนาคม 2566</p>
-
-        <!-- <hr style="border: 0.5px thin gray" /> -->
-
-        <router-link
-          to="postncomment"
-          style="
-            text-decoration: none;
-            color: black;
-            font-weight: bolder;
-            color: #1a237e;
-          "
-          >โอนเงินจากทรูมันนี่ไปธนาคารเลขบัญชีผิดทำอย่างไรดี</router-link
-        >
-        <p style="color: #5c6bc0">18 สิงหาคม 2566</p>
-      </div>
+      <q-scroll-area style="height: 200px; max-width: 500px">
+        <div class="post" v-for="(item, index) in PostList" :key="index">
+          <router-link
+            :to="`/postncomment/${item.id}`"
+            style="
+              text-decoration: none;
+              color: black;
+              font-weight: bolder;
+              color: #1a237e;
+            "
+            >{{ item.content }}
+          </router-link>
+          <p style="color: #5c6bc0">{{ item.create_date }}</p>
+          <!-- <hr style="border: 0.5px thin gray" /> -->
+        </div>
+      </q-scroll-area>
     </div>
   </q-page>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
+<script setup>
+import { ref, onMounted } from "vue";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { useAuthenStore } from "src/stores/authen";
 import { AuthenApi } from "src/api/AuthenApi";
+import { PostApi } from "src/api/PostApi";
 
-export default {
-  name: "MyProfile",
-  setup() {
-    const { localeList, t, locale } = useLang();
-    const leftDrawerOpen = ref(false);
-    const authenStore = useAuthenStore();
-    function toggleLeftDrawer() {
-      leftDrawerOpen.value = !leftDrawerOpen.value;
-    }
-    return {
-      authenStore,
-      useAuthenStore,
-      AuthenApi,
-      localeList,
-      t,
-      locale,
-      text: ref(""),
-      third: ref(false),
-      isPwd: ref(true),
+const { localeList, t, locale } = useLang();
+const authenStore = useAuthenStore();
+const { getOneUserPost } = PostApi();
 
-      toggleLeftDrawer,
-      links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
-    };
-  },
+const PostList = ref([]);
+
+onMounted(async () => {
+  fetchPost();
+});
+
+const fetchPost = async () => {
+  const response = await getOneUserPost(authenStore.auth.id);
+  if (response) {
+    PostList.value = response.dataList;
+    console.log(PostList);
+  }
 };
 </script>
 

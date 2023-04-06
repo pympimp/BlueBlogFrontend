@@ -95,6 +95,7 @@ const model = ref({
     username: "",
     email: "",
     password: "",
+    userRoles: ["3"],
   },
 });
 

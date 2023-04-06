@@ -91,16 +91,22 @@ const onSubmit = async () => {
   console.log("loginProcess", response);
   loading.value = false;
 
-  // if logined success
+  // ถ้าล็อกอินสำเร็จให้ขึ้นแจ้งเตือน
   if (response && response.userData && response.userData.apiKey) {
     authenStore.setAuthen(response.userData);
     $q.notify({
       message: "Login Success!",
       avatar: response.userData.picture.path,
     });
-    setTimeout(() => {
-      window.location.replace("/");
-    }, 500);
+    if (authenStore.auth.rolesText === "Dev") {
+      setTimeout(() => {
+        window.location.replace("/#/addashboard");
+      }, 500);
+    } else if (authenStore.auth.rolesText === "User") {
+      setTimeout(() => {
+        window.location.replace("/");
+      }, 500);
+    }
   } else {
     $q.notify({
       message: t("errorLogin"),

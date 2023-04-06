@@ -25,7 +25,7 @@ const routes = [
       },
       { path: "/setting", component: () => import("pages/SettinG.vue") },
       {
-        path: "/postncomment",
+        path: "/postncomment/:postId",
         component: () => import("pages/PostnComment.vue"),
       },
 

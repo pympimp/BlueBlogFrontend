@@ -14,7 +14,15 @@ export const PostApi = () => {
     });
   };
 
+  const getOneUserPost = async (id) => {
+    return await callApi({
+      method: "GET",
+      url: `/post?user_id=${id}`,
+    });
+  };
+
   return {
     getPostList,
+    getOneUserPost,
   };
 };
