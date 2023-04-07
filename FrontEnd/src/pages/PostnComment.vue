@@ -273,6 +273,8 @@
 import { defineComponent, ref } from "vue";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
+import { AuthenApi } from "src/api/AuthenApi";
+import { PostApi } from "src/api/PostApi";
 
 export default {
   name: "DashBoard",
