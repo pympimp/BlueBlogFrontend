@@ -38,7 +38,7 @@ const routes = [
         component: () => import("src/pages/AdManageUser.vue"),
       },
       {
-        path: "/adedituser/:userId",
+        path: "/adedituser/:action/:userId",
         component: () => import("src/pages/AdEditUser.vue"),
       },
       {

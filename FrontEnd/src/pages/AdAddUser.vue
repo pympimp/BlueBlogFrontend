@@ -1,85 +1,120 @@
 <template>
   <q-page class="window row justify-center items-center">
-    <div class="container">
-      <!-- หัวข้อ Edit Profile -->
-      <p
-        style="
-          font-size: 25px;
-          font-weight: bolder;
-          margin-bottom: -10px;
-          display: flex;
-          justify-content: center;
-          color: #880e4f;
-        "
-      >
-        ✧･ﾟ {{ t("AddUser") }} ｡･✧
-      </p>
-      <br />
+    <q-form @submit="onSubmit">
+      <div class="container">
+        <!-- หัวข้อ Edit Profile -->
+        <p
+          style="
+            font-size: 25px;
+            font-weight: bolder;
+            margin-bottom: -10px;
+            display: flex;
+            justify-content: center;
+            color: #880e4f;
+          "
+        >
+          ✧･ﾟ {{ t("AddUser") }} ｡･✧
+        </p>
+        <br />
 
-      <!-- ส่วนของการเปลี่ยนอีเมล -->
-      <i style="color: #c51162">{{ t("Email") }} :</i>
-      <q-input
-        filled
-        v-model="text"
-        :dense="dense"
-        style="width: 300px; margin-bottom: 7px"
-      />
+        <!-- ส่วนของการเปลี่ยน Username -->
+        <i style="color: #c51162">{{ t("Username") }} :</i>
+        <q-input
+          filled
+          v-model="entityItem.username"
+          style="width: 300px; margin-bottom: 7px"
+          :rules="[(val) => !!val || 'Field is required']"
+        />
 
-      <!-- ส่วนของการแก้ไข password -->
-      <i style="color: #c51162">{{ t("Password") }} :</i>
-      <q-input
-        v-model="password"
-        filled
-        :type="isPwd ? 'password' : 'text'"
-        style="width: 300px; color: #c51162"
-      >
-        <template v-slot:append>
-          <q-icon
-            :name="isPwd ? 'visibility_off' : 'visibility'"
-            class="cursor-pointer"
-            @click="isPwd = !isPwd"
-            style="color: #c51162"
-          />
-        </template>
-      </q-input>
+        <!-- ส่วนของการเปลี่ยนอีเมล -->
+        <i style="color: #c51162">{{ t("Email") }} :</i>
+        <q-input
+          filled
+          v-model="entityItem.email"
+          style="width: 300px; margin-bottom: 7px"
+          :rules="[(val) => !!val || 'Field is required']"
+        />
 
-      <!-- ส่วนของปุ่ม Submit -->
-      <q-btn
-        glossy
-        push
-        color="pink-10"
-        :label="t('Save')"
-        style="margin-top: 20px; margin-left: 230px"
-      />
-    </div>
+        <!-- ส่วนของการแก้ไข password -->
+        <i style="color: #c51162">{{ t("Password") }} :</i>
+        <q-input
+          v-model="entityItem.password"
+          filled
+          :type="isPwd ? 'password' : 'text'"
+          style="width: 300px; color: #c51162"
+          :rules="[(val) => !!val || 'Field is required']"
+        >
+          <template v-slot:append>
+            <q-icon
+              :name="isPwd ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwd = !isPwd"
+              style="color: #c51162"
+            />
+          </template>
+        </q-input>
+
+        <!-- ส่วนของปุ่ม Submit -->
+        <q-btn
+          type="submit"
+          glossy
+          push
+          color="pink-10"
+          style="margin-top: 20px; margin-left: 150px"
+          >{{ $t("okay") }}</q-btn
+        >
+        <!-- ส่วนของปุ่มยกเลิก -->
+        <q-btn
+          to="/admanageuser"
+          glossy
+          push
+          color="pink-10"
+          style="margin-top: 20px; margin-left: 10px"
+          >{{ $t("cancel") }}</q-btn
+        >
+      </div>
+    </q-form>
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { defineComponent, ref } from "vue";
+import { useQuasar } from "quasar";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
+import { UserApi } from "src/api/UserApi";
 
-export default {
-  name: "DashBoard",
-  setup() {
-    const { localeList, t, locale } = useLang();
-    const leftDrawerOpen = ref(false);
-    function toggleLeftDrawer() {
-      leftDrawerOpen.value = !leftDrawerOpen.value;
-    }
-    return {
-      localeList,
-      t,
-      locale,
-      text: ref(""),
-      third: ref(false),
-      isPwd: ref(true),
+const { localeList, t, locale } = useLang();
+const { createUser } = UserApi();
+const $q = useQuasar();
 
-      toggleLeftDrawer,
-      links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
-    };
-  },
+const action = ref();
+const email = ref("");
+const password = ref("");
+const username = ref("");
+const isPwd = ref(true);
+const entityItem = ref({
+  id: null,
+  username: "",
+  email: "",
+  password: "",
+});
+
+const onSubmit = async () => {
+  console.log("onSubmit", entityItem.value);
+
+  createProcess();
+};
+const createProcess = async () => {
+  const response = await createUser(entityItem.value);
+  // console.log("createUser", response);
+  if (response) {
+    $q.notify({
+      message: response.message,
+      type: "positive",
+    });
+  }
+  window.location.replace("/#/admanageuser");
 };
 </script>
 <style scoped>

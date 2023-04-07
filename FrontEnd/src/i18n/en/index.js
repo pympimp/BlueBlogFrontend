@@ -112,4 +112,10 @@ export default {
 
   errorLogin: "Login fail, Contact admin through Facebook : BlueBlog",
   RegisSuc: "Sign Up Success",
+
+  //q.dialog
+  Qdelete: "Delte User",
+  Qconfirm: "Confirm to delete user?",
+  Qok: "Delete",
+  Qno: "Cancel",
 };

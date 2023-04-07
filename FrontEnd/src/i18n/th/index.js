@@ -110,4 +110,10 @@ export default {
   errorLogin:
     "เข้าสู่ระบบไม่สำเร็จ ติดต่อผู้ดูแลระบบได้ที่ Facebook : BlueBlog",
   RegisSuc: "สมัครสมาชิกสำเร็จ",
+
+  //q.dialog
+  Qdelete: "ลบข้อมูลผู้ใช้",
+  Qconfirm: "ยืนยันที่จะลบข้อมูลผู้ใช้?",
+  Qok: "ลบผู้ใช้",
+  Qno: "ยกเลิก",
 };

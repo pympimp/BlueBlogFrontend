@@ -1,105 +1,109 @@
 <template>
   <q-page class="flex flex-center">
     <div class="container">
-      <!-- หัวข้อ Edit Profile -->
-      <p
-        style="
-          font-size: 25px;
-          font-weight: bolder;
-          margin-bottom: -10px;
-          display: flex;
-          justify-content: center;
-          color: #1a237e;
-        "
-      >
-        ✧･ﾟ {{ t("EditUser") }} ｡･✧
-      </p>
-
-      <br />
-      <!-- ส่วนของการเปลี่ยนอีเมล -->
-      <q-spinner v-if="loading == true" color="primary" size="3em" />
-      <template v-else>
-        <q-card-section v-if="entityItem">
-          <i style="color: #5c6bc0">{{ t("Email") }} :</i>
-          <q-input
-            filled
-            v-model="entityItem.email"
-            :dense="dense"
-            style="width: 300px; margin-bottom: 7px"
-        /></q-card-section>
-
-        <!-- ส่วนของการแก้ไข password -->
-        <i style="color: #5c6bc0; margin-left: 15px">{{ t("Password") }} :</i>
-        <q-input
-          v-model="password"
-          filled
-          :type="isPwd ? 'password' : 'text'"
-          style="width: 300px; margin-bottom: 20px; margin-left: 15px"
+      <q-form @submit="onSubmit">
+        <!-- หัวข้อ Edit Profile -->
+        <p
+          style="
+            font-size: 25px;
+            font-weight: bolder;
+            margin-bottom: -10px;
+            display: flex;
+            justify-content: center;
+            color: #1a237e;
+          "
         >
-          <template v-slot:append>
-            <q-icon
-              :name="isPwd ? 'visibility_off' : 'visibility'"
-              class="cursor-pointer"
-              @click="isPwd = !isPwd"
-            />
-          </template>
-        </q-input>
+          ✧･ﾟ {{ t("EditUser") }} ｡･✧
+        </p>
 
-        <!-- ปุ่ม toggle เปิด-ปิดสถานะผู้ใช้งาน -->
-        <i style="color: #5c6bc0; margin-left: 15px">{{ t("UserStatus") }}</i>
         <br />
-        <q-toggle
-          v-model="fourth"
-          checked-icon="check"
-          color="red"
-          label="Different icon for each state"
-          unchecked-icon="clear"
-        />
+        <!-- ส่วนของการเปลี่ยนอีเมล -->
+        <q-spinner v-if="loading == true" color="primary" size="3em" />
+        <template v-else>
+          <q-card-section v-if="entityItem">
+            <i style="color: #5c6bc0">{{ t("Email") }} :</i>
+            <q-input
+              filled
+              v-model="entityItem.email"
+              :dense="dense"
+              style="max-width: 300px; margin-bottom: -20px"
+          /></q-card-section>
 
-        <!-- ส่วนของปุ่ม Submit -->
-        <q-btn
-          type="submit"
-          glossy
-          push
-          color="indigo-10"
-          style="margin-top: -20px; margin-left: 100px"
-          >{{ $t("okay") }}</q-btn
-        >
-        <!-- ส่วนของปุ่มยกเลิก -->
-        <q-btn
-          to="/admanageuser"
-          glossy
-          push
-          color="indigo-10"
-          style="margin-top: -20px; margin-left: 10px"
-          >{{ $t("cancel") }}</q-btn
-        >
-      </template>
+          <!-- ส่วนของการแก้ไข Username -->
+          <q-card-section v-if="entityItem">
+            <i style="color: #5c6bc0">{{ t("Username") }} :</i>
+            <q-input
+              filled
+              v-model="entityItem.username"
+              :dense="dense"
+              style="max-width: 300px; margin-top: "
+          /></q-card-section>
+
+          <!-- ปุ่ม toggle เปิด-ปิดสถานะผู้ใช้งาน -->
+          <i style="color: #5c6bc0; margin-left: 15px">{{ t("UserStatus") }}</i>
+          <br />
+          <q-toggle
+            v-model="fourth"
+            checked-icon="check"
+            color="red"
+            label=" Status"
+            unchecked-icon="clear"
+          />
+
+          <!-- ส่วนของปุ่ม Submit -->
+          <q-btn
+            type="submit"
+            glossy
+            push
+            color="indigo-10"
+            style="margin-top: -20px; margin-left: 80px"
+            >{{ $t("okay") }}</q-btn
+          >
+          <!-- ส่วนของปุ่มยกเลิก -->
+          <q-btn
+            to="/admanageuser"
+            glossy
+            push
+            color="indigo-10"
+            style="margin-top: -20px; margin-left: 10px"
+            >{{ $t("cancel") }}</q-btn
+          >
+        </template>
+      </q-form>
     </div>
   </q-page>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from "vue";
-import { useMeta } from "quasar";
+import { useMeta, useQuasar } from "quasar";
 import { useLang } from "src/composables/useLang";
 import { UserApi } from "src/api/UserApi";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import { biArrowLeft } from "@quasar/extras/bootstrap-icons";
 const route = useRoute();
 const { t } = useLang();
-const { getOne } = UserApi();
 useMeta({ title: "Edit User" });
 
+const router = useRouter();
+const $q = useQuasar();
+const action = ref();
+const { getUserList, getOne, updateUser } = UserApi();
 const value = ref(true);
 const userId = ref();
 const entityItem = ref();
 const loading = ref(false);
+
 onMounted(() => {
+  onSubmit();
   if (route.params.userId) {
     userId.value = route.params.userId;
   }
-
-  if (userId.value) {
+  if (route.params.action) {
+    action.value = route.params.action;
+  }
+  // บังคับให้ action เป็น edit ถึงจะให้เข้ามาแก้ไข
+  if (userId.value && action.value == "edit") {
     fethData();
   }
   console.log("get userId ", userId.value);
@@ -114,8 +118,27 @@ const fethData = async () => {
     entityItem.value = respone.entity;
   }
 };
-const onSubmit = () => {
+
+const onSubmit = async () => {
   console.log("onSubmit", entityItem.value);
+  if (action.value == "edit") {
+    updateProcess();
+  } else {
+    createProcess();
+  }
+};
+const updateProcess = async () => {
+  loading.value = true;
+  const response = await updateUser(entityItem.value);
+  console.log("updateUser", response);
+  if (response) {
+    $q.notify({
+      message: response.message,
+      type: "positive",
+    });
+  }
+  loading.value = false;
+  router.push("/admanageuser");
 };
 </script>
 

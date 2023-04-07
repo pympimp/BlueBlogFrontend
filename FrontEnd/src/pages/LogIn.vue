@@ -3,6 +3,7 @@
     <div class="container">
       <h5 style="margin-top: 30px">{{ t("Login") }}</h5>
       <q-form @submit="onSubmit" class="q-px-sm" style="margin-top: -15px">
+        <!-- ส่วนของการป้อน Email -->
         <q-input
           :readonly="loading"
           v-model="email"
@@ -13,6 +14,8 @@
           :rules="[(val) => !!val || 'Email is required']"
         />
         <br />
+
+        <!-- ส่วนของการป้อน Password -->
         <q-input
           v-model="password"
           :readonly="loading"
@@ -31,12 +34,14 @@
           </template>
         </q-input>
 
+        <!-- ส่วนของการป้อน การแจ้ง หากผู้ใช้ต้องการสมัครสมาชิก -->
         <br />
         <section style="margin-top: -5px; margin-bottom: 10px">
           <p style="display: inline">{{ t("NoAccount") }}</p>
           <router-link to="/auth/signup">&nbsp; {{ t("Click") }}</router-link>
         </section>
 
+        <!-- ส่วนของปุ่ม Submit -->
         <q-card-actions>
           <q-btn
             unelevated
@@ -51,12 +56,14 @@
         </q-card-actions>
       </q-form>
 
+      <!-- ส่วนของปีและชื่อเว็บไซต์ที่สร้าง -->
       <q-card-section class="q-mt-lg text-center">
         <div :class="$q.dark.isActive ? 'text-indigo-1' : 'text-indigo-1'">
           {{ `@ 2023 ${t("appName")}` }}
         </div>
       </q-card-section>
 
+      <!-- ส่วนของ Spinner Loading -->
       <q-inner-loading :showing="loading" label="Please wait..." />
     </div>
   </q-page>

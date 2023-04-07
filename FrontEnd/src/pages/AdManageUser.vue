@@ -15,6 +15,7 @@
       >
         {{ t("ManageUser") }}
       </p>
+
       <!-- ส่วนของเสิร์ชบาร์ -->
       <q-input
         v-model="search"
@@ -68,13 +69,13 @@
             <td>
               <q-btn
                 :icon="biPencil"
-                :to="'/adedituser/' + item.id"
+                :to="`/adedituser/edit/${item.id}`"
                 flat
                 color="pink"
               >
                 <q-tooltip> {{ t("edit") }} </q-tooltip></q-btn
               >
-              <q-btn :icon="biTrash" flat color="pink">
+              <q-btn @click="onDelete(index)" :icon="biTrash" flat color="pink">
                 <q-tooltip> {{ t("delete") }} </q-tooltip></q-btn
               >
             </td>
@@ -82,6 +83,7 @@
         </tbody>
       </q-markup-table>
 
+      <!-- แถบเลขด้านล่าง -->
       <br />
       <div class="q-gutter-md" style="display: flex; justify-content: center">
         <q-pagination
@@ -103,12 +105,13 @@
 <script setup>
 import { biPencil, biPlus, biTrash } from "@quasar/extras/bootstrap-icons";
 import { ref, onMounted, onUnmounted, watch } from "vue";
-import { useMeta } from "quasar";
+import { useMeta, useQuasar } from "quasar";
 import { useLang } from "src/composables/useLang";
 import { useAxios } from "src/composables/useAxios";
 import { UserApi } from "src/api/UserApi";
-const { getUserList } = UserApi();
 
+const $q = useQuasar();
+const { getUserList, getOne, createUser, updateUser, deleteUser } = UserApi();
 const loading = ref(false);
 const currentPage = ref(1);
 const recordPerPage = ref(6);
@@ -138,6 +141,41 @@ const fetchList = async () => {
   console.log("response", response);
 };
 
+const onDelete = (index) => {
+  $q.dialog({
+    title: t("Qdelete"),
+    message: t("Qconfirm"),
+    cancel: true,
+    ok: {
+      label: t("Qok"),
+      color: "negative",
+    },
+    cancel: {
+      label: t("Qno"),
+      flat: true,
+      color: "grey",
+    },
+  }).onOk(() => {
+    console.log("OK");
+    deleteProcess(index);
+  });
+};
+
+const deleteProcess = async (index) => {
+  const item = userList.value[index];
+  if (item) {
+    const respone = await deleteUser(item.id);
+    console.log("deleteUser", respone);
+    refreshData();
+  }
+};
+
+const refreshData = () => {
+  userList.value = [];
+  currentPage.value = 1;
+  fetchList();
+};
+
 watch(currentPage, async (newVal, oldVal) => {
   fetchList();
   console.log("currentPage changed :", newVal);
@@ -149,7 +187,7 @@ watch(currentPage, async (newVal, oldVal) => {
   background-color: #d6e3ea;
   background-image: url(./public/background.jpg);
   background-size: cover;
-  width: 100%;
+  width: auto;
   height: auto;
 }
 

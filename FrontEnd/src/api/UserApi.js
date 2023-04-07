@@ -19,8 +19,31 @@ export const UserApi = () => {
       url: `/userReadSingle?_id=${id}`,
     });
   };
+  const createUser = async (req = {}) => {
+    return await callApi({
+      method: "POST",
+      url: "/userAdd",
+      body: req,
+    });
+  };
+  const updateUser = async (req = {}) => {
+    return await callApi({
+      method: "PUT",
+      url: "/userEdit",
+      body: req,
+    });
+  };
+  const deleteUser = async (ids) => {
+    return await callApi({
+      method: "DELETE",
+      url: `/user?_ids=${ids}`,
+    });
+  };
   return {
     getUserList,
     getOne,
+    createUser,
+    updateUser,
+    deleteUser,
   };
 };
