@@ -49,12 +49,12 @@
           <i style="color: #5c6bc0; margin-left: 15px">{{ t("UserStatus") }}</i>
           <br />
           <q-toggle
-            v-model="fourth"
+            v-model="toggle"
             checked-icon="check"
-            color="red"
-            label=" Status"
+            color="green"
             unchecked-icon="clear"
           />
+          <!-- สร้าง Toggle และกำหนด v-model ให้น้อง -->
 
           <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
@@ -103,9 +103,12 @@ const userId = ref();
 const entityItem = ref();
 const loading = ref(false);
 
-// ฟังก์ชั่นปุ่ม Submit
+// สร้างตัวแปรชื่อเดียวกันกับ v-model toggle
+const toggle = ref("");
+
+// Onmounted คือฟังก์ชั่นเมื่อเข้าหน้าเว็บ จะทำเป็นอันดับแรก
 onMounted(() => {
-  onSubmit();
+  //ถ้า route มี param ของ userID ส่งมาไหม ดูได้ใน route.js
   if (route.params.userId) {
     userId.value = route.params.userId;
   }
@@ -119,22 +122,31 @@ onMounted(() => {
   console.log("get userId ", userId.value);
 });
 
+//ฟังก์ชั่น fetchData จะไปเอาข้อมูลจากหลังบ้านมาเก็บไว้ในตัวแปรที่เรากำหนด ก็คือ entityItem กับ toggle
+//เรียกข้อมูลมาเก็บไว้ใน response
 const fethData = async () => {
   loading.value = true;
   const respone = await getOne(userId.value);
   loading.value = false;
   console.log("fethData", respone);
+  //ถ้า response มีข้อมูล จะทำฟังก์ชั่นดังต่อไปนี้
   if (respone) {
     entityItem.value = respone.entity;
+    toggle.value = respone.entity.status;
+    console.log("fethData", entityItem.value);
   }
 };
 
+//เมื่อเรากดปุ่มยืนยัน
 const onSubmit = async () => {
   console.log("onSubmit", entityItem.value);
   if (action.value == "edit") {
+    if (toggle.value == false) {
+      entityItem.value.status = false;
+    } else {
+      entityItem.value.status = true;
+    }
     updateProcess();
-  } else {
-    createProcess();
   }
 };
 const updateProcess = async () => {
