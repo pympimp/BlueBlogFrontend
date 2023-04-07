@@ -17,6 +17,8 @@
         </p>
         <br />
 
+        <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
         <!-- ส่วนของการเปลี่ยน Username -->
         <i style="color: #c51162">{{ t("Username") }} :</i>
         <q-input
@@ -26,7 +28,9 @@
           :rules="[(val) => !!val || 'Field is required']"
         />
 
-        <!-- ส่วนของการเปลี่ยนอีเมล -->
+        <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
+        <!-- ส่วนของการเปลี่ยน Email -->
         <i style="color: #c51162">{{ t("Email") }} :</i>
         <q-input
           filled
@@ -34,8 +38,9 @@
           style="width: 300px; margin-bottom: 7px"
           :rules="[(val) => !!val || 'Field is required']"
         />
+        <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
-        <!-- ส่วนของการแก้ไข password -->
+        <!-- ส่วนของการแก้ไข Password -->
         <i style="color: #c51162">{{ t("Password") }} :</i>
         <q-input
           v-model="entityItem.password"
@@ -54,6 +59,8 @@
           </template>
         </q-input>
 
+        <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
         <!-- ส่วนของปุ่ม Submit -->
         <q-btn
           type="submit"
@@ -63,7 +70,10 @@
           style="margin-top: 20px; margin-left: 150px"
           >{{ $t("okay") }}</q-btn
         >
-        <!-- ส่วนของปุ่มยกเลิก -->
+
+        <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
+        <!-- ส่วนของปุ่ม Cencal -->
         <q-btn
           to="/admanageuser"
           glossy
@@ -78,9 +88,8 @@
 </template>
 
 <script setup>
-import { defineComponent, ref } from "vue";
+import { ref } from "vue";
 import { useQuasar } from "quasar";
-import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { UserApi } from "src/api/UserApi";
 
@@ -93,6 +102,8 @@ const email = ref("");
 const password = ref("");
 const username = ref("");
 const isPwd = ref(true);
+
+// สร้างตัวแปร รอเก็บค่าต่างๆที่ Admin ป้อนเข้ามา
 const entityItem = ref({
   id: null,
   username: "",
@@ -100,11 +111,13 @@ const entityItem = ref({
   password: "",
 });
 
+// ฟังก์ชั่นปุ่ม Submit
 const onSubmit = async () => {
   console.log("onSubmit", entityItem.value);
-
   createProcess();
 };
+
+// ฟังก์ชั่น Add User
 const createProcess = async () => {
   const response = await createUser(entityItem.value);
   // console.log("createUser", response);

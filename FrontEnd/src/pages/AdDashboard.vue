@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center" style="display: flex">
     <div style="margin-right: 20px">
-      <!-- ส่วนของ Total User -->
+      <!-- ส่วนของหัวข้อ Total User -->
       <div
         class="container"
         style="width: 250px; height: 250px; margin-bottom: 20px"
@@ -19,13 +19,19 @@
           [ {{ t("TotalUser") }} ]
         </p>
         <br /><br />
+
+        <!-- รูปภาพ Total User -->
         <img
           src="public/ad-user.png"
           style="width: 70px; height: 70px; margin-left: 42px"
         />
         <br /><br />
+
+        <!-- จำนวน Total User -->
         <p style="margin-left: 66px; color: #827b7e">{{ t("UserAm") }}</p>
       </div>
+
+      <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
       <!-- ส่วนของ Total Post -->
       <div class="container" style="width: 250px; height: 250px">
@@ -43,15 +49,21 @@
         </p>
         <br />
         <br />
+
+        <!-- ส่วนของรูปภาพ Total Post -->
         <img
           src="public/ad-post.png"
           alt=""
           style="width: 70px; height: 70px; margin-left: 42px"
         />
         <br /><br />
+
+        <!-- ส่วนของจำนวน Total Post -->
         <p style="margin-left: 60px; color: #827b7e">{{ t("PostAm") }}</p>
       </div>
     </div>
+
+    <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
     <!-- ส่วนของ User Statistics -->
     <div
@@ -79,37 +91,13 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { defineComponent, defineAsyncComponent, ref } from "vue";
-import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 
 const useChart = defineAsyncComponent(() => import("components/MyChart.vue"));
 
-export default {
-  name: "DashBoard",
-  components: {
-    useChart,
-  },
-  setup() {
-    const { localeList, t, locale } = useLang();
-    const leftDrawerOpen = ref(false);
-    function toggleLeftDrawer() {
-      leftDrawerOpen.value = !leftDrawerOpen.value;
-    }
-    return {
-      localeList,
-      t,
-      locale,
-      text: ref(""),
-      third: ref(false),
-      isPwd: ref(true),
-
-      toggleLeftDrawer,
-      links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
-    };
-  },
-};
+const { localeList, t, locale } = useLang();
 </script>
 
 <style scoped>

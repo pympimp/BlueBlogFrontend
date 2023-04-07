@@ -7,6 +7,8 @@
           °˖ ✧◝ {{ t("AddPost") }} ◜✧˖ °
         </p>
 
+        <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
         <!-- ส่วนของการใส่หัวข้อโพสต์ -->
         <q-input
           outlined
@@ -17,6 +19,8 @@
           :dense="dense"
           style="width: 760px; color: #1a237e"
         />
+
+        <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
         <!-- ส่วนของการจัดรูปแบบเนื้อหาโพสต์ -->
         <div class="q-pa-sm q-gutter-sm" style="width: 800px">
@@ -109,6 +113,8 @@
             }"
           />
 
+          <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
           <!-- ส่วนของการแทรกไฟล์รูปภาพ -->
           <div style="display: flex; justify-content: space-between">
             <q-input
@@ -122,6 +128,8 @@
               style="width: 200px,height: 0px;"
               borderless
             />
+
+            <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
             <!-- ส่วนของปุ่มโพสต์ -->
             <q-btn
@@ -137,32 +145,16 @@
   </q-page>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
+<script setup>
+import { ref } from "vue";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 
-export default {
-  name: "DashBoard",
-  setup() {
-    const { localeList, t, locale } = useLang();
-    const leftDrawerOpen = ref(false);
-    function toggleLeftDrawer() {
-      leftDrawerOpen.value = !leftDrawerOpen.value;
-    }
-    return {
-      localeList,
-      t,
-      locale,
-      text: ref(null),
-      third: ref(false),
-      isPwd: ref(true),
-
-      toggleLeftDrawer,
-      links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
-    };
-  },
-};
+const { localeList, t, locale } = useLang();
+const leftDrawerOpen = ref(false);
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+}
 </script>
 <style scoped>
 .flex {

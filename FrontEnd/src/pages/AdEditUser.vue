@@ -16,6 +16,8 @@
           ✧･ﾟ {{ t("EditUser") }} ｡･✧
         </p>
 
+        <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
         <br />
         <!-- ส่วนของการเปลี่ยนอีเมล -->
         <q-spinner v-if="loading == true" color="primary" size="3em" />
@@ -29,6 +31,8 @@
               style="max-width: 300px; margin-bottom: -20px"
           /></q-card-section>
 
+          <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
           <!-- ส่วนของการแก้ไข Username -->
           <q-card-section v-if="entityItem">
             <i style="color: #5c6bc0">{{ t("Username") }} :</i>
@@ -38,6 +42,8 @@
               :dense="dense"
               style="max-width: 300px; margin-top: "
           /></q-card-section>
+
+          <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
           <!-- ปุ่ม toggle เปิด-ปิดสถานะผู้ใช้งาน -->
           <i style="color: #5c6bc0; margin-left: 15px">{{ t("UserStatus") }}</i>
@@ -50,6 +56,8 @@
             unchecked-icon="clear"
           />
 
+          <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
           <!-- ส่วนของปุ่ม Submit -->
           <q-btn
             type="submit"
@@ -59,6 +67,9 @@
             style="margin-top: -20px; margin-left: 80px"
             >{{ $t("okay") }}</q-btn
           >
+
+          <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
           <!-- ส่วนของปุ่มยกเลิก -->
           <q-btn
             to="/admanageuser"
@@ -80,20 +91,19 @@ import { useMeta, useQuasar } from "quasar";
 import { useLang } from "src/composables/useLang";
 import { UserApi } from "src/api/UserApi";
 import { useRoute, useRouter } from "vue-router";
-import { biArrowLeft } from "@quasar/extras/bootstrap-icons";
 const route = useRoute();
-const { t } = useLang();
-useMeta({ title: "Edit User" });
-
 const router = useRouter();
+const { t } = useLang();
+
 const $q = useQuasar();
 const action = ref();
-const { getUserList, getOne, updateUser } = UserApi();
+const { getOne, updateUser } = UserApi();
 const value = ref(true);
 const userId = ref();
 const entityItem = ref();
 const loading = ref(false);
 
+// ฟังก์ชั่นปุ่ม Submit
 onMounted(() => {
   onSubmit();
   if (route.params.userId) {

@@ -113,10 +113,10 @@
               v-if="postList.length"
               v-intersection="handleScrolledToBottom"
             >
-              <q-spinner-dots
+              <q-spinner-bars
                 v-if="loading === false"
-                color="primary"
-                size="40px"
+                color="indigo-10"
+                size="2em"
               />
             </div>
           </q-scroll-area>
