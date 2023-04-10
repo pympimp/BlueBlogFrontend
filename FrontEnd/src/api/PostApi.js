@@ -35,10 +35,18 @@ export const PostApi = () => {
     });
   };
 
+  const detailPost = async (id) => {
+    return await callApi({
+      method: "GET",
+      url: `/DetailPost?post_id=${id}`,
+    });
+  };
+
   return {
     getPostList,
     getOneUserPost,
     findAllByMyReplyPost,
     findAllByMyLikePost,
+    detailPost,
   };
 };
