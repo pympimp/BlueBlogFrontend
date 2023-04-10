@@ -106,7 +106,6 @@ import { useAxios } from "src/composables/useAxios";
 import { DashboardApi } from "src/api/DashboardApi";
 
 const useChart = defineAsyncComponent(() => import("components/MyChart.vue"));
-
 const { localeList, t, locale } = useLang();
 
 // countPost

@@ -15,14 +15,10 @@ const routes = [
         component: () => import("src/pages/MyProfile.vue"),
       },
       {
-        path: "/manageprofile",
+        path: "/manageprofile/:userId",
         component: () => import("src/pages/ManageProfile.vue"),
       },
       { path: "/setting", component: () => import("pages/SettinG.vue") },
-      {
-        path: "/manageprofile",
-        component: () => import("src/pages/ManageProfile.vue"),
-      },
       { path: "/setting", component: () => import("pages/SettinG.vue") },
       {
         path: "/postncomment/:postId",
