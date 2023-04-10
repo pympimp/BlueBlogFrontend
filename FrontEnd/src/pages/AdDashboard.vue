@@ -96,7 +96,6 @@ import { defineComponent, defineAsyncComponent, ref } from "vue";
 import { useLang } from "src/composables/useLang";
 
 const useChart = defineAsyncComponent(() => import("components/MyChart.vue"));
-
 const { localeList, t, locale } = useLang();
 </script>
 
