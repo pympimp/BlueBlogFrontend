@@ -13,12 +13,11 @@
           color: #1a237e;
         "
       >
-        ทำไมนรกต้องใช้กระทะทองแดง
+        {{ entityItem ? entityItem["title"] : "" }}
       </p>
       <Content style="color: #5c6bc0">
-        ทำไมนรกต้องใช้กระทะทองแดง ทำไมไม่ใช้กระทะเงิน
-        ซึ่งนำความร้อนได้ดีกว่า</Content
-      >
+        {{ entityItem ? entityItem["content"] : "" }}
+      </Content>
 
       <!-- ส่วนจัดการโพสต์ -->
 
@@ -53,15 +52,28 @@
       </div>
 
       <!-- ส่วนของรูปภาพของโพสต์ -->
-      <q-img src="/public/img.png" class="img"></q-img> <br />
+
+      <template v-for="(postImg, index) in entityItem?.postImg" :key="index">
+        <q-img :src="postImg.postimg.path" class="img"></q-img>
+        <br />
+      </template>
+
+      <br />
 
       <div class="details-user">
         <ion-avatar class="profile" style="display: inline">
-          <img src="/public/pf1.png" style="width: 30px; height: 30px" />
+          <img
+            :src="entityItem ? entityItem.picture.path : ''"
+            style="width: 30px; height: 30px"
+          />
         </ion-avatar>
         &nbsp;&nbsp;&nbsp;
-        <b style="color: #1a237e">User00001</b>
-        <i style="color: #5c6bc0"><br />วันเสาร์ 3 มีนาคม 2566 15:30</i>
+        <b style="color: #1a237e">{{
+          entityItem ? entityItem["username"] : ""
+        }}</b>
+        <i style="color: #5c6bc0"
+          ><br />{{ entityItem ? entityItem["create_date"] : "" }}</i
+        >
 
         <!-- ปุ่มไลก์โพส -->
         <div class="comment-like" style="display: flex; margin-left: 450px">
@@ -86,23 +98,25 @@
             <span
               id="count"
               style="display: inline; color: #b46f8f; text-weight: bolder"
-              >0</span
+              >{{ entityItem ? entityItem["like_count"] : "" }}
+              {{ t("Like") }}</span
             >
-            <!-- จำนวนยอดไลก์โพสต์ -->
-            <b
-              style="
-                color: #b46f8f;
-                margin-left: 10px;
-                margin-top: 10px;
-                font-size: 15px;
-              "
-            >
-              {{ t("Like") }}
-            </b>
           </div>
 
           <br />
         </div>
+        <br />
+
+        <!-- จำนวนยอดไลก์โพสต์ -->
+        <b
+          style="
+            color: #b03367;
+            margin-left: 10px;
+            margin-top: 10px;
+            font-size: 15px;
+          "
+        >
+        </b>
       </div>
     </div>
 
@@ -122,12 +136,7 @@
       <br />
       <!-- ช่องจัดรูปแบบของการเขียนคอมเมนต์ -->
       <div class="q-pa-md q-gutter-sm">
-        <q-editor
-          :v-model="editor"
-          min-height="5rem"
-          style="width: 600px"
-          :model-value="null"
-        />
+        <q-editor :v-model="editor" min-height="5rem" style="width: 600px" />
       </div>
 
       <div style="display: flex">
@@ -154,7 +163,11 @@
     </div>
 
     <!-- Part Comment -->
-    <div class="container-comment">
+    <div
+      class="container-comment"
+      v-for="(item, index) in entityItemComment"
+      :key="index"
+    >
       <div class="q-mt-md" style="position: absolute">
         <q-fab
           glossy
@@ -185,84 +198,92 @@
         </q-fab>
       </div>
       <!-- หัวข้อคอมเมนต์ -->
-      <p
-        style="
-          font-size: 15px;
-          font-weight: bolder;
-          margin-top: 10px;
-          color: #1a237e;
-        "
-      >
-        ความคิดเห็นที่ 1
-      </p>
-      <!-- เนื้อหาคอมเมนต์ -->
-      <Content
-        style="margin-inline-end: auto; margin-left: 20px; color: #5c6bc0"
-      >
-        ด้วยราคาของเงินที่สูงกว่าทองแดงมาก แต่สมบัติการนำความร้อนไม่ต่างกันมาก
-        การเลือกทองแดงเป็นกระทะจึงเป็นทางเลือกที่ดีกว่าเนื่องจากประหยัดกว่า</Content
-      >
-      <br />
-
-      <!-- ปุ่มไลก์คอมเมนต์ -->
-      <div class="comment-like2" style="display: flex">
-        <div style="display: inline">
-          <q-btn
-            class="like__btn2"
-            style="
-              background-color: #b46f8f;
-              font-size: 15px;
-              border-radius: 50px;
-              border: none;
-            "
-          >
-            <span id="icon2"
-              ><i
-                class="fa-regular fa-thumbs-up"
-                style="color: white; height: -20px; color: white"
-              ></i>
-            </span>
-          </q-btn>
-          &nbsp;
-          <span
-            id="count2"
-            style="display: inline; color: #b46f8f; text-weight: bolder"
-            >0</span
-          >
-          <!-- จำนวนยอดไลก์โพสต์ -->
-          <b
-            style="
-              color: #b46f8f;
-              margin-left: 10px;
-              margin-top: 10px;
-              font-size: 15px;
-            "
-          >
-            {{ t("Like") }}
-          </b>
-        </div>
-
-        <!-- ข้อมูลผู้คอมเมนต์ -->
-        <ion-avatar class="profile">
-          <img
-            src="/public/pf2.png"
-            style="width: 30px; height: 30px; margin-left: 369px"
-          />
-        </ion-avatar>
-        <b
+      <div class="comment">
+        <p
           style="
-            margin-top: -5px;
-            margin-left: 10px;
-            margin-right: -10px;
+            font-size: 15px;
+            font-weight: bolder;
+            margin-top: 10px;
             color: #1a237e;
           "
-          >User00002</b
+        >
+          ความคิดเห็นที่ {{ item.commentId }}
+        </p>
+        <!-- เนื้อหาคอมเมนต์ -->
+        <Content
+          style="margin-inline-end: auto; margin-left: 20px; color: #5c6bc0"
+        >
+          {{ item.content }}</Content
         >
         <br />
-        <i style="margin-top: 12px; margin-left: -60px; color: #5c6bc0"
-          >อาทิตย์ 4 มีนาคม 2566 10:12</i
+        <q-img
+          class="img"
+          :src="item.commentimg.path ? item.commentimg.path : ''"
         >
+        </q-img>
+        <br /><br />
+        <!-- ปุ่มไลก์คอมเมนต์ -->
+        <div class="comment-like2" style="display: flex">
+          <div style="display: inline">
+            <q-btn
+              class="like__btn2"
+              style="
+                background-color: #b46f8f;
+                font-size: 15px;
+                border-radius: 50px;
+                border: none;
+              "
+            >
+              <span id="icon2"
+                ><i
+                  class="fa-regular fa-thumbs-up"
+                  style="color: white; height: -20px; color: white"
+                ></i>
+              </span>
+            </q-btn>
+            &nbsp;
+            <span
+              id="count2"
+              style="display: inline; color: #b46f8f; text-weight: bolder"
+            >
+              {{ item.like_count }}
+            </span>
+            <!-- จำนวนยอดไลก์โพสต์ -->
+            <b
+              style="
+                color: #b46f8f;
+                margin-left: 10px;
+                margin-top: 10px;
+                font-size: 15px;
+              "
+            >
+              {{ t("Like") }}
+            </b>
+          </div>
 
+          <!-- ข้อมูลผู้คอมเมนต์ -->
+          <ion-avatar class="profile">
+            <img
+              :src="item.picture.path"
+              style="width: 30px; height: 30px; margin-left: 369px"
+            />
+          </ion-avatar>
+          <b
+            style="
+              margin-top: -5px;
+              margin-left: 10px;
+              margin-right: -10px;
+              color: #1a237e;
+            "
+            >{{ item.username }}
+          </b>
+          <br />
+          <i style="margin-top: 12px; margin-left: -60px; color: #5c6bc0">
+            {{ item.create_date }}
+          </i>
+
+          <br />
+        </div>
         <br />
       </div>
     </div>
@@ -270,11 +291,17 @@
 </template>
 
 <script setup>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { AuthenApi } from "src/api/AuthenApi";
+
+import { useAxios } from "src/composables/useAxios";
+// เรียกใช้ Post API
 import { PostApi } from "src/api/PostApi";
+// เรียกใช้ Comment API
+import { CommentApi } from "src/api/CommentApi";
 
 const likeBtn = document.querySelector(".like__btn");
 let likeIcon = document.querySelector("#icon");
@@ -283,39 +310,79 @@ const likeBtn2 = document.querySelector(".like__btn2");
 let likeIcon2 = document.querySelector("#icon2");
 let count2 = document.querySelector("#count2");
 
-//btn clicked
+//btn clicked test
 let clicked = false;
 let clicked2 = false;
 
-likeBtn.addEventListener("click", () => {
-  if (!clicked) {
-    clicked = true;
-    likeIcon.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
-    count.textContent++;
-  } else {
-    clicked = false;
-    likeIcon.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
-    count.textContent--;
-  }
-});
+const route = useRoute();
 
-likeBtn2.addEventListener("click", () => {
-  if (!clicked2) {
-    clicked2 = true;
-    likeIcon2.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
-    count2.textContent++;
-  } else {
-    clicked2 = false;
-    likeIcon2.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
-    count2.textContent--;
-  }
-});
+// post id
+const { detailPost } = PostApi();
+// comment
+const { detailComment } = CommentApi();
+const postId = ref();
+// Post
+const entityItem = ref();
+// ตัวแปรแสดงข้อมูลคอมเมนต์
+const entityItemComment = ref([]);
+
+// likeBtn.addEventListener("click", () => {
+//   if (!clicked) {
+//     clicked = true;
+//     likeIcon.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
+//     count.textContent++;
+//   } else {
+//     clicked = false;
+//     likeIcon.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
+//     count.textContent--;
+//   }
+// });
+
+// likeBtn2.addEventListener("click", () => {
+//   if (!clicked2) {
+//     clicked2 = true;
+//     likeIcon2.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
+//     count2.textContent++;
+//   } else {
+//     clicked2 = false;
+//     likeIcon2.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
+//     count2.textContent--;
+//   }
+// });
 
 const { localeList, t, locale } = useLang();
 const leftDrawerOpen = ref(false);
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
+
+onMounted(() => {
+  if (route.params.postId) {
+    postId.value = route.params.postId;
+  }
+
+  if (postId.value) {
+    fethData();
+    fethDataComment();
+  }
+  console.log("get postId ", postId.value);
+});
+
+const fethData = async () => {
+  const respone = await detailPost(postId.value);
+  console.log("fethData", respone);
+  if (respone) {
+    entityItem.value = respone.entity;
+  }
+};
+
+const fethDataComment = async () => {
+  const respone = await detailComment(postId.value);
+  console.log("fethDataComment", respone);
+  if (respone) {
+    entityItemComment.value = respone.entity;
+  }
+};
 
 const text = ref("");
 const third = ref(false);
