@@ -76,13 +76,35 @@
         >
 
         <!-- ปุ่มไลก์โพส -->
-        <q-btn
-          round
-          color="pink"
-          glossy
-          icon="fa-solid fa-heart"
-          style="margin-left: 420px"
-        />
+        <div class="comment-like" style="display: flex; margin-left: 450px">
+          <div style="display: inline">
+            <q-btn
+              class="like__btn"
+              style="
+                background-color: #b46f8f;
+                font-size: 15px;
+                border-radius: 50px;
+                border: none;
+              "
+            >
+              <span id="icon"
+                ><i
+                  class="fa-regular fa-thumbs-up"
+                  style="color: white; height: -20px; color: white"
+                ></i>
+              </span>
+            </q-btn>
+            &nbsp;
+            <span
+              id="count"
+              style="display: inline; color: #b46f8f; text-weight: bolder"
+              >{{ entityItem ? entityItem["like_count"] : "" }}
+              {{ t("Like") }}</span
+            >
+          </div>
+
+          <br />
+        </div>
         <br />
 
         <!-- จำนวนยอดไลก์โพสต์ -->
@@ -94,8 +116,7 @@
             font-size: 15px;
           "
         >
-          {{ entityItem ? entityItem["like_count"] : "" }} {{ t("Like") }}</b
-        >
+        </b>
       </div>
     </div>
 
@@ -142,7 +163,11 @@
     </div>
 
     <!-- Part Comment -->
-    <div class="container-comment">
+    <div
+      class="container-comment"
+      v-for="(item, index) in entityItemComment"
+      :key="index"
+    >
       <div class="q-mt-md" style="position: absolute">
         <q-fab
           glossy
@@ -173,11 +198,7 @@
         </q-fab>
       </div>
       <!-- หัวข้อคอมเมนต์ -->
-      <div
-        class="comment"
-        v-for="(item, index) in entityItemComment"
-        :key="index"
-      >
+      <div class="comment">
         <p
           style="
             font-size: 15px;
@@ -200,41 +221,52 @@
           :src="item.commentimg.path ? item.commentimg.path : ''"
         >
         </q-img>
-        <br />
+        <br /><br />
         <!-- ปุ่มไลก์คอมเมนต์ -->
-        <div class="comment-like" style="display: flex">
-          <q-btn
-            style="
-              margin-left: -40px;
-              padding-top: 7px;
-              font-size: 10px;
-              width: 10px;
-              height: 10px;
-              display: inline;
-            "
-            round
-            color="pink"
-            glossy
-            icon="fa-solid fa-heart"
-          />
-
-          <!-- จำนวนยอดไลก์คอมเมนต์ -->
-          <b
-            style="
-              display: inline;
-              color: #b03367;
-              font-size: 15px;
-              margin-left: 5px;
-              margin-right: 350px;
-              margin-top: 4px;
-            "
-          >
-            {{ item.like_count }} {{ t("Like") }}</b
-          >
+        <div class="comment-like2" style="display: flex">
+          <div style="display: inline">
+            <q-btn
+              class="like__btn2"
+              style="
+                background-color: #b46f8f;
+                font-size: 15px;
+                border-radius: 50px;
+                border: none;
+              "
+            >
+              <span id="icon2"
+                ><i
+                  class="fa-regular fa-thumbs-up"
+                  style="color: white; height: -20px; color: white"
+                ></i>
+              </span>
+            </q-btn>
+            &nbsp;
+            <span
+              id="count2"
+              style="display: inline; color: #b46f8f; text-weight: bolder"
+            >
+              {{ item.like_count }}
+            </span>
+            <!-- จำนวนยอดไลก์โพสต์ -->
+            <b
+              style="
+                color: #b46f8f;
+                margin-left: 10px;
+                margin-top: 10px;
+                font-size: 15px;
+              "
+            >
+              {{ t("Like") }}
+            </b>
+          </div>
 
           <!-- ข้อมูลผู้คอมเมนต์ -->
-          <ion-avatar class="profile" style="display: inline">
-            <img :src="item.picture.path" style="width: 30px; height: 30px" />
+          <ion-avatar class="profile">
+            <img
+              :src="item.picture.path"
+              style="width: 30px; height: 30px; margin-left: 369px"
+            />
           </ion-avatar>
           <b
             style="
@@ -243,12 +275,14 @@
               margin-right: -10px;
               color: #1a237e;
             "
-            >{{ item.username }}</b
-          >
+            >{{ item.username }}
+          </b>
           <br />
-          <i style="margin-top: 12px; margin-left: -60px; color: #5c6bc0">{{
-            item.create_date
-          }}</i>
+          <i style="margin-top: 12px; margin-left: -60px; color: #5c6bc0">
+            {{ item.create_date }}
+          </i>
+
+          <br />
         </div>
         <br />
       </div>
