@@ -109,6 +109,7 @@ const entityItem = ref({
   username: "",
   email: "",
   password: "",
+  userRoles: ["3"],
 });
 
 // ฟังก์ชั่นปุ่ม Submit

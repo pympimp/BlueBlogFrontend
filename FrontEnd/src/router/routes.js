@@ -11,7 +11,7 @@ const routes = [
       },
       { path: "/mainpage", component: () => import("pages/MainPage.vue") },
       {
-        path: "/myprofile",
+        path: "/myprofile/:user_id",
         component: () => import("src/pages/MyProfile.vue"),
       },
       {

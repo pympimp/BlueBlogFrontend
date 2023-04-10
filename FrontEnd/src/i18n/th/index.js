@@ -27,6 +27,7 @@ export default {
   Menu: "เมนู",
   Translate: "เลือกภาษา",
   ManageProfile: "แก้ไขโปรไฟล์",
+  ManagePost: "แก้ไขโพสต์",
 
   //ManageProfile
   Bio: "ข้อมูลเพิ่มเติม",

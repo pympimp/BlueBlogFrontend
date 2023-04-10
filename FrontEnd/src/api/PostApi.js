@@ -21,8 +21,24 @@ export const PostApi = () => {
     });
   };
 
+  const findAllByMyReplyPost = async (id) => {
+    return await callApi({
+      method: "GET",
+      url: `findAllByMyCommentToPost?user_id=${id}`,
+    });
+  };
+
+  const findAllByMyLikePost = async (id) => {
+    return await callApi({
+      method: "GET",
+      url: `findAllByMyLikePost?user_id=${id}`,
+    });
+  };
+
   return {
     getPostList,
     getOneUserPost,
+    findAllByMyReplyPost,
+    findAllByMyLikePost,
   };
 };

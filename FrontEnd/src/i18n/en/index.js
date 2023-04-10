@@ -30,6 +30,7 @@ export default {
   Menu: "Menu",
   Translate: "Choose Language",
   ManageProfile: "Manage Profile",
+  ManagePost: "Manage Post",
 
   //ManageProfile
   Bio: "Bio",

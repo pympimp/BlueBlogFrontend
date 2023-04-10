@@ -3,25 +3,25 @@
     <!-- ส่วนข้อมูลหลักของผู้ใช้ -->
     <div class="container-header">
       <!-- รูปโปรไฟล์ -->
-      <q-avatar v-if="authenStore.auth.picture" size="65px" class="shadow-5">
-        <q-img :src="authenStore.auth.picture.path" />
+      <q-avatar size="65px" class="shadow-5">
+        <q-img src="UserData.auth.picture.path" />
       </q-avatar>
       <!-- username และ bio -->
       <div
         class="details"
         style="display: inline; margin-left: -150px; margin-top: 10px"
       >
-        <b style="color: #1a237e"> {{ authenStore.auth.username }}</b>
-        <p style="color: #5c6bc0">{{ authenStore.auth.bio }}</p>
+        <b style="color: #1a237e"> {{ UserData.username }}</b>
+        <p style="color: #5c6bc0">{{ UserData.bio }}</p>
       </div>
-      <q-btn
-        to="manageprofile"
-        glossy
-        push
-        color="pink"
-        :label="t('Manage')"
-        style="height: 20px"
-      />
+      <router-link to="/manageprofile">
+        <q-btn
+          glossy
+          push
+          color="pink"
+          :label="t('Manage')"
+          style="height: 20px"
+      /></router-link>
     </div>
 
     <!-- ส่วนข้อมูลเพิ่มเติมของผู้ใช้ -->
@@ -37,9 +37,9 @@
           color: #880e4f;
         "
       >
-        <div>{{ t("Posted") }}</div>
-        <div>{{ t("Replied") }}</div>
-        <div>{{ t("Liked") }}</div>
+        <div @click="fetchPost">{{ t("Posted") }}</div>
+        <div @click="findMyReplyPost">{{ t("Replied") }}</div>
+        <div @click="findMyLikePost">{{ t("Liked") }}</div>
       </div>
       <hr
         style="
@@ -74,25 +74,58 @@
 import { ref, onMounted } from "vue";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
-import { useAuthenStore } from "src/stores/authen";
-import { AuthenApi } from "src/api/AuthenApi";
 import { PostApi } from "src/api/PostApi";
+import { UserApi } from "src/api/UserApi";
+import { useRoute } from "vue-router";
 
 const { localeList, t, locale } = useLang();
-const authenStore = useAuthenStore();
-const { getOneUserPost } = PostApi();
+const { getOneUserPost, findAllByMyReplyPost, findAllByMyLikePost } = PostApi();
+const { getOne } = UserApi();
 
+const UserData = ref("");
 const PostList = ref([]);
 
+const id = ref();
+const route = useRoute();
 onMounted(async () => {
-  fetchPost();
+  if (route.params.user_id) {
+    id.value = route.params.user_id;
+  }
+  if (id.value) {
+    fetchUser();
+    fetchPost();
+  }
 });
 
 const fetchPost = async () => {
-  const response = await getOneUserPost(authenStore.auth.id);
+  const response = await getOneUserPost(id.value);
   if (response) {
     PostList.value = response.dataList;
     console.log(PostList);
+  }
+};
+
+const findMyLikePost = async () => {
+  const response = await findAllByMyLikePost(id.value);
+  if (response) {
+    PostList.value = response.dataList;
+    console.log(PostList);
+  }
+};
+
+const findMyReplyPost = async () => {
+  const response = await findAllByMyReplyPost(id.value);
+  if (response) {
+    PostList.value = response.dataList;
+    console.log(PostList);
+  }
+};
+
+const fetchUser = async () => {
+  const response = await getOne(id.value);
+  if (response) {
+    UserData.value = response.entity;
+    console.log(UserData);
   }
 };
 </script>

@@ -63,38 +63,18 @@
   </q-page>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
+<script setup>
+import { ref } from "vue";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { useAuthenStore } from "src/stores/authen";
 import { AuthenApi } from "src/api/AuthenApi";
+import { UserApi } from "src/api/UserApi";
 
-export default {
-  name: "ManageProfile",
-  setup() {
-    const { localeList, t, locale } = useLang();
-    const leftDrawerOpen = ref(false);
-    const authenStore = useAuthenStore();
-    function toggleLeftDrawer() {
-      leftDrawerOpen.value = !leftDrawerOpen.value;
-    }
-    return {
-      authenStore,
-      AuthenApi,
-      useAuthenStore,
-      localeList,
-      t,
-      locale,
-      text: ref(""),
-      third: ref(false),
-      isPwd: ref(true),
+const { getOne } = UserApi();
 
-      toggleLeftDrawer,
-      links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
-    };
-  },
-};
+const { localeList, t, locale } = useLang();
+const authenStore = useAuthenStore();
 </script>
 
 <style scoped>

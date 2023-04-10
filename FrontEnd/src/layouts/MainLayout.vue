@@ -13,16 +13,11 @@
           style="display: flex; justify-content: space-around"
         >
           <!-- ส่วนของแถบสามขีด เมนู MainPage, MyFeed -->
-          <q-btn
-            flat
-            round
-            dense
-            icon="menu"
-            @click="leftDrawerOpen = !leftDrawerOpen"
-          />
+          <!-- ตั้ง Even ให้เป็น OpenMenu -->
+          <q-btn flat round dense icon="menu" @click="openMenu" />
 
           <!-- ส่วนของโลโก้ คลิกกลับหน้าหลัก -->
-          <router-link to="/">
+          <router-link v-if="authenStore.auth.rolesText === 'User'" to="/">
             <q-avatar class="q-ml-md">
               <img src="/public/blueblog-logo.png" />
             </q-avatar>
@@ -30,6 +25,14 @@
               {{ t("BacktoMain") }}
             </q-tooltip>
           </router-link>
+          <router-link v-else to="/addashboard">
+            <q-avatar class="q-ml-md">
+              <img src="/public/blueblog-logo.png" />
+            </q-avatar>
+            <q-tooltip transition-show="scale" transition-hide="scale">
+              {{ t("BacktoMain") }}
+            </q-tooltip></router-link
+          >
 
           <!-- serch user -->
           <div class="q-pa-md">
@@ -152,7 +155,7 @@
           </div>
 
           <!-- ส่วนของปุ่มเพิ่มโพส -->
-          <router-link to="addpost">
+          <router-link v-if="authenStore.auth.rolesText != 'Dev'" to="addpost">
             <img
               src="/public/add-white.png"
               alt=""
@@ -175,7 +178,7 @@
               <div class="row no-wrap q-pa-md">
                 <q-list style="min-width: 100px">
                   <!-- เมนู MyProfile -->
-                  <q-item clickable to="myprofile">
+                  <q-item clickable :to="`myprofile/${authenStore.auth.id}`">
                     <i
                       class="fa-solid fa-user"
                       style="margin-top: 10px; color: #406882"
@@ -187,7 +190,10 @@
                   <q-separator />
 
                   <!-- เมนู ManageProfile -->
-                  <q-item clickable to="manageprofile">
+                  <q-item
+                    clickable
+                    :to="`/manageprofile/edit/${authenStore.auth.id}`"
+                  >
                     <i
                       class="fa-solid fa-pen"
                       style="margin-top: 10px; color: #406882"
@@ -269,7 +275,7 @@
               <q-icon :name="link.icon" style="color: #1d366f" />
             </q-item-section>
             <q-item-section>
-              <q-item-label style="color: #963165; font-weight: bold">{{
+              <q-item-label style="color: #963165">{{
                 link.text
               }}</q-item-label>
             </q-item-section>
@@ -286,8 +292,12 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { fabYoutube } from "@quasar/extras/fontawesome-v6";
+import { ref, onMounted } from "vue";
+import {
+  fabYoutube,
+  fasUserPen,
+  fasAddressCard,
+} from "@quasar/extras/fontawesome-v6";
 import {
   biTranslate,
   biCheck,
@@ -320,6 +330,30 @@ const $q = useQuasar();
 const { userLogout } = AuthenApi();
 const authenStore = useAuthenStore();
 const { localeList, t, locale } = useLang();
+
+onMounted(() => {
+  menuListcheck();
+});
+
+// ส่วนของการทำ Menu Sidebar
+const menuList = ref([]);
+const openMenu = () => {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+};
+const menuListcheck = () => {
+  if (authenStore.auth.rolesText === "User") {
+    menuList.value = [
+      { icon: "home", text: t("MainPage"), link: "/" },
+      { icon: biPersonFill, text: t("FolPage"), link: "/" },
+    ];
+  } else {
+    menuList.value = [
+      { icon: fasAddressCard, text: t("ManagePost"), link: "/" },
+      { icon: fasUserPen, text: t("ManageUser"), link: "/admanageuser" },
+    ];
+  }
+  console.log("menu", menuList.value);
+};
 
 const logoutConfirm = async () => {
   $q.dialog({
@@ -364,11 +398,6 @@ const logoutProcess = async () => {
     }, 500);
   }
 };
-
-const menuList = [
-  { icon: "home", text: t("MainPage"), link: "/" },
-  { icon: biPersonFill, text: t("FolPage"), link: "/" },
-];
 
 /* Search user */
 // สร้าง async function fetch สำหรับเรียก API และเก็บผลลัพธ์ในตัวแปร stringUserOption
