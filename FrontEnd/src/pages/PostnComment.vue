@@ -283,7 +283,7 @@ const likeBtn2 = document.querySelector(".like__btn2");
 let likeIcon2 = document.querySelector("#icon2");
 let count2 = document.querySelector("#count2");
 
-//btn clicked
+//btn clicked test
 let clicked = false;
 let clicked2 = false;
 
