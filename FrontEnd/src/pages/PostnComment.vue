@@ -268,15 +268,17 @@
               style="width: 30px; height: 30px; margin-left: 369px"
             />
           </ion-avatar>
-          <b
-            style="
-              margin-top: -5px;
-              margin-left: 10px;
-              margin-right: -10px;
-              color: #1a237e;
-            "
-            >{{ item.username }}
-          </b>
+          <router-link :to="'/myprofile/' + item.userId">
+            <b
+              style="
+                margin-top: -5px;
+                margin-left: 10px;
+                margin-right: -10px;
+                color: #1a237e;
+              "
+              >{{ item.username }}
+            </b>
+          </router-link>
           <br />
           <i style="margin-top: 12px; margin-left: -60px; color: #5c6bc0">
             {{ item.create_date }}
@@ -315,6 +317,8 @@ let clicked = false;
 let clicked2 = false;
 
 const route = useRoute();
+
+const model = ref(null);
 
 // post id
 const { detailPost } = PostApi();

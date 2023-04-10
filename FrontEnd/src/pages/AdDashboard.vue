@@ -28,7 +28,10 @@
         <br /><br />
 
         <!-- จำนวน Total User -->
-        <p style="margin-left: 66px; color: #827b7e">{{ t("UserAm") }}</p>
+        <p style="text-align: center; color: #827b7e">
+          {{ entityUser ? entityUser["count_created_at"] : "" }}
+          {{ t("UserAm") }}
+        </p>
       </div>
 
       <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
@@ -59,7 +62,10 @@
         <br /><br />
 
         <!-- ส่วนของจำนวน Total Post -->
-        <p style="margin-left: 60px; color: #827b7e">{{ t("PostAm") }}</p>
+        <p style="text-align: center; color: #827b7e">
+          {{ entityPost ? entityPost["count_created_at"] : "" }}
+          {{ t("PostAm") }}
+        </p>
       </div>
     </div>
 
@@ -93,10 +99,40 @@
 
 <script setup>
 import { defineComponent, defineAsyncComponent, ref } from "vue";
+import { useRoute } from "vue-router";
 import { useLang } from "src/composables/useLang";
+import { useAxios } from "src/composables/useAxios";
+// เรียกใช้ Dashboard Api
+import { DashboardApi } from "src/api/DashboardApi";
 
 const useChart = defineAsyncComponent(() => import("components/MyChart.vue"));
 const { localeList, t, locale } = useLang();
+
+// countPost
+const { countPost } = DashboardApi();
+const entityPost = ref();
+// countUser
+const { countUser } = DashboardApi();
+const entityUser = ref();
+
+const fetchDataPost = async () => {
+  const response = await countPost();
+  console.log("countPost", response);
+  if (response) {
+    entityPost.value = response.entity;
+  }
+};
+
+const fetchDataUser = async () => {
+  const response = await countUser();
+  console.log("countUser", response);
+  if (response) {
+    entityUser.value = response.entity;
+  }
+};
+
+fetchDataPost();
+fetchDataUser();
 </script>
 
 <style scoped>

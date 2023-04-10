@@ -117,17 +117,7 @@
 
           <!-- ส่วนของการแทรกไฟล์รูปภาพ -->
           <div style="display: flex; justify-content: space-between">
-            <q-input
-              @update:model-value="
-                (val) => {
-                  files = val;
-                }
-              "
-              multiple
-              type="file"
-              style="width: 200px,height: 0px;"
-              borderless
-            />
+            <q-file v-model="model" label="Standard" />
 
             <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
@@ -155,6 +145,8 @@ const leftDrawerOpen = ref(false);
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
+
+const model = ref(null);
 </script>
 <style scoped>
 .flex {
