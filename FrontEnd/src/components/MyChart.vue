@@ -6,16 +6,18 @@
     :series="series"
   ></apexchart>
 </template>
-
 <script>
+// เรียกใช้ Dashboard Api
+import { DashboardApi } from "src/api/DashboardApi";
+
 export default {
   name: "MyChart",
   data() {
     return {
       series: [
         {
-          name: "Inflation",
-          data: [1, 2, 4.5, 1.7],
+          name: "User Registration",
+          data: [], // เราจะใส่ข้อมูล count ที่ได้จาก API ตรงนี้
         },
       ],
       chartOptions: {
@@ -37,7 +39,7 @@ export default {
         dataLabels: {
           enabled: true,
           formatter: function (val) {
-            return val + "%";
+            return val + "";
           },
           offsetY: -20,
           style: {
@@ -47,7 +49,7 @@ export default {
         },
 
         xaxis: {
-          categories: ["1-9", "10-16", "17-23", "24-30"],
+          categories: [],
           position: "top",
           axisBorder: {
             show: false,
@@ -81,7 +83,7 @@ export default {
           labels: {
             show: false,
             formatter: function (val) {
-              return val + "%";
+              return val + "";
             },
           },
         },
@@ -98,7 +100,28 @@ export default {
       },
     };
   },
+  mounted() {
+    this.fetchDatacountUserSignUpAllMonth();
+  },
+  methods: {
+    async fetchDatacountUserSignUpAllMonth() {
+      const { countUserSignUp } = DashboardApi();
+      const response = await countUserSignUp();
+      console.log("countUserSignUp", response);
+      if (response && response.dataList) {
+        const countData = response.dataList.count;
+        this.series[0].data = countData;
+        const weekData = response.dataList.week.map((item) => "Week " + item);
+        this.chartOptions.xaxis.categories = weekData;
+        this.chartOptions.title.text =
+          "User Registration (" +
+          response.dataList.month +
+          "/" +
+          response.dataList.year +
+          ")";
+      }
+    },
+  },
 };
 </script>
-
 <style></style>

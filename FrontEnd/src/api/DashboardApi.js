@@ -16,8 +16,16 @@ export const DashboardApi = () => {
     });
   };
 
+  const countUserSignUp = async () => {
+    return await callApi({
+      method: "GET",
+      url: `/countUserSignUpAllMonth`,
+    });
+  };
+
   return {
     countPost,
     countUser,
+    countUserSignUp,
   };
 };
