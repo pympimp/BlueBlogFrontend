@@ -39,11 +39,19 @@ export const UserApi = () => {
       url: `/user?_ids=${ids}`,
     });
   };
+
+  const userChangePwd = async (ids) => {
+    return await callApi({
+      method: "POST",
+      url: "/userChangePwd",
+    });
+  };
   return {
     getUserList,
     getOne,
     createUser,
     updateUser,
     deleteUser,
+    userChangePwd,
   };
 };
