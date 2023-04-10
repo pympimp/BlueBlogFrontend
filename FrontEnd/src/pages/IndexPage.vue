@@ -142,7 +142,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, onMounted, onUnmounted, watch } from "vue";
 import { fabYoutube } from "@quasar/extras/fontawesome-v6";
 import { biTranslate, biGlobe, biCheck } from "@quasar/extras/bootstrap-icons";
@@ -152,140 +152,106 @@ import { useAxios } from "src/composables/useAxios";
 // เรียกใช้ Post API
 import { PostApi } from "src/api/PostApi";
 
-export default {
-  name: "MyLayout",
-  setup() {
-    const { getPostList } = PostApi();
+const { getPostList } = PostApi();
 
-    // ตัวแปรแสดงข้อมูลโพสต์
-    const postList = ref([]);
-    // เลขหน้าเพจ
-    const currentPage = ref(1);
-    // จำนวนรายการ
-    const recordPerPage = ref(3);
-    const totalPage = ref(0);
-    const loading = ref(false);
+// ตัวแปรแสดงข้อมูลโพสต์
+const postList = ref([]);
+// เลขหน้าเพจ
+const currentPage = ref(1);
+// จำนวนรายการ
+const recordPerPage = ref(3);
+const totalPage = ref(0);
+const loading = ref(false);
 
-    const { localeList, t, locale } = useLang();
-    const leftDrawerOpen = ref(false);
-    const search = ref("");
+const { localeList, t, locale } = useLang();
+const leftDrawerOpen = ref(false);
+const search = ref("");
 
-    // คัดเลือกโพสต์ post
-    const url = ref("CreateDateDesc");
+// คัดเลือกโพสต์ post
+const url = ref("CreateDateDesc");
 
-    function toggleLeftDrawer() {
-      leftDrawerOpen.value = !leftDrawerOpen.value;
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+}
+// แสดง List Post
+onMounted(async () => {
+  fetchList();
+});
+
+// const fetchList = async () => {
+//   const response = await getPostList({
+//     page: currentPage.value, //method: "GET",
+//     perPage: recordPerPage.value,
+//     body: url.value,
+//   });
+//   if (response) {
+//     // postList.value = response.dataList;
+//     postList.value.push(...response.dataList);
+//     totalPage.value = response.appPagination;
+//     console.log(response);
+//   }
+// };
+
+// change url
+const change = async (value) => {
+  // กำหนดให้ postList.value เป็น array ว่าง
+  postList.value = [];
+
+  // เปลี่ยน url
+  url.value = value;
+
+  // recordPerPage.value = 3;
+  currentPage.value = 1;
+
+  // โหลดข้อมูลใหม่
+  // await fetchList();
+};
+
+const fetchList = async () => {
+  const response = await getPostList({
+    page: currentPage.value,
+    perPage: recordPerPage.value,
+    body: url.value,
+  });
+
+  if (response) {
+    // เก็บข้อมูลใหม่ลงใน postList.value
+    postList.value.push(...response.dataList);
+
+    // อัปเดตค่า totalPage.value
+    totalPage.value = response.appPagination;
+    console.log(response);
+  }
+};
+
+// fetchList();
+watch(url, () => {
+  fetchList();
+});
+
+// watch(currentPage, async (newVal, oldVal) => {
+//   fetchList();
+//   console.log("CurrentPage change from", newVal);
+// });
+// เมื่อเลื่อน Scroll ลงมา
+const handleScrolledToBottom = (isVisible) => {
+  setTimeout(() => {
+    loading.value = true;
+    if (!isVisible) {
+      return;
     }
-    // แสดง List Post
-    onMounted(async () => {
-      fetchList();
-    });
-
-    // const fetchList = async () => {
-    //   const response = await getPostList({
-    //     page: currentPage.value, //method: "GET",
-    //     perPage: recordPerPage.value,
-    //     body: url.value,
-    //   });
-    //   if (response) {
-    //     // postList.value = response.dataList;
-    //     postList.value.push(...response.dataList);
-    //     totalPage.value = response.appPagination;
-    //     console.log(response);
-    //   }
-    // };
-
-    // change url
-    const change = async (value) => {
-      // กำหนดให้ postList.value เป็น array ว่าง
-      postList.value = [];
-
-      // เปลี่ยน url
-      url.value = value;
-
-      // recordPerPage.value = 3;
-      currentPage.value = 1;
-
-      // โหลดข้อมูลใหม่
-      // await fetchList();
-    };
-
-    const fetchList = async () => {
-      const response = await getPostList({
-        page: currentPage.value,
-        perPage: recordPerPage.value,
-        body: url.value,
-      });
-
-      if (response) {
-        // เก็บข้อมูลใหม่ลงใน postList.value
-        postList.value.push(...response.dataList);
-
-        // อัปเดตค่า totalPage.value
-        totalPage.value = response.appPagination;
-        console.log(response);
-      }
-    };
-
-    // fetchList();
-    watch(url, () => {
-      fetchList();
-    });
-
-    // watch(currentPage, async (newVal, oldVal) => {
-    //   fetchList();
-    //   console.log("CurrentPage change from", newVal);
-    // });
-    // เมื่อเลื่อน Scroll ลงมา
-    const handleScrolledToBottom = (isVisible) => {
-      setTimeout(() => {
-        loading.value = true;
-        if (!isVisible) {
-          return;
-        }
-        if (currentPage.value >= totalPage.value) {
-          return;
-        }
-        // เพิ่มหน้ารายการ ทีละ 2 รายการ
-        currentPage.value++;
-        // recordPerPage.value = 2;
-        fetchList();
-        // ถ้าหมดแล้วจะ timelog
-        console.log("timeout");
-        loading.value = false;
-        // มีการรอ loading
-      }, 2000);
-    };
-
-    return {
-      localeList,
-      t,
-      locale,
-      biGlobe,
-      biCheck,
-      biTranslate,
-      fabYoutube,
-      leftDrawerOpen,
-      search,
-      // return รายการข้อมูล
-      currentPage,
-      totalPage,
-      // fetchList,
-      toggleLeftDrawer,
-      handleScrolledToBottom,
-      loading,
-      links1: [
-        { icon: "home", text: "Home", link: "/" },
-        { icon: "whatshot", text: "List Page", link: "/list-page" },
-        { icon: "subscriptions", text: "Subscriptions" },
-        { icon: biTranslate, text: "Translate", link: "/locale-page" },
-      ],
-      postList,
-      // คัดเลือกโพสต์
-      change,
-      url,
-    };
-  },
+    if (currentPage.value >= totalPage.value) {
+      return;
+    }
+    // เพิ่มหน้ารายการ ทีละ 2 รายการ
+    currentPage.value++;
+    // recordPerPage.value = 2;
+    fetchList();
+    // ถ้าหมดแล้วจะ timelog
+    console.log("timeout");
+    loading.value = false;
+    // มีการรอ loading
+  }, 2000);
 };
 </script>
 

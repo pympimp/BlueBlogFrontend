@@ -269,73 +269,60 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { defineComponent, ref } from "vue";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { AuthenApi } from "src/api/AuthenApi";
 import { PostApi } from "src/api/PostApi";
 
-export default {
-  name: "DashBoard",
-  mounted() {
-    const likeBtn = document.querySelector(".like__btn");
-    let likeIcon = document.querySelector("#icon");
-    let count = document.querySelector("#count");
-    const likeBtn2 = document.querySelector(".like__btn2");
-    let likeIcon2 = document.querySelector("#icon2");
-    let count2 = document.querySelector("#count2");
+const likeBtn = document.querySelector(".like__btn");
+let likeIcon = document.querySelector("#icon");
+let count = document.querySelector("#count");
+const likeBtn2 = document.querySelector(".like__btn2");
+let likeIcon2 = document.querySelector("#icon2");
+let count2 = document.querySelector("#count2");
 
-    //btn clicked
-    let clicked = false;
-    let clicked2 = false;
+//btn clicked
+let clicked = false;
+let clicked2 = false;
 
-    likeBtn.addEventListener("click", () => {
-      if (!clicked) {
-        clicked = true;
-        likeIcon.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
-        count.textContent++;
-      } else {
-        clicked = false;
-        likeIcon.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
-        count.textContent--;
-      }
-    });
+likeBtn.addEventListener("click", () => {
+  if (!clicked) {
+    clicked = true;
+    likeIcon.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
+    count.textContent++;
+  } else {
+    clicked = false;
+    likeIcon.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
+    count.textContent--;
+  }
+});
 
-    likeBtn2.addEventListener("click", () => {
-      if (!clicked2) {
-        clicked2 = true;
-        likeIcon2.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
-        count2.textContent++;
-      } else {
-        clicked2 = false;
-        likeIcon2.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
-        count2.textContent--;
-      }
-    });
-  },
-  setup() {
-    const { localeList, t, locale } = useLang();
-    const leftDrawerOpen = ref(false);
-    function toggleLeftDrawer() {
-      leftDrawerOpen.value = !leftDrawerOpen.value;
-    }
-    return {
-      liked: false,
-      localeList,
-      t,
-      locale,
-      text: ref(""),
-      third: ref(false),
-      isPwd: ref(true),
-      editor: ref("What you see is <b>what</b> you get."),
+likeBtn2.addEventListener("click", () => {
+  if (!clicked2) {
+    clicked2 = true;
+    likeIcon2.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
+    count2.textContent++;
+  } else {
+    clicked2 = false;
+    likeIcon2.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
+    count2.textContent--;
+  }
+});
 
-      toggleLeftDrawer,
-      links1: [{ icon: biTranslate, text: "Translate", link: "/locale-page" }],
-    };
-  },
-};
+const { localeList, t, locale } = useLang();
+const leftDrawerOpen = ref(false);
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+}
+
+const text = ref("");
+const third = ref(false);
+const isPwd = ref(true);
+const editor = ref("What you see is <b>what</b> you get.");
 </script>
+
 <style scoped>
 .flex {
   background-color: #d6e3ea;
