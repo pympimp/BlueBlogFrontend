@@ -192,7 +192,7 @@
                   <!-- เมนู ManageProfile -->
                   <q-item
                     clickable
-                    :to="`/manageprofile/edit/${authenStore.auth.id}`"
+                    :to="`/manageprofile/${authenStore.auth.id}`"
                   >
                     <i
                       class="fa-solid fa-pen"

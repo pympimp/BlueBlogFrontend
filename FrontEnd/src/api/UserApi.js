@@ -29,7 +29,7 @@ export const UserApi = () => {
   const updateUser = async (req = {}) => {
     return await callApi({
       method: "PUT",
-      url: "/userEdit",
+      url: "/user",
       body: req,
     });
   };

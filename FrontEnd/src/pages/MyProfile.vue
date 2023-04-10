@@ -4,7 +4,7 @@
     <div class="container-header">
       <!-- รูปโปรไฟล์ -->
       <q-avatar size="65px" class="shadow-5">
-        <q-img src="UserData.auth.picture.path" />
+        <q-img src="UserData.picture.path" />
       </q-avatar>
       <!-- username และ bio -->
       <div
@@ -95,6 +95,7 @@ onMounted(async () => {
     fetchUser();
     fetchPost();
   }
+  console.log(UserData);
 });
 
 const fetchPost = async () => {
