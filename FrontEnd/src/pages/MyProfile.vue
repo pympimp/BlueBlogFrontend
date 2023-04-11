@@ -109,12 +109,10 @@ function toggleFollow() {
     followLabel.value = "Following";
     followColor.value = "secondary";
     followers.value += 1;
-    Fol();
   } else {
     followLabel.value = "Follow";
     followColor.value = "primary";
     followers.value -= 1;
-    unFol();
   }
 }
 
@@ -163,21 +161,21 @@ const fetchUser = async () => {
   }
 };
 
-const Fol = async () => {
-  const response = await Follow(id.value);
-  if (response) {
-    UserData.value = response.entity;
-    console.log(UserData);
-  }
-};
+// const Fol = async () => {
+//   const response = await Follow(id.value);
+//   if (response) {
+//     UserData.value = response.entity;
+//     console.log(UserData);
+//   }
+// };
 
-const unFol = async () => {
-  const response = await unFollow(id.value);
-  if (response) {
-    UserData.value = response.entity;
-    console.log(UserData);
-  }
-};
+// const unFol = async () => {
+//   const response = await unFollow(id.value);
+//   if (response) {
+//     UserData.value = response.entity;
+//     console.log(UserData);
+//   }
+// };
 </script>
 
 <style scoped>
