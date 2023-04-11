@@ -329,6 +329,7 @@ const { localeList, t, locale } = useLang();
 
 onMounted(() => {
   menuListcheck();
+  console.log(authenStore.auth.rolesText);
 });
 
 // ส่วนของการทำ Menu Sidebar
