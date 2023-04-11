@@ -380,10 +380,6 @@ const entitycomment = ref({
 });
 
 const { localeList, t, locale } = useLang();
-const leftDrawerOpen = ref(false);
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value;
-}
 
 onMounted(() => {
   if (route.params.postId) {

@@ -98,19 +98,24 @@ const loading = ref(false);
 const userId = ref();
 const imageFile = ref();
 const entityItem = ref({
-  id: null,
+  user_id: null,
   email: "",
   username: "",
   bio: "",
-  image: "",
+  picture: "",
   haveNewImage: false,
 });
 
 onMounted(() => {
   if (route.params.userId) {
     userId.value = route.params.userId;
+    entityItem.value.user_id = route.params.userId;
+  }
+
+  if (imageFile.value) {
     fetchData();
   }
+
   console.log("get usertId ", userId.value);
 });
 
