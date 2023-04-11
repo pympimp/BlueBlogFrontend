@@ -40,10 +40,11 @@ export const UserApi = () => {
     });
   };
 
-  const userChangePwd = async (ids) => {
+  const userChangePwd = async (req) => {
     return await callApi({
       method: "POST",
       url: "/userChangePwd",
+      body: req,
     });
   };
   return {

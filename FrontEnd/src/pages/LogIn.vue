@@ -102,7 +102,7 @@ const onSubmit = async () => {
   if (response && response.userData && response.userData.apiKey) {
     authenStore.setAuthen(response.userData);
     $q.notify({
-      message: "Login Success!",
+      message: response.message,
       avatar: response.userData.picture.path,
     });
     if (authenStore.auth.rolesText === "Dev") {
@@ -116,7 +116,7 @@ const onSubmit = async () => {
     }
   } else {
     $q.notify({
-      message: t("errorLogin"),
+      message: response.message,
     });
   }
 };

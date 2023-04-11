@@ -155,7 +155,7 @@
           </div>
 
           <!-- ส่วนของปุ่มเพิ่มโพส -->
-          <router-link v-if="authenStore.auth.rolesText != 'Dev'" to="addpost">
+          <router-link to="addpost">
             <img
               src="/public/add-white.png"
               alt=""
@@ -293,11 +293,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import {
-  fabYoutube,
-  fasUserPen,
-  fasAddressCard,
-} from "@quasar/extras/fontawesome-v6";
+import { fasUserPen, fasAddressCard } from "@quasar/extras/fontawesome-v6";
 import {
   biTranslate,
   biCheck,
