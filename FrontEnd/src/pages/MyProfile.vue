@@ -11,17 +11,28 @@
         class="details"
         style="display: inline; margin-left: -150px; margin-top: 10px"
       >
-        <b style="color: #1a237e"> {{ UserData.username }}</b>
-        <p style="color: #5c6bc0">{{ UserData.bio }}</p>
+        <b class="text-start" style="color: #1a237e">
+          {{ UserData.username }}</b
+        >
+        <p class="text-start" style="color: #5c6bc0">{{ UserData.bio }}</p>
       </div>
-      <router-link :to="`/manageprofile/${id}`">
+
+      <!-- :to="`/manageprofile/${id}`" -->
+      <div>
         <q-btn
+          ref="followBtn"
           glossy
           push
-          color="pink"
-          :label="t('Manage')"
-          style="height: 20px"
-      /></router-link>
+          :color="followColor"
+          :label="followLabel"
+          @click="toggleFollow"
+          style="height: 20px; margin-top: 5px"
+        />
+
+        <p class="text-center" style="margin-top: 5px">
+          Followers: {{ followers }}
+        </p>
+      </div>
     </div>
 
     <!-- ส่วนข้อมูลเพิ่มเติมของผู้ใช้ -->
@@ -89,6 +100,21 @@ const { getOne } = UserApi();
 
 const UserData = ref("");
 const PostList = ref([]);
+
+const followers = ref(0);
+const followLabel = ref("Follow");
+const followColor = ref("primary");
+function toggleFollow() {
+  if (followLabel.value === "Follow") {
+    followLabel.value = "Following";
+    followColor.value = "secondary";
+    followers.value += 1;
+  } else {
+    followLabel.value = "Follow";
+    followColor.value = "primary";
+    followers.value -= 1;
+  }
+}
 
 const id = ref();
 const route = useRoute();
