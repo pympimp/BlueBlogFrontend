@@ -102,16 +102,15 @@ const entityItem = ref({
   email: "",
   username: "",
   bio: "",
-  image_name: "",
+  image: "",
   haveNewImage: false,
 });
 
 onMounted(() => {
   if (route.params.userId) {
     userId.value = route.params.userId;
+    fetchData();
   }
-  fetchData();
-
   console.log("get usertId ", userId.value);
 });
 
@@ -138,11 +137,10 @@ const onSubmit = async () => {
     const fileNameResponse = await updateAvatar(imageFile.value);
     console.log("updateAvatar", fileNameResponse);
     if (fileNameResponse && fileNameResponse.imageName) {
-      entityItem.value.image_name = fileNameResponse.imageName;
+      entityItem.value.image = fileNameResponse.imageName;
       entityItem.value.haveNewImage = true;
     }
     console.log("onSubmit", entityItem.value);
-
     updateProcess();
     console.log(entityItem);
   }
@@ -161,6 +159,7 @@ const updateProcess = async () => {
   loading.value = false;
   router.push("/");
 };
+
 const { localeList, t, locale } = useLang();
 const authenStore = useAuthenStore();
 </script>

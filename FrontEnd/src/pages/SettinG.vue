@@ -35,7 +35,7 @@
               >{{ t("NewPassword") }} :</i
             >
             <q-input
-              v-model="entityItem.newPassword"
+              v-model="entityItem._p"
               filled
               :type="isPwd ? 'password' : 'text'"
               style="width: 300px"
@@ -66,6 +66,7 @@ import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { UserApi } from "src/api/UserApi";
 import { AuthenApi } from "src/api/AuthenApi";
+import { useQuasar } from "quasar";
 
 const { loginProcess } = AuthenApi();
 const { userChangePwd } = UserApi();
@@ -73,32 +74,38 @@ const { localeList, t, locale } = useLang();
 
 const isPwd = ref(true);
 const loading = ref(false);
+const $q = useQuasar();
 
 const entityItem = ref({
-  id: null,
   oldPassword: "",
-  newPassword: "",
   _p: "",
   logoutAll: "false",
 });
 
 const onSubmit = () => {
   console.log("onSubmit", entityItem.value);
-  if (entityItem.value.oldPassword == entityItem.value._p) {
+  if (entityItem.value) {
     updateProcess();
+    console.log("changepass", entityItem.value);
   } else {
-    console.log(message);
+    console.log(response.message);
   }
 };
 
 const updateProcess = async () => {
   loading.value = true;
   const response = await userChangePwd(entityItem.value);
-  console.log("userChangePwd ", response);
-  if (response) {
+  // console.log("userChangePwd ", response);
+  if (response.status === true) {
     $q.notify({
       message: response.message,
       type: "positive",
+    });
+    window.location.replace("/");
+  } else {
+    $q.notify({
+      message: response.message,
+      type: "negative",
     });
   }
   loading.value = false;

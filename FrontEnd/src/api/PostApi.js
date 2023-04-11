@@ -21,17 +21,24 @@ export const PostApi = () => {
     });
   };
 
+  const findAllByMyPost = async (id) => {
+    return await callApi({
+      method: "GET",
+      url: `/findAllByYouPost?id=${id}`,
+    });
+  };
+
   const findAllByMyReplyPost = async (id) => {
     return await callApi({
       method: "GET",
-      url: `findAllByMyCommentToPost?user_id=${id}`,
+      url: `findAllByYouCommentToPost?id=${id}`,
     });
   };
 
   const findAllByMyLikePost = async (id) => {
     return await callApi({
       method: "GET",
-      url: `findAllByMyLikePost?user_id=${id}`,
+      url: `findAllByYouLikePost?id=${id}`,
     });
   };
 
@@ -45,6 +52,7 @@ export const PostApi = () => {
   return {
     getPostList,
     getOneUserPost,
+    findAllByMyPost,
     findAllByMyReplyPost,
     findAllByMyLikePost,
     detailPost,

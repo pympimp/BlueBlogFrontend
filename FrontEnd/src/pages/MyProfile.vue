@@ -4,7 +4,7 @@
     <div class="container-header">
       <!-- รูปโปรไฟล์ -->
       <q-avatar size="65px" class="shadow-5">
-        <q-img src="UserData.picture.path" />
+        <q-img :src="UserData ? UserData.picture.path : ''" />
       </q-avatar>
       <!-- username และ bio -->
       <div
@@ -14,7 +14,7 @@
         <b style="color: #1a237e"> {{ UserData.username }}</b>
         <p style="color: #5c6bc0">{{ UserData.bio }}</p>
       </div>
-      <router-link to="/manageprofile">
+      <router-link :to="`/manageprofile/${id}`">
         <q-btn
           glossy
           push
@@ -79,7 +79,12 @@ import { UserApi } from "src/api/UserApi";
 import { useRoute } from "vue-router";
 
 const { localeList, t, locale } = useLang();
-const { getOneUserPost, findAllByMyReplyPost, findAllByMyLikePost } = PostApi();
+const {
+  getOneUserPost,
+  findAllByMyPost,
+  findAllByMyReplyPost,
+  findAllByMyLikePost,
+} = PostApi();
 const { getOne } = UserApi();
 
 const UserData = ref("");
@@ -99,7 +104,7 @@ onMounted(async () => {
 });
 
 const fetchPost = async () => {
-  const response = await getOneUserPost(id.value);
+  const response = await findAllByMyPost(id.value);
   if (response) {
     PostList.value = response.dataList;
     console.log(PostList);
