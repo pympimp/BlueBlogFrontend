@@ -70,6 +70,14 @@ export const PostApi = () => {
     });
   };
 
+  // Delete Post
+  const deletePost = async (ids) => {
+    return await callApi({
+      method: "DELETE",
+      url: `/post?_ids=${ids}`,
+    });
+  };
+
   return {
     getPostList,
     getOneUserPost,
@@ -78,5 +86,6 @@ export const PostApi = () => {
     findAllByMyLikePost,
     detailPost,
     postMultipleUploadImage,
+    deletePost,
   };
 };
