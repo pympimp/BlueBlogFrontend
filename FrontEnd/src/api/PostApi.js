@@ -42,11 +42,26 @@ export const PostApi = () => {
     });
   };
 
+  // Crate Post Multiple Upload Image
+  const postMultipleUploadImage = async (file, Text) => {
+    const postData = new FormData();
+    postData.append("fileName", file);
+    postData.append("titlePost", Text);
+    postData.append("contentPost", Text);
+    return await callApi({
+      method: "POST",
+      url: "/postMultipleUploadImage",
+      contentType: "multipart/form-data",
+      body: postData,
+    });
+  };
+
   return {
     getPostList,
     getOneUserPost,
     findAllByMyReplyPost,
     findAllByMyLikePost,
     detailPost,
+    postMultipleUploadImage,
   };
 };
