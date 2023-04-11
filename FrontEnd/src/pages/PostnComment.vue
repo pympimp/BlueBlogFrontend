@@ -44,7 +44,7 @@
           <q-fab-action
             external-label
             color="pink-10"
-            @click="onClick"
+            @click="onDeletePost(entityItem)"
             icon="delete"
             :label="t('DeletePost')"
           />
@@ -198,7 +198,7 @@
           <q-fab-action
             external-label
             color="pink-10"
-            @click="onClick"
+            @click="onDelete(index)"
             icon="delete"
             :label="t('DeletePost')"
           />
@@ -330,9 +330,9 @@ let clicked = false;
 let clicked2 = false;
 
 // post id
-const { detailPost } = PostApi();
+const { detailPost, deletePost } = PostApi();
 // comment
-const { detailComment, addComment } = CommentApi();
+const { detailComment, addComment, deleteComment } = CommentApi();
 // File Upload
 const { uploadImageApi } = FileApi();
 const postId = ref();
@@ -443,6 +443,86 @@ const createProcess = async (postId) => {
     location.reload();
   }
   router.push(`/postncomment/${postId.value}`);
+};
+
+// Delete Comment
+const onDelete = (index) => {
+  $q.dialog({
+    title: t("Qdelete"),
+    message: t("Qconfirm"),
+    cancel: true,
+    ok: {
+      label: t("Qok"),
+      color: "negative",
+    },
+    cancel: {
+      label: t("Qno"),
+      flat: true,
+      color: "grey",
+    },
+  }).onOk(() => {
+    console.log("OK");
+    $q.notify({
+      message: "Success!",
+      type: "positive",
+    });
+    deleteProcess(index);
+  });
+};
+
+const deleteProcess = async (index) => {
+  const item = entityItemComment.value[index];
+  // console.log(entityItemComment.value[index]);
+  if (item) {
+    const respone = await deleteComment(item.commentId);
+    console.log("deleteComment", respone);
+    console.log(item.commentId);
+    // refresh page to display the latest data
+    // location.reload();
+    refreshData();
+  }
+};
+
+const refreshData = () => {
+  entityItemComment.value = [];
+  fethDataComment();
+};
+
+// Delete Post
+const onDeletePost = (entityItem) => {
+  $q.dialog({
+    title: t("Qdelete"),
+    message: t("Qconfirm"),
+    cancel: true,
+    ok: {
+      label: t("Qok"),
+      color: "negative",
+    },
+    cancel: {
+      label: t("Qno"),
+      flat: true,
+      color: "grey",
+    },
+  }).onOk(() => {
+    console.log("OK");
+    $q.notify({
+      message: "Success!",
+      type: "positive",
+    });
+    deleteProcessPost(entityItem);
+  });
+};
+
+const deleteProcessPost = async (entityItem) => {
+  const item = entityItem.value;
+  // console.log(entityItemComment.value[index]);
+  if (item) {
+    const respone = await deletePost(item.id);
+    console.log("deletePost", respone);
+    console.log(item.id);
+    // refresh page to display the latest data
+    // location.reload();
+  }
 };
 
 const text = ref("");
