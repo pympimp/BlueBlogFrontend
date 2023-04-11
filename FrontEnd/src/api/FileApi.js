@@ -15,7 +15,7 @@ export const FileApi = () => {
 
   const updateAvatar = async (file) => {
     const postData = new FormData();
-    postData.append("fileName", file);
+    postData.append("imgUpload", file);
     return await callApi({
       method: "POST",
       url: "/changeAvatar",

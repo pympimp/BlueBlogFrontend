@@ -89,6 +89,7 @@ import { PostApi } from "src/api/PostApi";
 import { UserApi } from "src/api/UserApi";
 import { useRoute } from "vue-router";
 import { FollowApi } from "src/api/FollowApi";
+import { useQuasar } from "quasar";
 
 const { Follow, unFollow } = FollowApi();
 const { localeList, t, locale } = useLang();
@@ -98,6 +99,7 @@ const { getOne } = UserApi();
 
 const UserData = ref("");
 const PostList = ref([]);
+const $q = useQuasar();
 
 const followers = ref(0);
 const followLabel = ref("Follow");
@@ -106,13 +108,15 @@ const followColor = ref("primary");
 // ปุ่ม Toggle เพิ่ม-ลดจำนวนผู้ติดตาม
 function toggleFollow() {
   if (followLabel.value === "Follow") {
+    Fol();
     followLabel.value = "Following";
     followColor.value = "secondary";
-    followers.value += 1;
+    // followers.value += 1;
   } else {
+    unFol();
     followLabel.value = "Follow";
     followColor.value = "primary";
-    followers.value -= 1;
+    // followers.value -= 1;
   }
 }
 
@@ -161,21 +165,21 @@ const fetchUser = async () => {
   }
 };
 
-// const Fol = async () => {
-//   const response = await Follow(id.value);
-//   if (response) {
-//     UserData.value = response.entity;
-//     console.log(UserData);
-//   }
-// };
+const Fol = async () => {
+  const response = await Follow(id.value);
+  if (response) {
+    console.log("Fol", response.message);
+    followers.value++;
+  }
+};
 
-// const unFol = async () => {
-//   const response = await unFollow(id.value);
-//   if (response) {
-//     UserData.value = response.entity;
-//     console.log(UserData);
-//   }
-// };
+const unFol = async () => {
+  const response = await unFollow(id.value);
+  if (response) {
+    console.log("unFol", response.message);
+    followers.value--;
+  }
+};
 </script>
 
 <style scoped>

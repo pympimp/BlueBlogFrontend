@@ -136,12 +136,14 @@ const onSubmit = async () => {
   if (imageFile.value) {
     const fileNameResponse = await updateAvatar(imageFile.value);
     console.log("updateAvatar", fileNameResponse);
-    if (fileNameResponse && fileNameResponse.imageName) {
-      entityItem.value.image = fileNameResponse.imageName;
+    if (fileNameResponse) {
+      entityItem.value.image = fileNameResponse.picture;
       entityItem.value.haveNewImage = true;
     }
     console.log("onSubmit", entityItem.value);
-    updateProcess();
+    if (entityItem.value.image) {
+      updateProcess();
+    }
     console.log(entityItem);
   }
 };
