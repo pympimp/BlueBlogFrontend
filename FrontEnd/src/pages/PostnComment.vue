@@ -439,8 +439,10 @@ const createProcess = async (postId) => {
       message: "Success!",
       type: "positive",
     });
+    // refresh page to display the latest data
+    location.reload();
   }
-  router.push("/");
+  router.push(`/postncomment/${postId.value}`);
 };
 
 const text = ref("");
