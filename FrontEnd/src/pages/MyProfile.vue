@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center column">
     <!-- ส่วนข้อมูลหลักของผู้ใช้ -->
-    <div class="container-header">
+    <div class="container-header" @click="toggleBtn">
       <!-- รูปโปรไฟล์ -->
       <q-avatar size="65px" class="shadow-5">
         <q-img :src="UserData ? UserData.picture.path : ''" />
@@ -88,14 +88,12 @@ import { useLang } from "src/composables/useLang";
 import { PostApi } from "src/api/PostApi";
 import { UserApi } from "src/api/UserApi";
 import { useRoute } from "vue-router";
+import { FollowApi } from "src/api/FollowApi";
 
+const { Follow, unFollow } = FollowApi();
 const { localeList, t, locale } = useLang();
-const {
-  getOneUserPost,
-  findAllByMyPost,
-  findAllByMyReplyPost,
-  findAllByMyLikePost,
-} = PostApi();
+const { findAllByMyPost, findAllByMyReplyPost, findAllByMyLikePost } =
+  PostApi();
 const { getOne } = UserApi();
 
 const UserData = ref("");
@@ -104,6 +102,8 @@ const PostList = ref([]);
 const followers = ref(0);
 const followLabel = ref("Follow");
 const followColor = ref("primary");
+
+// ปุ่ม Toggle เพิ่ม-ลดจำนวนผู้ติดตาม
 function toggleFollow() {
   if (followLabel.value === "Follow") {
     followLabel.value = "Following";
@@ -160,6 +160,22 @@ const fetchUser = async () => {
     console.log(UserData);
   }
 };
+
+// const Fol = async () => {
+//   const response = await Follow(id.value);
+//   if (response) {
+//     UserData.value = response.entity;
+//     console.log(UserData);
+//   }
+// };
+
+// const unFol = async () => {
+//   const response = await unFollow(id.value);
+//   if (response) {
+//     UserData.value = response.entity;
+//     console.log(UserData);
+//   }
+// };
 </script>
 
 <style scoped>
@@ -191,6 +207,4 @@ const fetchUser = async () => {
   padding: 10px;
   background: white;
 }
-
-/* set up รูปโปรไฟล์ */
 </style>

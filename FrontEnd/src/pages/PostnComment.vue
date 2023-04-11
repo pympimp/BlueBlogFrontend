@@ -226,6 +226,7 @@
         <q-img
           class="img"
           :src="item.commentimg.path ? item.commentimg.path : ''"
+          style="width: 200px; height: 200px"
         >
         </q-img>
         <br /><br />
@@ -379,10 +380,6 @@ const entitycomment = ref({
 });
 
 const { localeList, t, locale } = useLang();
-const leftDrawerOpen = ref(false);
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value;
-}
 
 onMounted(() => {
   if (route.params.postId) {

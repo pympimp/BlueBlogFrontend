@@ -166,7 +166,7 @@
             </q-tooltip>
           </router-link>
 
-          <!-- ส่วนของปุ่มล็อกอิน -->
+          <!-- ส่วนของแก้ไขโปรไฟล์ -->
           <div class="q-pa-md">
             <q-btn-dropdown
               class="glossy"
@@ -178,7 +178,7 @@
               <div class="row no-wrap q-pa-md">
                 <q-list style="min-width: 100px">
                   <!-- เมนู MyProfile -->
-                  <q-item clickable :to="`myprofile/${authenStore.auth.id}`">
+                  <q-item clickable :to="`/myprofile/${authenStore.auth.id}`">
                     <i
                       class="fa-solid fa-user"
                       style="margin-top: 10px; color: #406882"
@@ -205,7 +205,7 @@
                   <q-separator />
 
                   <!-- เมนู Setting -->
-                  <q-item clickable to="setting">
+                  <q-item clickable :to="`/setting`">
                     <i
                       class="fa-solid fa-gear"
                       style="margin-top: 10px; color: #406882"
@@ -329,6 +329,7 @@ const { localeList, t, locale } = useLang();
 
 onMounted(() => {
   menuListcheck();
+  console.log(authenStore.auth.rolesText);
 });
 
 // ส่วนของการทำ Menu Sidebar
