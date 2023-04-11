@@ -122,44 +122,51 @@
 
     <!-- Part Add Comment -->
     <div class="container-add-comment">
-      <!-- หัวข้อใหญ่ว่า "Add Comment" -->
-      <p
-        style="
-          font-size: 25px;
-          font-weight: bolder;
-          margin-bottom: -10px;
-          color: #b03367;
-        "
-      >
-        {{ t("AddComment") }}
-      </p>
-      <br />
-      <!-- ช่องจัดรูปแบบของการเขียนคอมเมนต์ -->
-      <div class="q-pa-md q-gutter-sm">
-        <q-editor :v-model="editor" min-height="5rem" style="width: 600px" />
-      </div>
-
-      <div style="display: flex">
-        <!-- ปุ่มเลือกไฟล์ -->
-        <q-file
-          color="pink"
-          v-model="model"
-          :label="t('ChooseFile')"
-          borderless
-          style="padding-right: 400px; text-decoration: none"
+      <q-form @submit="onSubmit">
+        <!-- หัวข้อใหญ่ว่า "Add Comment" -->
+        <p
+          style="
+            font-size: 25px;
+            font-weight: bolder;
+            margin-bottom: -10px;
+            color: #b03367;
+          "
         >
-          <template v-slot:prepend>
-            <q-icon name="attach_file" />
-          </template>
-        </q-file>
-        <!-- ปุ่มโพสต์ -->
-        <q-btn
-          color="pink"
-          glossy
-          :label="t('Submit')"
-          style="height: 5px; margin-top: 15px"
-        />
-      </div>
+          {{ t("AddComment") }}
+        </p>
+        <br />
+        <!-- ช่องจัดรูปแบบของการเขียนคอมเมนต์ -->
+        <div class="q-pa-md q-gutter-sm">
+          <q-editor
+            v-model="entitycomment.content"
+            min-height="5rem"
+            style="width: 600px"
+          />
+        </div>
+
+        <div style="display: flex">
+          <!-- ปุ่มเลือกไฟล์ -->
+          <q-file
+            color="pink"
+            v-model="imageFile"
+            :label="t('ChooseFile')"
+            borderless
+            style="padding-right: 400px; text-decoration: none"
+          >
+            <template v-slot:prepend>
+              <q-icon name="attach_file" />
+            </template>
+          </q-file>
+          <!-- ปุ่มโพสต์ -->
+          <q-btn
+            color="pink"
+            glossy
+            type="submit"
+            :label="t('Submit')"
+            style="height: 5px; margin-top: 15px"
+          />
+        </div>
+      </q-form>
     </div>
 
     <!-- Part Comment -->
@@ -294,16 +301,22 @@
 
 <script setup>
 import { defineComponent, ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { AuthenApi } from "src/api/AuthenApi";
+import { useQuasar } from "quasar";
 
 import { useAxios } from "src/composables/useAxios";
 // เรียกใช้ Post API
 import { PostApi } from "src/api/PostApi";
 // เรียกใช้ Comment API
 import { CommentApi } from "src/api/CommentApi";
+import { FileApi } from "src/api/FileApi";
+
+const route = useRoute();
+const router = useRouter();
+const $q = useQuasar();
 
 const likeBtn = document.querySelector(".like__btn");
 let likeIcon = document.querySelector("#icon");
@@ -316,14 +329,12 @@ let count2 = document.querySelector("#count2");
 let clicked = false;
 let clicked2 = false;
 
-const route = useRoute();
-
-const model = ref(null);
-
 // post id
 const { detailPost } = PostApi();
 // comment
-const { detailComment } = CommentApi();
+const { detailComment, addComment } = CommentApi();
+// File Upload
+const { uploadImageApi } = FileApi();
 const postId = ref();
 // Post
 const entityItem = ref();
@@ -353,6 +364,19 @@ const entityItemComment = ref([]);
 //     count2.textContent--;
 //   }
 // });
+// add comment
+const content = ref("");
+const imageFile = ref("");
+const entitycomment = ref({
+  id: null,
+  post_id: "",
+  user_id: "",
+  content: "",
+  img_name: "",
+  create_date: "",
+  update_date: "",
+  status: "0",
+});
 
 const { localeList, t, locale } = useLang();
 const leftDrawerOpen = ref(false);
@@ -363,6 +387,7 @@ function toggleLeftDrawer() {
 onMounted(() => {
   if (route.params.postId) {
     postId.value = route.params.postId;
+    entitycomment.value.post_id = route.params.postId;
   }
 
   if (postId.value) {
@@ -371,7 +396,7 @@ onMounted(() => {
   }
   console.log("get postId ", postId.value);
 });
-
+// Detail Post
 const fethData = async () => {
   const respone = await detailPost(postId.value);
   console.log("fethData", respone);
@@ -380,12 +405,42 @@ const fethData = async () => {
   }
 };
 
+// Detail List Comment
 const fethDataComment = async () => {
   const respone = await detailComment(postId.value);
   console.log("fethDataComment", respone);
   if (respone) {
     entityItemComment.value = respone.entity;
   }
+};
+
+// Add Comment
+const onSubmit = async () => {
+  if (imageFile.value) {
+    const fileNameResponse = await uploadImageApi(imageFile.value);
+    console.log("uploadImageApi", fileNameResponse);
+    if (fileNameResponse && fileNameResponse.imageName) {
+      entitycomment.value.img_name = fileNameResponse.imageName;
+      entitycomment.value.haveNewImage = true;
+    }
+  }
+  console.log("onSubmit", entitycomment.value);
+  if (entitycomment.value) {
+    createProcess(entitycomment.value.post_id);
+  }
+};
+
+// Function Add Comment
+const createProcess = async (postId) => {
+  const response = await addComment(postId, entitycomment.value);
+  console.log("addComment", response);
+  if (response) {
+    $q.notify({
+      message: "Success!",
+      type: "positive",
+    });
+  }
+  router.push("/");
 };
 
 const text = ref("");

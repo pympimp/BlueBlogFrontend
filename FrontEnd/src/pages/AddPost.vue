@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    <q-form>
+    <q-form @submit="onSubmit">
       <div class="container">
         <!-- ส่วนของหัวข้อ 'เพิ่มโพสต์ใหม่' -->
         <p style="font-size: 25px; font-weight: bolder; color: #1a237e">
@@ -12,7 +12,7 @@
         <!-- ส่วนของการใส่หัวข้อโพสต์ -->
         <q-input
           outlined
-          v-model="text"
+          v-model="titlePost"
           :label="t('PostHead')"
           color="indigo-10"
           stack-label
@@ -25,7 +25,7 @@
         <!-- ส่วนของการจัดรูปแบบเนื้อหาโพสต์ -->
         <div class="q-pa-sm q-gutter-sm" style="width: 800px">
           <q-editor
-            v-model="qeditor"
+            v-model="contentPost"
             style="height: 300px"
             :dense="$q.screen.lt.md"
             :toolbar="[
@@ -117,7 +117,19 @@
 
           <!-- ส่วนของการแทรกไฟล์รูปภาพ -->
           <div style="display: flex; justify-content: space-between">
-            <q-file v-model="model" label="Standard" />
+            <!-- ปุ่มเลือกไฟล์ -->
+            <q-file
+              color="pink"
+              v-model="imageNameList"
+              :label="t('ChooseFile')"
+              borderless
+              multiple
+              style="padding-right: 50px; text-decoration: none"
+            >
+              <template v-slot:prepend>
+                <q-icon name="attach_file" />
+              </template>
+            </q-file>
 
             <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
@@ -127,6 +139,7 @@
               color="indigo-5"
               :label="t('Postbtn')"
               style="height: 35px; width: 50px"
+              type="submit"
             />
           </div>
         </div>
@@ -139,14 +152,96 @@
 import { ref } from "vue";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
+import { useQuasar } from "quasar";
+import { useAxios } from "src/composables/useAxios";
+import { PostApi } from "src/api/PostApi";
+import { useRoute, useRouter } from "vue-router";
+const { postMultipleUploadImage } = PostApi();
+
+const $q = useQuasar();
+const route = useRoute();
+const router = useRouter();
 
 const { localeList, t, locale } = useLang();
 const leftDrawerOpen = ref(false);
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
+const titlePost = ref("");
+const contentPost = ref("");
+const imageNameList = ref([]);
+const entityItem = ref({
+  id: null,
+  titlePost: titlePost.value,
+  contentPost: contentPost.value,
+  haveNewImage: false,
+  imageNameList: [],
+});
 
-const model = ref(null);
+/* const onSubmit = async () => {
+  // createProcess();
+  // // entityItem.value.imageNameList = await uploadMulipleFile();
+  // // if (imageFile.value) {
+  // //   const fileNameResponse = await uploadImageApi(imageFile.value);
+  // //   console.log("uploadImageApi", fileNameResponse);
+  // //   if (fileNameResponse && fileNameResponse.imageName) {
+  // //     entityItem.value.image_name = fileNameResponse.imageName;
+  // //     entityItem.value.haveNewImage = true;
+  // //   }
+  // // }
+  // console.log("onSubmit", entityItem.value);
+
+  createProcess();
+  console.log("onSubmit", entityItem.value);
+  const response = await postMultipleUploadImage(
+    titlePost.value,
+    contentPost.value
+  );
+  console.log("response", response);
+}; */
+
+const onSubmit = async () => {
+  createProcess();
+  console.log("onSubmit", entityItem.value);
+
+  const title = titlePost.value;
+  const content = contentPost.value;
+
+  const postData = {
+    titlePost: title,
+    contentPost: content,
+  };
+
+  const response = await postMultipleUploadImage(postData, title, content);
+  console.log("onSubmit response", response);
+};
+
+const uploadMulipleFile = async () => {
+  return new Promise(async (resolve) => {
+    let fileNameFromServer = [];
+    if (imageFileList.value.length > 0) {
+      for (const f of imageFileList.value) {
+        const fileNameResponse = await uploadImageApi(f);
+        console.log("uploadImageApi", fileNameResponse);
+        if (fileNameResponse && fileNameResponse.imageName) {
+          fileNameFromServer.push(fileNameResponse.imageName);
+        }
+      }
+    }
+    resolve(fileNameFromServer);
+  });
+};
+const createProcess = async () => {
+  const response = await postMultipleUploadImage(entityItem.value);
+  console.log("createPosst", response);
+  if (response) {
+    $q.notify({
+      message: "Success !",
+      type: "positive",
+    });
+  }
+  router.push("/");
+};
 </script>
 <style scoped>
 .flex {
