@@ -9,7 +9,16 @@ export const CommentApi = () => {
     });
   };
 
+  const addComment = async (id, req = {}) => {
+    return await callApi({
+      method: "POST",
+      url: `/addComment?post_id=${id}`,
+      body: req,
+    });
+  };
+
   return {
     detailComment,
+    addComment,
   };
 };

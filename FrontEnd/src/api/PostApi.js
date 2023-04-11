@@ -50,11 +50,18 @@ export const PostApi = () => {
   };
 
   // Crate Post Multiple Upload Image
-  const postMultipleUploadImage = async (file, Text) => {
+  const postMultipleUploadImage = async (
+    file,
+    string,
+    titlePost,
+    contentPost
+  ) => {
+    console.log("string", string);
     const postData = new FormData();
-    postData.append("fileName", file);
-    postData.append("titlePost", Text);
-    postData.append("contentPost", Text);
+    postData.append("fileName_", file);
+    postData.append("titlePost", titlePost);
+    postData.append("contentPost", contentPost);
+
     return await callApi({
       method: "POST",
       url: "/postMultipleUploadImage",
