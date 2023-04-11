@@ -226,6 +226,7 @@
         <q-img
           class="img"
           :src="item.commentimg.path ? item.commentimg.path : ''"
+          style="width: 200px; height: 200px"
         >
         </q-img>
         <br /><br />
