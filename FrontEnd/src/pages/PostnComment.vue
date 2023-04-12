@@ -183,10 +183,174 @@
       </q-form>
     </div>
 
-    <!-- Part Comment -->
+    <!-- Part Comment All -->
     <div
       class="container-comment"
       v-for="(item, index) in entityItemComment"
+      :key="index"
+      :style="item.status === '0' ? 'background: white' : 'background: black'"
+    >
+      <div
+        class="q-mt-md"
+        style="position: absolute"
+        v-if="
+          item.userId === authenStore.auth.id ||
+          (entityItem && entityItem.user_id === authenStore.auth.id) ||
+          authenStore.auth.rolesText === 'Dev'
+        "
+      >
+        <q-fab
+          glossy
+          v-model="fab2"
+          label=""
+          external-label
+          vertical-actions-align="left"
+          color="pink"
+          icon="keyboard_arrow_down"
+          direction="down"
+          style="margin-left: 650px; transform: scale(0.6) translate(60%, -80%)"
+        >
+          <!-- Edit -->
+          <q-fab-action
+            to="addpost"
+            external-label
+            color="pink-10"
+            @click="onClick"
+            icon="edit"
+            :label="t('EditComment')"
+            v-if="item.userId === authenStore.auth.id"
+          />
+          <!-- Delete -->
+          <q-fab-action
+            external-label
+            color="pink-10"
+            @click="onDelete(index)"
+            icon="delete"
+            :label="t('DeleteComment')"
+            v-if="
+              item.userId === authenStore.auth.id ||
+              authenStore.auth.rolesText === 'Dev'
+            "
+          />
+          <!-- Hide -->
+          <q-fab-action
+            external-label
+            color="pink-10"
+            click=""
+            :icon="biEyeSlash"
+            :label="t('HideComment')"
+            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
+          />
+          <!-- unhide -->
+          <q-fab-action
+            external-label
+            color="pink-10"
+            click=""
+            :icon="biEye"
+            :label="t('UnHideComment')"
+            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
+          />
+        </q-fab>
+      </div>
+      <!-- หัวข้อคอมเมนต์ -->
+      <div class="comment">
+        <p
+          style="
+            font-size: 15px;
+            font-weight: bolder;
+            margin-top: 10px;
+            color: #1a237e;
+          "
+        >
+          <!-- ID : {{ item.commentId }} status: {{ item.status }}  -->
+          ความคิดเห็นที่ {{ index + 1 }}
+        </p>
+        <!-- เนื้อหาคอมเมนต์ -->
+        <Content
+          style="margin-inline-end: auto; margin-left: 20px; color: #5c6bc0"
+        >
+          {{ item.content }}
+        </Content>
+        <br />
+        <q-img
+          class="img"
+          :src="item.commentimg.path ? item.commentimg.path : ''"
+          style="width: 200px; height: 200px"
+        >
+        </q-img>
+        <br /><br />
+        <!-- ปุ่มไลก์คอมเมนต์ -->
+        <div class="comment-like2" style="display: flex">
+          <div style="display: inline">
+            <q-btn
+              class="like__btn2"
+              style="
+                background-color: #b46f8f;
+                font-size: 15px;
+                border-radius: 50px;
+                border: none;
+              "
+            >
+              <span id="icon2"
+                ><i
+                  class="fa-regular fa-thumbs-up"
+                  style="color: white; height: -20px; color: white"
+                ></i>
+              </span>
+            </q-btn>
+            &nbsp;
+            <span
+              id="count2"
+              style="display: inline; color: #b46f8f; text-weight: bolder"
+            >
+              {{ item.like_count }}
+            </span>
+            <!-- จำนวนยอดไลก์โพสต์ -->
+            <b
+              style="
+                color: #b46f8f;
+                margin-left: 10px;
+                margin-top: 10px;
+                font-size: 15px;
+              "
+            >
+              {{ t("Like") }}
+            </b>
+          </div>
+
+          <!-- ข้อมูลผู้คอมเมนต์ -->
+          <ion-avatar class="profile">
+            <img
+              :src="item.picture.path"
+              style="width: 30px; height: 30px; margin-left: 369px"
+            />
+          </ion-avatar>
+          <router-link :to="'/myprofile/' + item.userId">
+            <b
+              style="
+                margin-top: -5px;
+                margin-left: 10px;
+                margin-right: -10px;
+                color: #1a237e;
+              "
+              >{{ item.username }}
+            </b>
+          </router-link>
+          <br />
+          <i style="margin-top: 12px; margin-left: -60px; color: #5c6bc0">
+            {{ item.create_date }}
+          </i>
+
+          <br />
+        </div>
+        <br />
+      </div>
+    </div>
+
+    <!-- Part Comment Status 0 -->
+    <div
+      class="container-comment"
+      v-for="(item, index) in entityItemCommentStatus"
       :key="index"
       :style="item.status === '0' ? 'background: white' : 'background: black'"
     >
