@@ -67,7 +67,7 @@
                   font-weight: bolder;
                   color: #1a237e;
                 "
-                >? {{ item.id }} {{ item.title }}
+                >{{ item.id }} {{ item.title }}
               </router-link>
               <br />
               <Content style="color: #5c6bc0"> {{ item.content }} </Content
