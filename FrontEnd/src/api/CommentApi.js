@@ -10,6 +10,14 @@ export const CommentApi = () => {
     });
   };
 
+  // DetailComment Status = 0
+  const detailCommentStatus = async (id) => {
+    return await callApi({
+      method: "GET",
+      url: `/detailCommentInPostStatus?post_id=${id}`,
+    });
+  };
+
   // Add Comment
   const addComment = async (id, req = {}) => {
     return await callApi({
@@ -29,6 +37,7 @@ export const CommentApi = () => {
 
   return {
     detailComment,
+    detailCommentStatus,
     addComment,
     deleteComment,
   };

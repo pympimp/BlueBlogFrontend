@@ -392,14 +392,17 @@ let clicked2 = false;
 // post id
 const { detailPost, deletePost } = PostApi();
 // comment
-const { detailComment, addComment, deleteComment } = CommentApi();
+const { detailComment, addComment, deleteComment, detailCommentStatus } =
+  CommentApi();
 // File Upload
 const { uploadImageApi } = FileApi();
 const postId = ref();
 // Post
 const entityItem = ref();
-// ตัวแปรแสดงข้อมูลคอมเมนต์
+// ตัวแปรแสดงข้อมูลคอมเมนต์ทั้งหมด
 const entityItemComment = ref([]);
+// ตัวแปรแสดงข้อมูลคอมเมนต์ทั้งหมด status =0
+const entityItemCommentStatus = ref([]);
 
 // likeBtn.addEventListener("click", () => {
 //   if (!clicked) {
@@ -446,9 +449,17 @@ onMounted(() => {
     entitycomment.value.post_id = route.params.postId;
   }
 
-  if (postId.value) {
+  if (
+    (postId.value && authenStore.auth.rolesText === "Dev") ||
+    entityItemComment.value.userId === authenStore.auth.id
+  ) {
     fethData();
     fethDataComment();
+    console.log("Comment All");
+  } else {
+    fethData();
+    fethDataCommentStatus();
+    console.log("Comment Status 0");
   }
   console.log("get postId ", postId.value);
 });
@@ -467,6 +478,15 @@ const fethDataComment = async () => {
   console.log("fethDataComment", respone);
   if (respone) {
     entityItemComment.value = respone.entity;
+  }
+};
+
+// Detail List Comment Status = 0
+const fethDataCommentStatus = async () => {
+  const respone = await detailCommentStatus(postId.value);
+  console.log("fethDataCommentStatus", respone);
+  if (respone) {
+    entityItemCommentStatus.value = respone.entity;
   }
 };
 
