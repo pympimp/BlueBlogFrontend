@@ -145,6 +145,8 @@ const onSubmit = async () => {
       updateProcess();
     }
     console.log(entityItem);
+  } else {
+    updateProcess();
   }
 };
 
