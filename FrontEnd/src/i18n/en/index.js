@@ -97,7 +97,9 @@ export default {
   //PostnComment
   AddComment: "Add Comment",
   EditPost: "Edit Post",
+  EditComment: "Edit Comment",
   DeletePost: "Delete Post",
+  DeleteComment: "Delete Comment",
   ChooseFile: "Choose Image",
 
   //DashBoard
@@ -115,9 +117,17 @@ export default {
   errorLogin: "Login fail, Contact admin through Facebook : BlueBlog",
   RegisSuc: "Sign Up Success",
 
-  //q.dialog
+  //q.dialog User
   Qdelete: "Delte User",
   Qconfirm: "Confirm to delete user?",
   Qok: "Delete",
   Qno: "Cancel",
+
+  //q.doalog Post
+  QdelPost: "Delete Post",
+  QconPost: "Confirm to delete post?",
+
+  //q.doalog Comment
+  QdelComment: "Delete Comment",
+  QconComment: "Confirm to delete comment?",
 };

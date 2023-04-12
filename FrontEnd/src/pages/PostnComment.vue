@@ -194,14 +194,14 @@
             color="pink-10"
             @click="onClick"
             icon="edit"
-            :label="t('EditPost')"
+            :label="t('EditComment')"
           />
           <q-fab-action
             external-label
             color="pink-10"
             @click="onDelete(index)"
             icon="delete"
-            :label="t('DeletePost')"
+            :label="t('DeleteComment')"
           />
         </q-fab>
       </div>
@@ -446,8 +446,8 @@ const createProcess = async (postId) => {
 // Delete Comment
 const onDelete = (index) => {
   $q.dialog({
-    title: t("Qdelete"),
-    message: t("Qconfirm"),
+    title: t("QdelComment"),
+    message: t("QconComment"),
     cancel: true,
     ok: {
       label: t("Qok"),
@@ -489,8 +489,8 @@ const refreshData = () => {
 // Delete Post
 const onDeletePost = (entityItem) => {
   $q.dialog({
-    title: t("Qdelete"),
-    message: t("Qconfirm"),
+    title: t("QdelPost"),
+    message: t("QconPost"),
     cancel: true,
     ok: {
       label: t("Qok"),
