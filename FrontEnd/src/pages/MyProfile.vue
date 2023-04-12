@@ -82,7 +82,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { PostApi } from "src/api/PostApi";
@@ -90,7 +90,6 @@ import { UserApi } from "src/api/UserApi";
 import { useRoute } from "vue-router";
 import { FollowApi } from "src/api/FollowApi";
 import { LocalStorage, useQuasar } from "quasar";
-import { watch } from "vue";
 import { followCount } from "src/utils/config";
 
 const { Follow, unFollow, countFol } = FollowApi();
@@ -105,7 +104,7 @@ const PostList = ref([]);
 const $q = useQuasar();
 const id = ref();
 
-const followers = ref(0);
+const count = ref(0);
 const followLabel = ref("Follow");
 const followColor = ref("primary");
 
@@ -114,13 +113,22 @@ onMounted(async () => {
   if (route.params.user_id) {
     id.value = route.params.user_id;
   }
+
   if (id.value) {
     fetchUser();
     fetchPost();
     fetchCountFol();
   }
   console.log(UserData);
+
+  // if (localStorage.count) {
+  //   this.count = JSON.parse(localStorage.count);
+  // }
 });
+
+// watch(count, (newCount) => {
+//   localStorage.count = JSON.stringify.newCount;
+// });
 
 // ปุ่ม Toggle เพิ่ม-ลดจำนวนผู้ติดตาม
 function toggleFollow() {
@@ -128,12 +136,12 @@ function toggleFollow() {
     Fol();
     followLabel.value = "Following";
     followColor.value = "secondary";
-    // followers.value += 1;
+    // count.value += 1;
   } else {
     unFol();
     followLabel.value = "Follow";
     followColor.value = "primary";
-    // followers.value -= 1;
+    // count.value -= 1;
   }
 }
 
@@ -189,7 +197,7 @@ const Fol = async () => {
   const response = await Follow(id.value);
   if (response) {
     console.log("Fol", response.message);
-    // followers.value++;
+    // count.value++;
   }
 };
 
@@ -198,16 +206,16 @@ const unFol = async () => {
   const response = await unFollow(id.value);
   if (response) {
     console.log("unFol", response.message);
-    // followers.value--;
+    // count.value--;
   }
 };
 
 // ทดลองอะไรบางอย่าง ตอนนี้ยังไม่ได้ใช้
-// watch(followers, async (newVal, oldVal) => {
-//   console.log("follow update", oldVal, newVal);
-//   LocalStorage.set(followCount, newVal);
-//   followers.value.set(newVal);
-// });
+watch(count, async (newVal, oldVal) => {
+  console.log("follow update", oldVal, newVal);
+  LocalStorage.set(count, newVal);
+  count.value.set(newVal);
+});
 </script>
 
 <style scoped>
