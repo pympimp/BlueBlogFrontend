@@ -13,7 +13,8 @@
           color: #1a237e;
         "
       >
-        {{ entityItem ? entityItem["id"] : "" }}
+        <!-- {{ entityItem ? entityItem["id"] : "" }} -->
+        <!-- {{ entityItem ? entityItem["user_id"] : "" }} -->
         {{ entityItem ? entityItem["title"] : "" }}
       </p>
       <Content style="color: #5c6bc0">
@@ -22,7 +23,11 @@
 
       <!-- ส่วนจัดการโพสต์ -->
 
-      <div class="q-mt-md" style="position: absolute">
+      <div
+        class="q-mt-md"
+        style="position: absolute"
+        v-if="entityItem && entityItem.user_id === authenStore.auth.id"
+      >
         <q-fab
           glossy
           v-model="fab2"
@@ -315,6 +320,10 @@ import { PostApi } from "src/api/PostApi";
 // เรียกใช้ Comment API
 import { CommentApi } from "src/api/CommentApi";
 import { FileApi } from "src/api/FileApi";
+
+// เรียใช้ค่าการ login API KEY
+import { useAuthenStore } from "src/stores/authen";
+const authenStore = useAuthenStore();
 
 const route = useRoute();
 const router = useRouter();
