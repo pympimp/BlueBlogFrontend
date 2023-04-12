@@ -343,17 +343,17 @@ const entityItem = ref();
 // ตัวแปรแสดงข้อมูลคอมเมนต์
 const entityItemComment = ref([]);
 
-// likeBtn.addEventListener("click", () => {
-//   if (!clicked) {
-//     clicked = true;
-//     likeIcon.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count.textContent++;
-//   } else {
-//     clicked = false;
-//     likeIcon.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count.textContent--;
-//   }
-// });
+likeBtn.addEventListener("click", () => {
+  if (!clicked) {
+    clicked = true;
+    likeIcon.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
+    count.textContent++;
+  } else {
+    clicked = false;
+    likeIcon.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
+    count.textContent--;
+  }
+});
 
 // likeBtn2.addEventListener("click", () => {
 //   if (!clicked2) {

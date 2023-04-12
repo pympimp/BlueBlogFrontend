@@ -90,7 +90,7 @@ import { UserApi } from "src/api/UserApi";
 import { useRoute } from "vue-router";
 import { FollowApi } from "src/api/FollowApi";
 import { LocalStorage, useQuasar } from "quasar";
-import { followCount } from "src/utils/config";
+import { followLabel1 } from "src/utils/config";
 
 const { Follow, unFollow, countFol } = FollowApi();
 const { localeList, t, locale } = useLang();
@@ -121,26 +121,22 @@ onMounted(async () => {
   }
   console.log(UserData);
 
-  // if (localStorage.count) {
-  //   this.count = JSON.parse(localStorage.count);
-  // }
+  if (followLabel.value) {
+    followLabel.value = LocalStorage.getItem(followLabel1);
+  }
 });
-
-// watch(count, (newCount) => {
-//   localStorage.count = JSON.stringify.newCount;
-// });
 
 // ปุ่ม Toggle เพิ่ม-ลดจำนวนผู้ติดตาม
 function toggleFollow() {
   if (followLabel.value === "Follow") {
     Fol();
     followLabel.value = "Following";
-    followColor.value = "secondary";
+    // followColor.value = "secondary";
     // count.value += 1;
   } else {
     unFol();
     followLabel.value = "Follow";
-    followColor.value = "primary";
+    // followColor.value = "primary";
     // count.value -= 1;
   }
 }
@@ -197,6 +193,7 @@ const Fol = async () => {
   const response = await Follow(id.value);
   if (response) {
     console.log("Fol", response.message);
+    fetchCountFol();
     // count.value++;
   }
 };
@@ -206,15 +203,15 @@ const unFol = async () => {
   const response = await unFollow(id.value);
   if (response) {
     console.log("unFol", response.message);
+    fetchCountFol();
     // count.value--;
   }
 };
 
 // ทดลองอะไรบางอย่าง ตอนนี้ยังไม่ได้ใช้
-watch(count, async (newVal, oldVal) => {
+watch(followLabel, async (newVal, oldVal) => {
   console.log("follow update", oldVal, newVal);
-  LocalStorage.set(count, newVal);
-  count.value.set(newVal);
+  LocalStorage.set(followLabel1, newVal);
 });
 </script>
 
