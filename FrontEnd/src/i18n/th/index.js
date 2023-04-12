@@ -70,6 +70,7 @@ export default {
 
   // หน้าหลัก
   MainPage: "หน้าหลัก",
+  MyFeed: "โพสต์ผู้ที่ฉันติดตาม",
   FilterPost: "คัดกรองโพสต์",
   PostOld: "โพสต์เก่า - ใหม่",
   PostNew: "โพสต์ใหม่ - เก่า",

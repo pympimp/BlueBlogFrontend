@@ -10,48 +10,13 @@
             color: #880e4f;
           "
         >
-          🏠&nbsp; {{ $t("MainPage") }}
+          🏠&nbsp; {{ $t("MyFeed") }}
         </p>
-
-        <q-btn-dropdown
-          split
-          glossy
-          color="pink"
-          rounded
-          :label="t('FilterPost')"
-          style="display: inline; margin-bottom: 20px; margin-left: 580px"
-        >
-          <q-list>
-            <q-item clickable v-close-popup @click="change('CreateDateASC')">
-              <q-item-section>
-                <q-item-label>{{ $t("PostOld") }}</q-item-label>
-              </q-item-section>
-            </q-item>
-
-            <q-item clickable v-close-popup @click="change('CreateDateDesc')">
-              <q-item-section>
-                <q-item-label>{{ $t("PostNew") }}</q-item-label>
-              </q-item-section>
-            </q-item>
-
-            <q-item clickable v-close-popup @click="change('PopularAsc')">
-              <q-item-section>
-                <q-item-label>{{ $t("PopMore") }}</q-item-label>
-              </q-item-section>
-            </q-item>
-
-            <q-item clickable v-close-popup @click="change('PopularDesc')">
-              <q-item-section>
-                <q-item-label>{{ $t("PopLess") }}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-btn-dropdown>
 
         <!-- ----------------------------------------------------------------------------------------------------------- -->
         <div class="q-pa-md">
           <!-- <q-infinite-scroll :distance="1" :disable="currentPage >= totalPage"> -->
-          <q-scroll-area style="height: 380px">
+          <q-scroll-area style="height: 380px; width: 700px">
             <!-- Post -->
             <!-- loop ข้อมูลโพสต์ -->
             <section
@@ -60,14 +25,14 @@
               :key="index"
             >
               <router-link
-                :to="'/postncomment/' + item.id"
+                :to="'/postncomment/' + item.postId"
                 style="
                   text-decoration: none;
                   color: black;
                   font-weight: bolder;
                   color: #1a237e;
                 "
-                >{{ item.id }} {{ item.title }}
+                >{{ item.postId }} {{ item.title }}
               </router-link>
               <br />
               <Content style="color: #5c6bc0"> {{ item.content }} </Content
@@ -168,7 +133,7 @@ const leftDrawerOpen = ref(false);
 const search = ref("");
 
 // คัดเลือกโพสต์ post
-const url = ref("CreateDateDesc");
+const url = ref("MyFollow");
 
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;

@@ -15,20 +15,6 @@ export const PostApi = () => {
     });
   };
 
-  // โพสต์ผู้ติดตาม
-  const getPostListMyFollow = async (
-    req = {
-      page: 1,
-      perPage: 10,
-      body: "",
-    }
-  ) => {
-    return await callApi({
-      method: "GET",
-      url: `/findAllByMyFollow?page=${req.page}&perPage=${req.perPage}`,
-    });
-  };
-
   const getOneUserPost = async (id) => {
     return await callApi({
       method: "GET",

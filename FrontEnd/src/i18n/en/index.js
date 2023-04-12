@@ -73,6 +73,7 @@ export default {
 
   // หน้าหลัก
   MainPage: "HomePage ",
+  MyFeed: "MyFeed ",
   FilterPost: "Filter Posts",
   PostOld: "Old post - New post",
   PostNew: "New post - Old post",
