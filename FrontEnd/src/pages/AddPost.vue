@@ -12,11 +12,10 @@
         <!-- ส่วนของการใส่หัวข้อโพสต์ -->
         <q-input
           outlined
-          v-model="titlePost"
+          v-model="entityItem.title"
           :label="t('PostHead')"
           color="indigo-10"
           stack-label
-          :dense="dense"
           style="width: 760px; color: #1a237e"
         />
 
@@ -25,7 +24,7 @@
         <!-- ส่วนของการจัดรูปแบบเนื้อหาโพสต์ -->
         <div class="q-pa-sm q-gutter-sm" style="width: 800px">
           <q-editor
-            v-model="contentPost"
+            v-model="entityItem.content"
             style="height: 300px"
             :dense="$q.screen.lt.md"
             :toolbar="[
@@ -120,7 +119,7 @@
             <!-- ปุ่มเลือกไฟล์ -->
             <q-file
               color="pink"
-              v-model="imageNameList"
+              v-model="imageFileList"
               :label="t('ChooseFile')"
               borderless
               multiple
@@ -155,8 +154,12 @@ import { useLang } from "src/composables/useLang";
 import { useQuasar } from "quasar";
 import { useAxios } from "src/composables/useAxios";
 import { PostApi } from "src/api/PostApi";
+import { FileApi } from "src/api/FileApi";
 import { useRoute, useRouter } from "vue-router";
-const { postMultipleUploadImage } = PostApi();
+// Add Post
+const { addPost } = PostApi();
+// File Upload
+const { uploadImageApi } = FileApi();
 
 const $q = useQuasar();
 const route = useRoute();
@@ -169,11 +172,13 @@ function toggleLeftDrawer() {
 }
 const titlePost = ref("");
 const contentPost = ref("");
-const imageNameList = ref([]);
+const imageFile = ref();
+const imageFileList = ref([]);
 const entityItem = ref({
   id: null,
-  titlePost: titlePost.value,
-  contentPost: contentPost.value,
+  user_id: "",
+  title: "",
+  content: "",
   haveNewImage: false,
   imageNameList: [],
 });
@@ -201,19 +206,17 @@ const entityItem = ref({
 }; */
 
 const onSubmit = async () => {
-  createProcess();
+  entityItem.value.imageNameList = await uploadMulipleFile();
+  if (imageFile.value) {
+    const fileNameResponse = await uploadImageApi(imageFile.value);
+    console.log("uploadImageApi", fileNameResponse);
+    if (fileNameResponse && fileNameResponse.imageName) {
+      entityItem.value.img_name = fileNameResponse.imageName;
+      entityItem.value.haveNewImage = true;
+    }
+  }
   console.log("onSubmit", entityItem.value);
-
-  const title = titlePost.value;
-  const content = contentPost.value;
-
-  const postData = {
-    titlePost: title,
-    contentPost: content,
-  };
-
-  const response = await postMultipleUploadImage(postData, title, content);
-  console.log("onSubmit response", response);
+  createProcess();
 };
 
 const uploadMulipleFile = async () => {
@@ -232,11 +235,11 @@ const uploadMulipleFile = async () => {
   });
 };
 const createProcess = async () => {
-  const response = await postMultipleUploadImage(entityItem.value);
-  console.log("createPosst", response);
+  const response = await addPost(entityItem.value);
+  console.log("addPost", response);
   if (response) {
     $q.notify({
-      message: "Success !",
+      message: "Success!",
       type: "positive",
     });
   }
