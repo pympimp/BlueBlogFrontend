@@ -13,6 +13,7 @@
           color: #1a237e;
         "
       >
+        {{ entityItem ? entityItem["id"] : "" }}
         {{ entityItem ? entityItem["title"] : "" }}
       </p>
       <Content style="color: #5c6bc0">
@@ -506,19 +507,20 @@ const onDeletePost = (entityItem) => {
       message: "Success!",
       type: "positive",
     });
+    console.log(entityItem);
     deleteProcessPost(entityItem);
   });
 };
 
 const deleteProcessPost = async (entityItem) => {
-  const item = entityItem.value;
-  // console.log(entityItemComment.value[index]);
+  const item = entityItem.id;
+  console.log(entityItem.id);
   if (item) {
-    const respone = await deletePost(item.id);
+    const respone = await deletePost(item);
     console.log("deletePost", respone);
-    console.log(item.id);
-    // refresh page to display the latest data
-    // location.reload();
+    console.log("postId", item);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    router.push("/");
   }
 };
 
