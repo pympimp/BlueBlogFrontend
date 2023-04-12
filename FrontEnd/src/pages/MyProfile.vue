@@ -26,7 +26,7 @@
           :color="followColor"
           :label="followLabel"
           @click="toggleFollow"
-          style="height: 20px; margin-top: 5px"
+          style="height: 20px; margin-top: 5px; width: 100px"
         />
 
         <p class="text-center" style="margin-top: 5px">
@@ -106,7 +106,7 @@ const id = ref();
 
 const count = ref(0);
 const followLabel = ref("Follow");
-const followColor = ref("primary");
+const followColor = ref("pink-7");
 
 // ทำก่อน เวลาโหลดหน้าเว็บมา
 onMounted(async () => {
@@ -125,6 +125,10 @@ onMounted(async () => {
     followLabel.value = LocalStorage.getItem(followLabel1);
   }
 });
+
+// watch(followLabel, (newfollowLabel) => {
+//   localStorage.followLabel = JSON.stringify.newfollowLabel;
+// });
 
 // ปุ่ม Toggle เพิ่ม-ลดจำนวนผู้ติดตาม
 function toggleFollow() {
