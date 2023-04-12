@@ -193,6 +193,7 @@
           direction="down"
           style="margin-left: 650px; transform: scale(0.6) translate(60%, -80%)"
         >
+          <!-- Edit -->
           <q-fab-action
             to="addpost"
             external-label
@@ -201,12 +202,29 @@
             icon="edit"
             :label="t('EditComment')"
           />
+          <!-- Delete -->
           <q-fab-action
             external-label
             color="pink-10"
             @click="onDelete(index)"
             icon="delete"
             :label="t('DeleteComment')"
+          />
+          <!-- Hide -->
+          <q-fab-action
+            external-label
+            color="pink-10"
+            click=""
+            :icon="biEyeSlash"
+            :label="t('HideComment')"
+          />
+          <!-- unhide -->
+          <q-fab-action
+            external-label
+            color="pink-10"
+            click=""
+            :icon="biEye"
+            :label="t('UnHideComment')"
           />
         </q-fab>
       </div>
@@ -309,7 +327,13 @@
 <script setup>
 import { defineComponent, ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
+// import icon bootstrap
+import {
+  biTranslate,
+  biCheck,
+  biEye,
+  biEyeSlash,
+} from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { AuthenApi } from "src/api/AuthenApi";
 import { useQuasar } from "quasar";

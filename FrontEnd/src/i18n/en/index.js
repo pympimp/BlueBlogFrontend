@@ -100,6 +100,8 @@ export default {
   EditComment: "Edit Comment",
   DeletePost: "Delete Post",
   DeleteComment: "Delete Comment",
+  HideComment: "Hide Comment",
+  UnHideComment: "Unhide Comment",
   ChooseFile: "Choose Image",
 
   //DashBoard

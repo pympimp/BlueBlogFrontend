@@ -97,6 +97,8 @@ export default {
   EditComment: "แก้ไขความคิดเห็น",
   DeletePost: "ลบโพสต์",
   DeleteComment: "ลบความคิดเห็น",
+  HideComment: "ซ่อนความคิดเห็น",
+  UnHideComment: "ยกเลิกซ่อนความคิดเห็น",
   ChooseFile: "เลือกไฟล์รูปภาพ",
 
   //DashBoard
