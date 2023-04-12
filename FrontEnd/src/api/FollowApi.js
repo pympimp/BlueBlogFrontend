@@ -16,8 +16,16 @@ export const FollowApi = () => {
     });
   };
 
+  const countFol = async (id) => {
+    return await callApi({
+      method: "GET",
+      url: `/countFollow?user_id=${id}`,
+    });
+  };
+
   return {
     Follow,
     unFollow,
+    countFol,
   };
 };

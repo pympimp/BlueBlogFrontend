@@ -30,7 +30,7 @@
         />
 
         <p class="text-center" style="margin-top: 5px">
-          Followers: {{ followers }}
+          {{ entityUser ? entityUser["count"] : "" }} Follower
         </p>
       </div>
     </div>
@@ -89,21 +89,38 @@ import { PostApi } from "src/api/PostApi";
 import { UserApi } from "src/api/UserApi";
 import { useRoute } from "vue-router";
 import { FollowApi } from "src/api/FollowApi";
-import { useQuasar } from "quasar";
+import { LocalStorage, useQuasar } from "quasar";
+import { watch } from "vue";
+import { followCount } from "src/utils/config";
 
-const { Follow, unFollow } = FollowApi();
+const { Follow, unFollow, countFol } = FollowApi();
 const { localeList, t, locale } = useLang();
 const { findAllByMyPost, findAllByMyReplyPost, findAllByMyLikePost } =
   PostApi();
 const { getOne } = UserApi();
 
+const route = useRoute();
 const UserData = ref("");
 const PostList = ref([]);
 const $q = useQuasar();
+const id = ref();
 
 const followers = ref(0);
 const followLabel = ref("Follow");
 const followColor = ref("primary");
+
+// ทำก่อน เวลาโหลดหน้าเว็บมา
+onMounted(async () => {
+  if (route.params.user_id) {
+    id.value = route.params.user_id;
+  }
+  if (id.value) {
+    fetchUser();
+    fetchPost();
+    fetchCountFol();
+  }
+  console.log(UserData);
+});
 
 // ปุ่ม Toggle เพิ่ม-ลดจำนวนผู้ติดตาม
 function toggleFollow() {
@@ -120,19 +137,18 @@ function toggleFollow() {
   }
 }
 
-const id = ref();
-const route = useRoute();
-onMounted(async () => {
-  if (route.params.user_id) {
-    id.value = route.params.user_id;
+//นับจำนวนผู้ติดตาม
+const entityUser = ref();
+const fetchCountFol = async () => {
+  const response = await countFol(id.value);
+  console.log("countFol", response);
+  if (response) {
+    entityUser.value = response.entity;
   }
-  if (id.value) {
-    fetchUser();
-    fetchPost();
-  }
-  console.log(UserData);
-});
+  console.log(entityUser.value.count);
+};
 
+//แสดงรายชื่อโพสต์
 const fetchPost = async () => {
   const response = await findAllByMyPost(id.value);
   if (response) {
@@ -141,6 +157,7 @@ const fetchPost = async () => {
   }
 };
 
+//หาโพสต์ที่ฉันถูกใจ
 const findMyLikePost = async () => {
   const response = await findAllByMyLikePost(id.value);
   if (response) {
@@ -149,6 +166,7 @@ const findMyLikePost = async () => {
   }
 };
 
+//หาโพสต์ที่ฉันตอบกลับ
 const findMyReplyPost = async () => {
   const response = await findAllByMyReplyPost(id.value);
   if (response) {
@@ -157,6 +175,7 @@ const findMyReplyPost = async () => {
   }
 };
 
+//แสดงข้อมูลผู้ใช้งาน โดยระบุ ID
 const fetchUser = async () => {
   const response = await getOne(id.value);
   if (response) {
@@ -165,21 +184,30 @@ const fetchUser = async () => {
   }
 };
 
+// ฟังก์ชั่นการกดติดตาม โดยเพิ่ม 1 จำนวนผู้ติดตาม
 const Fol = async () => {
   const response = await Follow(id.value);
   if (response) {
     console.log("Fol", response.message);
-    followers.value++;
+    // followers.value++;
   }
 };
 
+// ฟังก์ชั่นการติดตาม โดยลด 1 จำนวนผู้ติดตาม
 const unFol = async () => {
   const response = await unFollow(id.value);
   if (response) {
     console.log("unFol", response.message);
-    followers.value--;
+    // followers.value--;
   }
 };
+
+// ทดลองอะไรบางอย่าง ตอนนี้ยังไม่ได้ใช้
+// watch(followers, async (newVal, oldVal) => {
+//   console.log("follow update", oldVal, newVal);
+//   LocalStorage.set(followCount, newVal);
+//   followers.value.set(newVal);
+// });
 </script>
 
 <style scoped>
