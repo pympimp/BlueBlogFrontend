@@ -70,6 +70,7 @@ export default {
 
   // หน้าหลัก
   MainPage: "หน้าหลัก",
+  MyFeed: "โพสต์ผู้ที่ฉันติดตาม",
   FilterPost: "คัดกรองโพสต์",
   PostOld: "โพสต์เก่า - ใหม่",
   PostNew: "โพสต์ใหม่ - เก่า",
@@ -93,7 +94,9 @@ export default {
   //PostnComment
   AddComment: "แสดงความคิดเห็น",
   EditPost: "แก้ไขโพสต์",
+  EditComment: "แก้ไขความคิดเห็น",
   DeletePost: "ลบโพสต์",
+  DeleteComment: "ลบความคิดเห็น",
   ChooseFile: "เลือกไฟล์รูปภาพ",
 
   //DashBoard
@@ -115,6 +118,14 @@ export default {
   //q.dialog
   Qdelete: "ลบข้อมูลผู้ใช้",
   Qconfirm: "ยืนยันที่จะลบข้อมูลผู้ใช้?",
-  Qok: "ลบผู้ใช้",
+  Qok: "ลบข้อมูล",
   Qno: "ยกเลิก",
+
+  //q.doalog Post
+  QdelPost: "ลบข้อมูลโพสต์",
+  QconPost: "ยืนยันที่จะลบข้อมูลโพสต์?",
+
+  //q.doalog Comment
+  QdelComment: "ลบข้อมูลความคิดเห็น",
+  QconComment: "ยืนยันที่จะลบข้อมูลความคิดเห็น?",
 };

@@ -341,7 +341,7 @@ const menuListcheck = () => {
   if (authenStore.auth.rolesText === "User") {
     menuList.value = [
       { icon: "home", text: t("MainPage"), link: "/" },
-      { icon: biPersonFill, text: t("FolPage"), link: "/" },
+      { icon: biPersonFill, text: t("FolPage"), link: "/myfeed" },
     ];
   } else {
     menuList.value = [

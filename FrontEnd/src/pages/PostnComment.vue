@@ -13,6 +13,7 @@
           color: #1a237e;
         "
       >
+        {{ entityItem ? entityItem["id"] : "" }}
         {{ entityItem ? entityItem["title"] : "" }}
       </p>
       <Content style="color: #5c6bc0">
@@ -193,14 +194,14 @@
             color="pink-10"
             @click="onClick"
             icon="edit"
-            :label="t('EditPost')"
+            :label="t('EditComment')"
           />
           <q-fab-action
             external-label
             color="pink-10"
             @click="onDelete(index)"
             icon="delete"
-            :label="t('DeletePost')"
+            :label="t('DeleteComment')"
           />
         </q-fab>
       </div>
@@ -214,7 +215,7 @@
             color: #1a237e;
           "
         >
-          ความคิดเห็นที่ {{ item.commentId }}
+          ความคิดเห็นที่ {{ index + 1 }}
         </p>
         <!-- เนื้อหาคอมเมนต์ -->
         <Content
@@ -445,8 +446,8 @@ const createProcess = async (postId) => {
 // Delete Comment
 const onDelete = (index) => {
   $q.dialog({
-    title: t("Qdelete"),
-    message: t("Qconfirm"),
+    title: t("QdelComment"),
+    message: t("QconComment"),
     cancel: true,
     ok: {
       label: t("Qok"),
@@ -488,8 +489,8 @@ const refreshData = () => {
 // Delete Post
 const onDeletePost = (entityItem) => {
   $q.dialog({
-    title: t("Qdelete"),
-    message: t("Qconfirm"),
+    title: t("QdelPost"),
+    message: t("QconPost"),
     cancel: true,
     ok: {
       label: t("Qok"),
@@ -506,19 +507,20 @@ const onDeletePost = (entityItem) => {
       message: "Success!",
       type: "positive",
     });
+    console.log(entityItem);
     deleteProcessPost(entityItem);
   });
 };
 
 const deleteProcessPost = async (entityItem) => {
-  const item = entityItem.value;
-  // console.log(entityItemComment.value[index]);
+  const item = entityItem.id;
+  console.log(entityItem.id);
   if (item) {
-    const respone = await deletePost(item.id);
+    const respone = await deletePost(item);
     console.log("deletePost", respone);
-    console.log(item.id);
-    // refresh page to display the latest data
-    // location.reload();
+    console.log("postId", item);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    router.push("/");
   }
 };
 
