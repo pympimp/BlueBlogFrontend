@@ -26,7 +26,7 @@
           :color="followColor"
           :label="followLabel"
           @click="toggleFollow"
-          style="height: 20px; margin-top: 5px"
+          style="height: 20px; margin-top: 5px; width: 100px"
         />
 
         <p class="text-center" style="margin-top: 5px">
@@ -82,7 +82,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { PostApi } from "src/api/PostApi";
@@ -90,8 +90,7 @@ import { UserApi } from "src/api/UserApi";
 import { useRoute } from "vue-router";
 import { FollowApi } from "src/api/FollowApi";
 import { LocalStorage, useQuasar } from "quasar";
-import { watch } from "vue";
-import { followCount } from "src/utils/config";
+import { followLabel1 } from "src/utils/config";
 
 const { Follow, unFollow, countFol } = FollowApi();
 const { localeList, t, locale } = useLang();
@@ -105,35 +104,44 @@ const PostList = ref([]);
 const $q = useQuasar();
 const id = ref();
 
-const followers = ref(0);
+const count = ref(0);
 const followLabel = ref("Follow");
-const followColor = ref("primary");
+const followColor = ref("pink-7");
 
 // ทำก่อน เวลาโหลดหน้าเว็บมา
 onMounted(async () => {
   if (route.params.user_id) {
     id.value = route.params.user_id;
   }
+
   if (id.value) {
     fetchUser();
     fetchPost();
     fetchCountFol();
   }
   console.log(UserData);
+
+  if (followLabel.value) {
+    followLabel.value = LocalStorage.getItem(followLabel1);
+  }
 });
+
+// watch(followLabel, (newfollowLabel) => {
+//   localStorage.followLabel = JSON.stringify.newfollowLabel;
+// });
 
 // ปุ่ม Toggle เพิ่ม-ลดจำนวนผู้ติดตาม
 function toggleFollow() {
   if (followLabel.value === "Follow") {
     Fol();
     followLabel.value = "Following";
-    followColor.value = "secondary";
-    // followers.value += 1;
+    // followColor.value = "secondary";
+    // count.value += 1;
   } else {
     unFol();
     followLabel.value = "Follow";
-    followColor.value = "primary";
-    // followers.value -= 1;
+    // followColor.value = "primary";
+    // count.value -= 1;
   }
 }
 
@@ -189,7 +197,8 @@ const Fol = async () => {
   const response = await Follow(id.value);
   if (response) {
     console.log("Fol", response.message);
-    // followers.value++;
+    fetchCountFol();
+    // count.value++;
   }
 };
 
@@ -198,16 +207,16 @@ const unFol = async () => {
   const response = await unFollow(id.value);
   if (response) {
     console.log("unFol", response.message);
-    // followers.value--;
+    fetchCountFol();
+    // count.value--;
   }
 };
 
 // ทดลองอะไรบางอย่าง ตอนนี้ยังไม่ได้ใช้
-// watch(followers, async (newVal, oldVal) => {
-//   console.log("follow update", oldVal, newVal);
-//   LocalStorage.set(followCount, newVal);
-//   followers.value.set(newVal);
-// });
+watch(followLabel, async (newVal, oldVal) => {
+  console.log("follow update", oldVal, newVal);
+  LocalStorage.set(followLabel1, newVal);
+});
 </script>
 
 <style scoped>

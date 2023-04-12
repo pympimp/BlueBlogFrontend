@@ -93,7 +93,7 @@
         <div class="comment-like" style="display: flex; margin-left: 450px">
           <div style="display: inline">
             <q-btn
-              class="like__btn"
+              class="likePost"
               style="
                 background-color: #b46f8f;
                 font-size: 15px;
