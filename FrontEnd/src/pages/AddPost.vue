@@ -17,6 +17,7 @@
           color="indigo-10"
           stack-label
           style="width: 760px; color: #1a237e"
+          :rules="[(val) => !!val || 'Field is required']"
         />
 
         <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
@@ -25,6 +26,7 @@
         <div class="q-pa-sm q-gutter-sm" style="width: 800px">
           <q-editor
             v-model="entityItem.content"
+            :rules="[(val) => !!val || 'Field is required']"
             style="height: 300px"
             :dense="$q.screen.lt.md"
             :toolbar="[
