@@ -49,24 +49,12 @@ export const PostApi = () => {
     });
   };
 
-  // Crate Post Multiple Upload Image
-  const postMultipleUploadImage = async (
-    file,
-    string,
-    titlePost,
-    contentPost
-  ) => {
-    console.log("string", string);
-    const postData = new FormData();
-    postData.append("fileName_", file);
-    postData.append("titlePost", titlePost);
-    postData.append("contentPost", contentPost);
-
+  // Add Post
+  const addPost = async (req = {}) => {
     return await callApi({
       method: "POST",
-      url: "/postMultipleUploadImage",
-      contentType: "multipart/form-data",
-      body: postData,
+      url: `/postUpload`,
+      body: req,
     });
   };
 
@@ -85,7 +73,7 @@ export const PostApi = () => {
     findAllByMyReplyPost,
     findAllByMyLikePost,
     detailPost,
-    postMultipleUploadImage,
+    addPost,
     deletePost,
   };
 };
