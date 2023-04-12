@@ -26,7 +26,10 @@
       <div
         class="q-mt-md"
         style="position: absolute"
-        v-if="entityItem && entityItem.user_id === authenStore.auth.id"
+        v-if="
+          (entityItem && entityItem.user_id === authenStore.auth.id) ||
+          authenStore.auth.rolesText === 'Dev'
+        "
       >
         <q-fab
           glossy
@@ -46,6 +49,7 @@
             @click="onClick"
             icon="edit"
             :label="t('EditPost')"
+            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
           />
           <q-fab-action
             external-label
@@ -53,6 +57,10 @@
             @click="onDeletePost(entityItem)"
             icon="delete"
             :label="t('DeletePost')"
+            v-if="
+              (entityItem && entityItem.user_id === authenStore.auth.id) ||
+              authenStore.auth.rolesText === 'Dev'
+            "
           />
         </q-fab>
       </div>
@@ -181,7 +189,15 @@
       v-for="(item, index) in entityItemComment"
       :key="index"
     >
-      <div class="q-mt-md" style="position: absolute">
+      <div
+        class="q-mt-md"
+        style="position: absolute"
+        v-if="
+          item.userId === authenStore.auth.id ||
+          (entityItem && entityItem.user_id === authenStore.auth.id) ||
+          authenStore.auth.rolesText === 'Dev'
+        "
+      >
         <q-fab
           glossy
           v-model="fab2"
@@ -201,6 +217,7 @@
             @click="onClick"
             icon="edit"
             :label="t('EditComment')"
+            v-if="item.userId === authenStore.auth.id"
           />
           <!-- Delete -->
           <q-fab-action
@@ -209,6 +226,10 @@
             @click="onDelete(index)"
             icon="delete"
             :label="t('DeleteComment')"
+            v-if="
+              item.userId === authenStore.auth.id ||
+              authenStore.auth.rolesText === 'Dev'
+            "
           />
           <!-- Hide -->
           <q-fab-action
@@ -217,6 +238,7 @@
             click=""
             :icon="biEyeSlash"
             :label="t('HideComment')"
+            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
           />
           <!-- unhide -->
           <q-fab-action
@@ -225,6 +247,7 @@
             click=""
             :icon="biEye"
             :label="t('UnHideComment')"
+            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
           />
         </q-fab>
       </div>
