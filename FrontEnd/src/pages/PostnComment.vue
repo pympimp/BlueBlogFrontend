@@ -188,6 +188,7 @@
       class="container-comment"
       v-for="(item, index) in entityItemComment"
       :key="index"
+      :style="item.status === '0' ? 'background: white' : 'background: black'"
     >
       <div
         class="q-mt-md"
@@ -261,14 +262,15 @@
             color: #1a237e;
           "
         >
+          <!-- ID : {{ item.commentId }} status: {{ item.status }}  -->
           ความคิดเห็นที่ {{ index + 1 }}
         </p>
         <!-- เนื้อหาคอมเมนต์ -->
         <Content
           style="margin-inline-end: auto; margin-left: 20px; color: #5c6bc0"
         >
-          {{ item.content }}</Content
-        >
+          {{ item.content }}
+        </Content>
         <br />
         <q-img
           class="img"
@@ -634,7 +636,6 @@ const editor = ref("What you see is <b>what</b> you get.");
   border-radius: 30px;
   box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);
   padding: 10px;
-  background: white;
 }
 
 /* Title หัวข้อโพสต์ */
