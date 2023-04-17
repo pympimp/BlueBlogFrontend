@@ -98,7 +98,7 @@
               push
               color="pink-9"
               :icon="LikePostIcon"
-              @click="toggleLikePost"
+              @click="toggleLikePost(entityItem)"
               style="height: 20px; margin-top: 5px; width: 40px"
             />
             <!-- <span id="icon"
@@ -287,8 +287,8 @@
               glossy
               push
               color="pink-9"
-              :icon="LikeCommentIcon1"
-              @click="toggleLikeComment1"
+              :icon="LikeCommentIcon"
+              @click="toggleLikeComment"
               style="height: 20px; margin-top: 5px; width: 40px"
             />
             &nbsp;
@@ -444,8 +444,8 @@
               glossy
               push
               color="pink-9"
-              :icon="LikePostIcon0"
-              @click="toggleLikePost0"
+              :icon="LikeCommentIcon"
+              @click="toggleLikeComment"
               style="
                 height: 20px;
                 margin-top: 5px;
@@ -513,6 +513,8 @@ import {
   biCheck,
   biEye,
   biEyeSlash,
+  biHeart,
+  biHeartFill,
 } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { AuthenApi } from "src/api/AuthenApi";
@@ -531,7 +533,14 @@ import { LikeApi } from "src/api/LikeApi";
 import { useAuthenStore } from "src/stores/authen";
 const authenStore = useAuthenStore();
 
-const { Like, Unlike, CountLike } = LikeApi();
+const {
+  LikePost,
+  UnlikePost,
+  LikeComment,
+  UnlikeComment,
+  CheckLikePost,
+  CheckLikeComment,
+} = LikeApi();
 const route = useRoute();
 const router = useRouter();
 const $q = useQuasar();
@@ -550,52 +559,6 @@ const entityItem = ref();
 const entityItemComment = ref([]);
 // ตัวแปรแสดงข้อมูลคอมเมนต์ทั้งหมด status =0
 const entityItemCommentStatus = ref([]);
-
-// const likeBtn = document.querySelector(".like__btn");
-// let likeIcon = document.querySelector("#icon");
-// let count = document.querySelector("#count");
-// const likeBtn2 = document.querySelector(".like__btn2");
-// let likeIcon2 = document.querySelector("#icon2");
-// let count2 = document.querySelector("#count2");
-
-// //btn clicked test
-// let clicked = false;
-// let clicked2 = false;
-
-// document.addEventListener("DOMContentLoaded", function () {
-//   // ตรวจสอบว่า element ที่ต้องการมีอยู่จริงหรือไม่
-//   const element = document.querySelector("#my-element");
-//   if (element) {
-//     // ใส่โค้ดที่ต้องการทำงานกับ element นี้ต่อไป
-//     element.addEventListener("click", function () {
-//       console.log("Element clicked!");
-//     });
-//   }
-// });
-
-// likeBtn.addEventListener("click", () => {
-//   if (!clicked) {
-//     clicked = true;
-//     likeIcon.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count.textContent++;
-//   } else {
-//     clicked = false;
-//     likeIcon.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count.textContent--;
-//   }
-// });
-
-// likeBtn2.addEventListener("click", () => {
-//   if (!clicked2) {
-//     clicked2 = true;
-//     likeIcon2.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count2.textContent++;
-//   } else {
-//     clicked2 = false;
-//     likeIcon2.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count2.textContent--;
-//   }
-// });
 
 // add comment
 const content = ref("");
@@ -626,7 +589,18 @@ onMounted(() => {
   ) {
     fethData();
     fethDataComment();
+    ListLike();
+    checkLike();
+    fetchCountLike();
     console.log("Comment All");
+  }
+
+  if (id.value) {
+    fethData();
+    fethDataComment();
+    ListLike();
+    checkLike();
+    fetchCountLike();
   } else {
     fethData();
     fethDataCommentStatus();
@@ -774,53 +748,209 @@ const deleteProcessPost = async (entityItem) => {
   }
 };
 
-//ฟังก์ชั่นของการกดไลก์
-function toggleFollow() {
-  if (followLabel.value === "Following") {
-    unFol();
-    followLabel.value = "Follow";
+//เป็นการประกาศค่าตั้งต้นของไอคอน Toggle
+const LikePostIcon = ref(biHeart);
+const LikeCommentIcon = ref(biHeart);
+
+//ฟังก์ชั่นของการกดไลก์โพสต์
+function toggleLikePost(entityItem) {
+  if (LikePostIcon.value === biHeart) {
+    LikePostBtn(entityItem);
+    LikePostIcon.value = biHeartFill;
     // followColor.value = "secondary";
     // count.value += 1;
   } else {
-    Fol();
-    followLabel.value = "Following";
+    UnlikePostBtn(entityItem);
+    LikePostIcon.value = biHeart;
+    // followColor.value = "primary";
+    // count.value -= 1;
+  }
+}
+
+//ฟังก์ชั่นของการกดไลก์คอมเมนต์
+function toggleLikeComment(entityItem) {
+  if (LikeCommentIcon.value === biHeart) {
+    LikeCommentBtn(entityItem);
+    LikeCommentIcon.value = biHeartFill;
+    // followColor.value = "secondary";
+    // count.value += 1;
+  } else {
+    UnlikeCommentBtn(entityItem);
+    LikeCommentIcon.value = biHeart;
     // followColor.value = "primary";
     // count.value -= 1;
   }
 }
 
 const entityLike = ref();
-const fetchCountLike = async () => {
-  const response = await CountLike(id.value);
-  console.log("CountLike", response);
+//ฟังก์ชั่นของการเช็คว่ามีการกดไลก์ไหม
+const checkLike = async () => {
+  const response = await checkFollower(id.value);
   if (response) {
-    entityUser.value = response.entity;
+    entityLike.value = response;
+    console.log("checkLike", entityLike);
+    // fetchCountLike();
+    // count.value--;
+    if (entityLike.value.status === true) {
+      LikePostIcon.value = biHeart;
+    } else {
+      LikePostIcon.value = biHeartFill;
+    }
   }
-  console.log(entityUser.value.count);
 };
 
-const UnlikeBtn = async () => {
-  const response = await Unlike(id.value);
+//ฟังก์ชั่นของการนับยอดไลก์
+// const fetchCountLike = async () => {
+//   const response = await CountLike(id.value);
+//   console.log("CountLike", response);
+//   if (response) {
+//     entityLike.value = response.entity;
+//   }
+//   console.log(entityLike.value.TotalLikePost);
+// };
+
+//ฟังก์ชั่นกดไลก์โพสต์
+const LikePostBtn = async (entityItem) => {
+  const $item = entityItem.id;
+  if ($item) {
+    const response = await LikePost($item);
+    if (response) {
+      console.log(entityItem.id);
+      console.log("Like", response.message);
+      // fetchCountLike();
+      // count.value++;
+    }
+  }
+};
+
+//ฟังก์ชั่นกดยกเลิกไลก์โพสต์
+const UnlikePostBtn = async (entityItem) => {
+  const $item = entityItem.id;
+  if ($item) {
+    const response = await UnlikePost($item);
+    if (response) {
+      console.log("Unlike", response.message);
+      // fetchCountLike();
+      // count.value++;
+    }
+  }
+};
+
+//ฟังก์ชั่นกดไลก์คอมเมนต์
+const LikeCommentBtn = async () => {
+  const response = await LikeComment(id.value);
   if (response) {
-    console.log("Unlike", response.message);
-    fetchCountFol();
+    console.log("LikeComment", response.message);
+    // fetchCountLike();
     // count.value++;
   }
 };
 
+//ฟังก์ชั่นกดยกเลิกไลก์คอมเมนต์
+const UnlikeCommentBtn = async () => {
+  const response = await UnlikeComment(id.value);
+  if (response) {
+    console.log("UnlikeComment", response.message);
+    // fetchCountLike();
+    // count.value++;
+  }
+};
+
+//ฟังก์ชั่นลิสต์รายชื่อคนที่ถูกใจโพสต์, คอมเมนต์
 const ListLike = async () => {
   const response = await ListLikePost(id.value);
   if (response) {
     console.log("ListLikePost", response.message);
-    fetchCountFol();
+    // fetchCountLike();
     // count.value++;
   }
 };
 
-const text = ref("");
-const third = ref(false);
-const isPwd = ref(true);
-const editor = ref("What you see is <b>what</b> you get.");
+// Hide Comment
+const onHide = (index) => {
+  $q.dialog({
+    title: t("QhideComment"),
+    message: t("QconhideComment"),
+    cancel: true,
+    ok: {
+      label: t("Qhide"),
+      color: "negative",
+    },
+    cancel: {
+      label: t("Qno"),
+      flat: true,
+      color: "grey",
+    },
+  }).onOk(() => {
+    console.log("OK");
+    $q.notify({
+      message: "Success!",
+      type: "positive",
+    });
+    hideProcess(index);
+  });
+};
+
+const hideProcess = async (index) => {
+  const item = entityItemComment.value[index];
+  // console.log(entityItemComment.value[index]);
+  if (item) {
+    const respone = await hideComment(item.commentId);
+    console.log("hideComment", respone);
+    console.log(item.commentId);
+    // refresh page to display the latest data
+    // location.reload();
+    refreshHideData();
+  }
+};
+
+const refreshHideData = async () => {
+  await fetchDataComment();
+  await fetchDataCommentStatus();
+};
+
+// UnHide Comment
+const onUnhide = (index) => {
+  $q.dialog({
+    title: t("QunhideComment"),
+    message: t("QconunhideComment"),
+    cancel: true,
+    ok: {
+      label: t("Qunhide"),
+      color: "negative",
+    },
+    cancel: {
+      label: t("Qno"),
+      flat: true,
+      color: "grey",
+    },
+  }).onOk(() => {
+    console.log("OK");
+    $q.notify({
+      message: "Success!",
+      type: "positive",
+    });
+    unhideProcess(index);
+  });
+};
+
+const unhideProcess = async (index) => {
+  const item = entityItemComment.value[index];
+  // console.log(entityItemComment.value[index]);
+  if (item) {
+    const respone = await unHideComment(item.commentId);
+    console.log("unhideComment", respone);
+    console.log(item.commentId);
+    // refresh page to display the latest data
+    // location.reload();
+    refreshUnHideData();
+  }
+};
+
+const refreshUnHideData = async () => {
+  await fetchDataComment();
+  await fetchDataCommentStatus();
+};
 </script>
 
 <style scoped>
