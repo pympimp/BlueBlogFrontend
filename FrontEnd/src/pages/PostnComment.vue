@@ -560,6 +560,44 @@ const entityItemComment = ref([]);
 // ตัวแปรแสดงข้อมูลคอมเมนต์ทั้งหมด status =0
 const entityItemCommentStatus = ref([]);
 
+// User Post
+let userPostId = "";
+
+// document.addEventListener("DOMContentLoaded", function () {
+//   // ตรวจสอบว่า element ที่ต้องการมีอยู่จริงหรือไม่
+//   const element = document.querySelector("#my-element");
+//   if (element) {
+//     // ใส่โค้ดที่ต้องการทำงานกับ element นี้ต่อไป
+//     element.addEventListener("click", function () {
+//       console.log("Element clicked!");
+//     });
+//   }
+// });
+
+// likeBtn.addEventListener("click", () => {
+//   if (!clicked) {
+//     clicked = true;
+//     likeIcon.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
+//     count.textContent++;
+//   } else {
+//     clicked = false;
+//     likeIcon.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
+//     count.textContent--;
+//   }
+// });
+
+// likeBtn2.addEventListener("click", () => {
+//   if (!clicked2) {
+//     clicked2 = true;
+//     likeIcon2.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
+//     count2.textContent++;
+//   } else {
+//     clicked2 = false;
+//     likeIcon2.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
+//     count2.textContent--;
+//   }
+// });
+
 // add comment
 const content = ref("");
 const imageFile = ref("");
@@ -700,15 +738,15 @@ const deleteProcess = async (index) => {
     console.log("deleteComment", respone);
     console.log(item.commentId);
     // refresh page to display the latest data
-    // location.reload();
-    refreshData();
+    location.reload();
+    // refreshData();
   }
 };
 
-const refreshData = () => {
-  entityItemComment.value = [];
-  fethDataComment();
-};
+// const refreshData = () => {
+//   entityItemComment.value = [];
+//   fethDataComment();
+// };
 
 // Delete Post
 const onDeletePost = (entityItem) => {
@@ -899,15 +937,17 @@ const hideProcess = async (index) => {
     console.log("hideComment", respone);
     console.log(item.commentId);
     // refresh page to display the latest data
-    // location.reload();
-    refreshHideData();
+    location.reload();
+    // await refreshideData(); // เรียกใช้งานฟังก์ชัน refreshHideData() เพื่อดึงข้อมูลใหม่จากแหล่งข้อมูล
+    // router.push(`/postncomment/${postId.value}`);
   }
 };
 
-const refreshHideData = async () => {
-  await fetchDataComment();
-  await fetchDataCommentStatus();
-};
+// const refreshideData = async () => {
+//   entityItemComment.value = []; // ล้างข้อมูลในตัวแปร entityItemComment
+//   await fetchDataComment();
+//   await fetchDataCommentStatus();
+// };
 
 // UnHide Comment
 const onUnhide = (index) => {
@@ -936,14 +976,13 @@ const onUnhide = (index) => {
 
 const unhideProcess = async (index) => {
   const item = entityItemComment.value[index];
-  // console.log(entityItemComment.value[index]);
   if (item) {
-    const respone = await unHideComment(item.commentId);
-    console.log("unhideComment", respone);
+    const response = await unHideComment(item.commentId);
+    console.log("unhideComment", response);
     console.log(item.commentId);
-    // refresh page to display the latest data
-    // location.reload();
-    refreshUnHideData();
+    location.reload();
+    // await refresUnhideData(); // เรียกใช้งานฟังก์ชัน refreshHideData() เพื่อดึงข้อมูลใหม่จากแหล่งข้อมูล
+    // router.push(`/postncomment/${postId.value}`);
   }
 };
 
