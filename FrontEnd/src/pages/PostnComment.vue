@@ -568,29 +568,41 @@ const entityItemComment = ref([]);
 // ตัวแปรแสดงข้อมูลคอมเมนต์ทั้งหมด status =0
 const entityItemCommentStatus = ref([]);
 
-// likeBtn.addEventListener("click", () => {
-//   if (!clicked) {
-//     clicked = true;
-//     likeIcon.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count.textContent++;
-//   } else {
-//     clicked = false;
-//     likeIcon.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count.textContent--;
-//   }
-// });
+document.addEventListener("DOMContentLoaded", function () {
+  // ตรวจสอบว่า element ที่ต้องการมีอยู่จริงหรือไม่
+  const element = document.querySelector("#my-element");
+  if (element) {
+    // ใส่โค้ดที่ต้องการทำงานกับ element นี้ต่อไป
+    element.addEventListener("click", function () {
+      console.log("Element clicked!");
+    });
+  }
+});
 
-// likeBtn2.addEventListener("click", () => {
-//   if (!clicked2) {
-//     clicked2 = true;
-//     likeIcon2.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count2.textContent++;
-//   } else {
-//     clicked2 = false;
-//     likeIcon2.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count2.textContent--;
-//   }
-// });
+likeBtn.addEventListener("click", () => {
+  if (!clicked) {
+    clicked = true;
+    likeIcon.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
+    count.textContent++;
+  } else {
+    clicked = false;
+    likeIcon.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
+    count.textContent--;
+  }
+});
+
+likeBtn2.addEventListener("click", () => {
+  if (!clicked2) {
+    clicked2 = true;
+    likeIcon2.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
+    count2.textContent++;
+  } else {
+    clicked2 = false;
+    likeIcon2.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
+    count2.textContent--;
+  }
+});
+
 // add comment
 const content = ref("");
 const imageFile = ref("");

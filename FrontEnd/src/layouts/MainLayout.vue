@@ -303,10 +303,6 @@ import { useLang } from "src/composables/useLang";
 import { useAuthenStore } from "src/stores/authen";
 import { AuthenApi } from "src/api/AuthenApi";
 import { useQuasar } from "quasar";
-// const $q = useQuasar();
-// const { userLogout } = AuthenApi();
-// const authenStore = useAuthenStore();
-// const { localeList, t, locale } = useLang();
 
 /* Search user */
 // นำเข้าฟังก์ชัน useAxios จากไฟล์ useAxios.js เพื่อใช้ในการเรียกใช้ API

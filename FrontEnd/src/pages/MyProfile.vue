@@ -29,6 +29,17 @@
           style="height: 20px; margin-top: 5px; width: 100px"
         />
 
+        <!-- <q-btn
+          v-else
+          ref="followBtn"
+          glossy
+          push
+          :color="followColor"
+          :label="followLabel"
+          @click="toggleFollow"
+          style="height: 20px; margin-top: 5px; width: 100px"
+        /> -->
+
         <p class="text-center" style="margin-top: 5px">
           {{ entityUser ? entityUser["count"] : "" }} Follower
         </p>
@@ -91,8 +102,12 @@ import { useRoute } from "vue-router";
 import { FollowApi } from "src/api/FollowApi";
 import { LocalStorage, useQuasar } from "quasar";
 import { followLabel1 } from "src/utils/config";
+import { useAuthenStore } from "src/stores/authen";
+import { AuthenApi } from "src/api/AuthenApi";
 
-const { Follow, unFollow, countFol } = FollowApi();
+const { getUserDataByAuth } = AuthenApi();
+const authenStore = useAuthenStore();
+const { Follow, unFollow, countFol, checkFollower } = FollowApi();
 const { localeList, t, locale } = useLang();
 const { findAllByMyPost, findAllByMyReplyPost, findAllByMyLikePost } =
   PostApi();
@@ -105,7 +120,7 @@ const $q = useQuasar();
 const id = ref();
 
 const count = ref(0);
-const followLabel = ref("Follow");
+const followLabel = ref("");
 const followColor = ref("pink-7");
 
 // ทำก่อน เวลาโหลดหน้าเว็บมา
@@ -118,12 +133,14 @@ onMounted(async () => {
     fetchUser();
     fetchPost();
     fetchCountFol();
+    getUserDataByAuth;
+    checkFol();
   }
   console.log(UserData);
 
-  if (followLabel.value) {
-    followLabel.value = LocalStorage.getItem(followLabel1);
-  }
+  // if (followLabel.value) {
+  //   followLabel.value = LocalStorage.getItem(followLabel1);
+  // }
 });
 
 // watch(followLabel, (newfollowLabel) => {
@@ -132,14 +149,14 @@ onMounted(async () => {
 
 // ปุ่ม Toggle เพิ่ม-ลดจำนวนผู้ติดตาม
 function toggleFollow() {
-  if (followLabel.value === "Follow") {
-    Fol();
-    followLabel.value = "Following";
+  if (followLabel.value === "Following") {
+    unFol();
+    followLabel.value = "Follow";
     // followColor.value = "secondary";
     // count.value += 1;
   } else {
-    unFol();
-    followLabel.value = "Follow";
+    Fol();
+    followLabel.value = "Following";
     // followColor.value = "primary";
     // count.value -= 1;
   }
@@ -189,6 +206,7 @@ const fetchUser = async () => {
   if (response) {
     UserData.value = response.entity;
     console.log(UserData);
+    checkFol();
   }
 };
 
@@ -212,11 +230,27 @@ const unFol = async () => {
   }
 };
 
+const entityFollow = ref();
+const checkFol = async () => {
+  const response = await checkFollower(id.value);
+  if (response) {
+    entityFollow.value = response;
+    console.log("checkFol", entityFollow);
+    fetchCountFol();
+    // count.value--;
+    if (entityFollow.value.status === true) {
+      followLabel.value = "following";
+    } else {
+      followLabel.value = "follow";
+    }
+  }
+};
+
 // ทดลองอะไรบางอย่าง ตอนนี้ยังไม่ได้ใช้
-watch(followLabel, async (newVal, oldVal) => {
-  console.log("follow update", oldVal, newVal);
-  LocalStorage.set(followLabel1, newVal);
-});
+// watch(followLabel, async (newVal, oldVal) => {
+//   console.log("follow update", oldVal, newVal);
+//   LocalStorage.set(followLabel1, newVal);
+// });
 </script>
 
 <style scoped>
