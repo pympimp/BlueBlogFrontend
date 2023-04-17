@@ -236,19 +236,27 @@
           <q-fab-action
             external-label
             color="pink-10"
-            click=""
+            @click="onHide(index)"
             :icon="biEyeSlash"
             :label="t('HideComment')"
-            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
+            v-if="
+              entityItem &&
+              entityItem.user_id === authenStore.auth.id &&
+              item.status === '0'
+            "
           />
           <!-- unhide -->
           <q-fab-action
             external-label
             color="pink-10"
-            click=""
+            @click="onUnhide(index)"
             :icon="biEye"
             :label="t('UnHideComment')"
-            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
+            v-if="
+              entityItem &&
+              entityItem.user_id === authenStore.auth.id &&
+              item.status === '1'
+            "
           />
         </q-fab>
       </div>
@@ -564,8 +572,14 @@ let clicked2 = false;
 // post id
 const { detailPost, deletePost } = PostApi();
 // comment
-const { detailComment, addComment, deleteComment, detailCommentStatus } =
-  CommentApi();
+const {
+  detailComment,
+  addComment,
+  deleteComment,
+  detailCommentStatus,
+  hideComment,
+  unHideComment,
+} = CommentApi();
 // File Upload
 const { uploadImageApi } = FileApi();
 const postId = ref();
@@ -809,8 +823,26 @@ const onHide = (index) => {
       message: "Success!",
       type: "positive",
     });
-    deleteProcess(index);
+    hideProcess(index);
   });
+};
+
+const hideProcess = async (index) => {
+  const item = entityItemComment.value[index];
+  // console.log(entityItemComment.value[index]);
+  if (item) {
+    const respone = await hideComment(item.commentId);
+    console.log("hideComment", respone);
+    console.log(item.commentId);
+    // refresh page to display the latest data
+    // location.reload();
+    refreshHideData();
+  }
+};
+
+const refreshHideData = async () => {
+  await fetchDataComment();
+  await fetchDataCommentStatus();
 };
 
 // UnHide Comment
@@ -834,8 +866,26 @@ const onUnhide = (index) => {
       message: "Success!",
       type: "positive",
     });
-    deleteProcess(index);
+    unhideProcess(index);
   });
+};
+
+const unhideProcess = async (index) => {
+  const item = entityItemComment.value[index];
+  // console.log(entityItemComment.value[index]);
+  if (item) {
+    const respone = await unHideComment(item.commentId);
+    console.log("unhideComment", respone);
+    console.log(item.commentId);
+    // refresh page to display the latest data
+    // location.reload();
+    refreshUnHideData();
+  }
+};
+
+const refreshUnHideData = async () => {
+  await fetchDataComment();
+  await fetchDataCommentStatus();
 };
 
 const text = ref("");

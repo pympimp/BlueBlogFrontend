@@ -35,10 +35,28 @@ export const CommentApi = () => {
     });
   };
 
+  // Hide Comment
+  const hideComment = async (ids) => {
+    return await callApi({
+      method: "PUT",
+      url: `/commentHide?comment_id=${ids}`,
+    });
+  };
+
+  // UnHide Comment
+  const unHideComment = async (ids) => {
+    return await callApi({
+      method: "PUT",
+      url: `/commentUnHide?comment_id=${ids}`,
+    });
+  };
+
   return {
     detailComment,
     detailCommentStatus,
     addComment,
     deleteComment,
+    hideComment,
+    unHideComment,
   };
 };
