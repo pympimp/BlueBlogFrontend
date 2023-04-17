@@ -23,9 +23,17 @@ export const FollowApi = () => {
     });
   };
 
+  const checkFollower = async (id) => {
+    return await callApi({
+      method: "GET",
+      url: `/checkFollow?follow_id=${id}`,
+    });
+  };
+
   return {
     Follow,
     unFollow,
     countFol,
+    checkFollower,
   };
 };

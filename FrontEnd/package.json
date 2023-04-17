@@ -26,6 +26,7 @@
     "pinia": "^2.0.33",
     "quasar": "^2.11.7",
     "vue": "^3.2.47",
+    "vue-chevron": "^0.1.0",
     "vue-i18n": "^9.2.2",
     "vue-observe-visibility": "^1.0.0",
     "vue-router": "^4.1.6",
