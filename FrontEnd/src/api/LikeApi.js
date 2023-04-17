@@ -2,17 +2,31 @@ import { useAxios } from "src/composables/useAxios";
 export const LikeApi = () => {
   const { callApi } = useAxios();
 
-  const Like = async (id) => {
+  const LikePost = async (id) => {
     return await callApi({
       method: "POST",
       url: `/likePostApi?post_id=${id}`,
     });
   };
 
-  const Unlike = async (id) => {
+  const UnlikePost = async (id) => {
     return await callApi({
       method: "POST",
       url: `/unlikePostApi?post_id=${id}`,
+    });
+  };
+
+  const LikeComment = async (id) => {
+    return await callApi({
+      method: "POST",
+      url: `/likeCommentApi?post_id=59&comment_id=${id}`,
+    });
+  };
+
+  const UnlikeComment = async (id) => {
+    return await callApi({
+      method: "POST",
+      url: `/unlikeCommentApi?post_id=56&comment_id=${id}`,
     });
   };
 
@@ -20,6 +34,20 @@ export const LikeApi = () => {
     return await callApi({
       method: "GET",
       url: `/CountLikePost?post_id=${id}`,
+    });
+  };
+
+  const CheckLikePost = async (id) => {
+    return await callApi({
+      method: "GET",
+      url: `/checkLikePost?comment_id=${id}`,
+    });
+  };
+
+  const CheckLikeComment = async (id) => {
+    return await callApi({
+      method: "GET",
+      url: `/checkLikeComment?comment_id=${id}`,
     });
   };
 
@@ -32,9 +60,13 @@ export const LikeApi = () => {
   };
 
   return {
-    Like,
-    Unlike,
+    LikePost,
+    UnlikePost,
+    LikeComment,
+    UnlikeComment,
     CountLike,
     ListLikePost,
+    CheckLikePost,
+    CheckLikeComment,
   };
 };
