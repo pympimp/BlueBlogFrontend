@@ -123,6 +123,8 @@ export default {
   Qdelete: "Delte User",
   Qconfirm: "Confirm to delete user?",
   Qok: "Delete",
+  Qhide: "Hide",
+  Qunhide: "Unhide",
   Qno: "Cancel",
 
   //q.doalog Post
@@ -132,4 +134,12 @@ export default {
   //q.doalog Comment
   QdelComment: "Delete Comment",
   QconComment: "Confirm to delete comment?",
+
+  //q.doalog Hide Comment
+  QhideComment: "Hide Comment",
+  QconhideComment: "Confirm to hide comment?",
+
+  //q.doalog UnHide Comment
+  QunhideComment: "Unhide Comment",
+  QconunhideComment: "Confirm to unhide comment?",
 };

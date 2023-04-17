@@ -400,19 +400,27 @@
           <q-fab-action
             external-label
             color="pink-10"
-            click=""
+            @click="onHide(index)"
             :icon="biEyeSlash"
             :label="t('HideComment')"
-            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
+            v-if="
+              entityItem &&
+              entityItem.user_id === authenStore.auth.id &&
+              item.status === '0'
+            "
           />
           <!-- unhide -->
           <q-fab-action
             external-label
             color="pink-10"
-            click=""
+            @click="onUnhide(index)"
             :icon="biEye"
             :label="t('UnHideComment')"
-            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
+            v-if="
+              entityItem &&
+              entityItem.user_id === authenStore.auth.id &&
+              item.status === '1'
+            "
           />
         </q-fab>
       </div>
@@ -567,6 +575,8 @@ const entityItem = ref();
 const entityItemComment = ref([]);
 // ตัวแปรแสดงข้อมูลคอมเมนต์ทั้งหมด status =0
 const entityItemCommentStatus = ref([]);
+// User Post
+let userPostId = "";
 
 // likeBtn.addEventListener("click", () => {
 //   if (!clicked) {
@@ -613,46 +623,58 @@ onMounted(() => {
     entitycomment.value.post_id = route.params.postId;
   }
 
-  if (
-    (postId.value && authenStore.auth.rolesText === "Dev") ||
-    entityItemComment.value.userId === authenStore.auth.id
-  ) {
-    fethData();
-    fethDataComment();
-    console.log("Comment All");
-  } else {
-    fethData();
-    fethDataCommentStatus();
-    console.log("Comment Status 0");
-  }
-  console.log("get postId ", postId.value);
+  // Detail Post
+  const fethData = async () => {
+    const respone = await detailPost(postId.value);
+    console.log("fethData", respone);
+    if (respone) {
+      entityItem.value = respone.entity;
+      userPostId = entityItem.value.user_id;
+      console.log("User Post ID", userPostId);
+    }
+  };
+
+  // เรียกใช้งาน fethData ก่อน
+  fethData().then(() => {
+    // สามารถใช้งาน userPostId ได้ที่นี่หลังจาก fethData ได้รับค่าเรียบร้อยแล้ว
+    console.log("User Post Then fetchData :", userPostId);
+
+    // Check comment
+    if (
+      (postId.value && authenStore.auth.rolesText === "Dev") ||
+      (postId.value && authenStore.auth.id === userPostId)
+    ) {
+      fethData();
+      fethDataComment();
+      console.log("Comment All");
+      console.log("userPostID in Comment :", userPostId);
+    } else {
+      fethData();
+      fethDataCommentStatus();
+      console.log("Comment Status 0");
+      console.log("userPostID in Comment :", userPostId);
+    }
+    console.log("get postId ", postId.value);
+  });
+
+  // Detail List Comment
+  const fethDataComment = async () => {
+    const respone = await detailComment(postId.value);
+    console.log("fethDataComment", respone);
+    if (respone) {
+      entityItemComment.value = respone.entity;
+    }
+  };
+
+  // Detail List Comment Status = 0
+  const fethDataCommentStatus = async () => {
+    const respone = await detailCommentStatus(postId.value);
+    console.log("fethDataCommentStatus", respone);
+    if (respone) {
+      entityItemCommentStatus.value = respone.entity;
+    }
+  };
 });
-// Detail Post
-const fethData = async () => {
-  const respone = await detailPost(postId.value);
-  console.log("fethData", respone);
-  if (respone) {
-    entityItem.value = respone.entity;
-  }
-};
-
-// Detail List Comment
-const fethDataComment = async () => {
-  const respone = await detailComment(postId.value);
-  console.log("fethDataComment", respone);
-  if (respone) {
-    entityItemComment.value = respone.entity;
-  }
-};
-
-// Detail List Comment Status = 0
-const fethDataCommentStatus = async () => {
-  const respone = await detailCommentStatus(postId.value);
-  console.log("fethDataCommentStatus", respone);
-  if (respone) {
-    entityItemCommentStatus.value = respone.entity;
-  }
-};
 
 // Add Comment
 const onSubmit = async () => {
@@ -764,6 +786,56 @@ const deleteProcessPost = async (entityItem) => {
     await new Promise((resolve) => setTimeout(resolve, 3000));
     router.push("/");
   }
+};
+
+// Hide Comment
+const onHide = (index) => {
+  $q.dialog({
+    title: t("QhideComment"),
+    message: t("QconhideComment"),
+    cancel: true,
+    ok: {
+      label: t("Qhide"),
+      color: "negative",
+    },
+    cancel: {
+      label: t("Qno"),
+      flat: true,
+      color: "grey",
+    },
+  }).onOk(() => {
+    console.log("OK");
+    $q.notify({
+      message: "Success!",
+      type: "positive",
+    });
+    deleteProcess(index);
+  });
+};
+
+// UnHide Comment
+const onUnhide = (index) => {
+  $q.dialog({
+    title: t("QunhideComment"),
+    message: t("QconunhideComment"),
+    cancel: true,
+    ok: {
+      label: t("Qunhide"),
+      color: "negative",
+    },
+    cancel: {
+      label: t("Qno"),
+      flat: true,
+      color: "grey",
+    },
+  }).onOk(() => {
+    console.log("OK");
+    $q.notify({
+      message: "Success!",
+      type: "positive",
+    });
+    deleteProcess(index);
+  });
 };
 
 const text = ref("");

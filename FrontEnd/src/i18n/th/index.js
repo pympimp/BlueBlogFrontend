@@ -121,6 +121,8 @@ export default {
   Qdelete: "ลบข้อมูลผู้ใช้",
   Qconfirm: "ยืนยันที่จะลบข้อมูลผู้ใช้?",
   Qok: "ลบข้อมูล",
+  Qhide: "ซ่อน",
+  Qunhide: "ยกเลิกซ่อน",
   Qno: "ยกเลิก",
 
   //q.doalog Post
@@ -130,4 +132,12 @@ export default {
   //q.doalog Comment
   QdelComment: "ลบข้อมูลความคิดเห็น",
   QconComment: "ยืนยันที่จะลบข้อมูลความคิดเห็น?",
+
+  //q.doalog Hide Comment
+  QhideComment: "ซ่อนความคิดเห็น",
+  QconhideComment: "ยืนยันที่จะซ่อนความคิดเห็น?",
+
+  //q.doalog UnHide Comment
+  QunhideComment: "ยกเลิกซ่อนความคิดเห็น",
+  QconunhideComment: "ยืนยันที่จะยกเลิกซ่อนความคิดเห็น?",
 };
