@@ -59,9 +59,13 @@
           color: #880e4f;
         "
       >
-        <div @click="fetchPost">{{ t("Posted") }}</div>
-        <div @click="findMyReplyPost">{{ t("Replied") }}</div>
-        <div @click="findMyLikePost">{{ t("Liked") }}</div>
+        <div @click="fetchPost" style="cursor: pointer">{{ t("Posted") }}</div>
+        <div @click="findMyReplyPost" style="cursor: pointer">
+          {{ t("Replied") }}
+        </div>
+        <div @click="findMyLikePost" style="cursor: pointer">
+          {{ t("Liked") }}
+        </div>
       </div>
       <hr
         style="
@@ -121,7 +125,6 @@ const id = ref();
 
 const count = ref(0);
 const followLabel = ref("");
-const followColor = ref("pink-7");
 
 // ทำก่อน เวลาโหลดหน้าเว็บมา
 onMounted(async () => {
