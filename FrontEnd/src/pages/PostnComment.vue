@@ -112,7 +112,7 @@
             <span
               id="count"
               style="display: inline; color: #b46f8f; text-weight: bolder"
-              >{{ entityItem ? entityItem["like_count"] : "" }}
+              >{{ entityLikePost ? entityLikePost["TotalLikePost"] : "" }}
               {{ t("Like") }}</span
             >
           </div>
@@ -296,7 +296,9 @@
               id="count2"
               style="display: inline; color: #b46f8f; text-weight: bolder"
             >
-              {{ item.like_count }}
+              {{
+                entityLikeComment ? entityLikeComment["TotalLikeComment"] : ""
+              }}
             </span>
             <!-- จำนวนยอดไลก์โพสต์ -->
             <b
@@ -444,7 +446,7 @@
               glossy
               push
               color="pink-9"
-              :icon="LikeCommentIcon"
+              :icon="(LikeCommentIcon = biHeart ? 'biHeartFill' : 'biHeart')"
               @click="toggleLikeComment"
               style="
                 height: 20px;
@@ -458,7 +460,9 @@
               id="count2"
               style="display: inline; color: #b46f8f; text-weight: bolder"
             >
-              {{ item.like_count }}
+              {{
+                entityLikeComment ? entityLikeComment["TotalLikeComment"] : ""
+              }}
             </span>
             <!-- จำนวนยอดไลก์โพสต์ -->
             <b
@@ -541,7 +545,8 @@ const {
   CheckLikePost,
   CheckLikeComment,
   ListLikePost,
-  CountLike,
+  CountPost,
+  CountComment,
 } = LikeApi();
 const route = useRoute();
 const router = useRouter();
@@ -600,7 +605,8 @@ onMounted(() => {
     ListLike();
     CheckPost();
     CheckComment();
-    fetchCountLike();
+    fetchCountPost();
+    // fetchCountComment();
     console.log("Comment All");
   }
 
@@ -610,13 +616,15 @@ onMounted(() => {
     ListLike();
     CheckPost();
     CheckComment();
-    fetchCountLike();
+    fetchCountPost();
+    // fetchCountComment();
   } else {
     fethData();
     fethDataCommentStatus();
     CheckPost();
     CheckComment();
-    fetchCountLike();
+    fetchCountPost();
+    fetchCountComment();
     console.log("Comment Status 0");
   }
   console.log("What", CheckComment);
@@ -630,7 +638,8 @@ const fethData = async () => {
     entityItem.value = respone.entity;
     CheckPost();
     CheckComment();
-    fetchCountLike();
+    fetchCountPost();
+    fetchCountComment();
   }
 };
 
@@ -832,15 +841,26 @@ const CheckComment = async () => {
   }
 };
 
-//ฟังก์ชั่นของการนับยอดไลก์
-const fetchCountLike = async () => {
-  const response = await CountLike(id.value);
-  console.log("CountLike", response);
+//ฟังก์ชั่นของการนับยอดไลก์โพสต์
+const fetchCountPost = async () => {
+  const response = await CountPost(postId.value);
+  console.log("CountPost", response);
   if (response) {
     // entityLike.value = response.entity;
-    entityLike.value = response;
+    entityLikePost.value = response;
   }
-  console.log("TTTTTTTTTTTTTTTT", entityLike.value.TotalLikePost);
+  console.log("TTTTTTTTTTTTTTTT", entityLikePost.value.TotalLikePost);
+};
+
+//ฟังก์ชั่นของการนับยอดไลก์โพสต์
+const fetchCountComment = async () => {
+  const response = await CountComment(commentId.value);
+  console.log("CountComment", response);
+  if (response) {
+    // entityLike.value = response.entity;
+    entityLikeComment.value = response;
+  }
+  console.log("GGGGGGG", entityLikeComment.value.TotalLikeComment);
 };
 
 //ฟังก์ชั่นกดไลก์โพสต์
@@ -851,6 +871,7 @@ const LikePostBtn = async (entityItem) => {
     if (response) {
       console.log(entityItem.id);
       console.log("Like", response.message);
+      fetchCountPost();
     }
   }
 };
@@ -862,6 +883,7 @@ const UnlikePostBtn = async (entityItem) => {
     const response = await UnlikePost($item);
     if (response) {
       console.log("Unlike", response.message);
+      fetchCountPost();
     }
   }
 };
@@ -874,6 +896,7 @@ const LikeCommentBtn = async (id, id1) => {
     const response = await LikeComment($id, $id1);
     if (response) {
       console.log("LikeComment", response.message);
+      fetchCountComment();
     }
   }
 };
@@ -885,7 +908,8 @@ const UnlikeCommentBtn = async (id, id1) => {
   if ($id && $id1) {
     const response = await UnlikeComment($id, $id1);
     if (response) {
-      console.log("UnlikeComment", response.status);
+      console.log("UnlikeComment", response.message);
+      fetchCountComment();
     }
   }
 };

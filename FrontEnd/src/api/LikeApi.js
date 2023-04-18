@@ -26,14 +26,21 @@ export const LikeApi = () => {
   const UnlikeComment = async (id, id1) => {
     return await callApi({
       method: "POST",
-      url: `/unlikeCommentApi?post_id=${id1}comment_id=${id}`,
+      url: `/unlikeCommentApi?post_id=${id1}&comment_id=${id}`,
     });
   };
 
-  const CountLike = async (id) => {
+  const CountPost = async (id) => {
     return await callApi({
       method: "GET",
       url: `/CountLikePost?post_id=${id}`,
+    });
+  };
+
+  const CountComment = async (id) => {
+    return await callApi({
+      method: "GET",
+      url: `/countLikeComment?comment_id=${id}`,
     });
   };
 
@@ -64,7 +71,8 @@ export const LikeApi = () => {
     UnlikePost,
     LikeComment,
     UnlikeComment,
-    CountLike,
+    CountPost,
+    CountComment,
     ListLikePost,
     CheckLikePost,
     CheckLikeComment,
