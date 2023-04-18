@@ -27,6 +27,11 @@ const routes = [
       },
 
       {
+        path: "/editpost/:postId",
+        component: () => import("src/pages/EditPost.vue"),
+      },
+
+      {
         path: "/addashboard",
         component: () => import("src/pages/AdDashboard.vue"),
       },

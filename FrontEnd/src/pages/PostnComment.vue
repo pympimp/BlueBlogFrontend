@@ -101,12 +101,6 @@
               @click="toggleLikePost(entityItem)"
               style="height: 20px; margin-top: 5px; width: 40px"
             />
-            <!-- <span id="icon"
-                ><i
-                  class="fa-regular fa-thumbs-up"
-                  style="color: white; height: -20px; color: white"
-                ></i>
-              </span> -->
 
             &nbsp;
             <span
@@ -560,7 +554,7 @@ const { detailComment, addComment, deleteComment, detailCommentStatus } =
 // File Upload
 const { uploadImageApi } = FileApi();
 const postId = ref();
-const commentId = ref();
+const commentId = ref([]);
 // Post
 const entityItem = ref();
 // ตัวแปรแสดงข้อมูลคอมเมนต์ทั้งหมด
@@ -602,22 +596,20 @@ onMounted(() => {
   ) {
     fethData();
     fethDataComment();
-    ListLike();
     CheckPost();
     CheckComment();
     fetchCountPost();
-    // fetchCountComment();
+    fetchCountComment();
     console.log("Comment All");
   }
 
   if (postId.value) {
     fethData();
     fethDataComment();
-    ListLike();
     CheckPost();
     CheckComment();
     fetchCountPost();
-    // fetchCountComment();
+    fetchCountComment();
   } else {
     fethData();
     fethDataCommentStatus();
@@ -627,7 +619,6 @@ onMounted(() => {
     fetchCountComment();
     console.log("Comment Status 0");
   }
-  console.log("What", CheckComment);
   console.log("get postId ", postId.value);
 });
 // Detail Post
@@ -836,7 +827,7 @@ const CheckComment = async () => {
     console.log("Like Comment Status :", entityLikeComment.value.status);
     LikeCommentIcon.value = biHeartFill;
   } else {
-    console.log("Unlike Comment Status :", entityLikeComment);
+    console.log("Unlike Comment Status :", entityLikeComment.value.status);
     LikeCommentIcon.value = biHeart;
   }
 };
@@ -852,7 +843,7 @@ const fetchCountPost = async () => {
   console.log("TTTTTTTTTTTTTTTT", entityLikePost.value.TotalLikePost);
 };
 
-//ฟังก์ชั่นของการนับยอดไลก์โพสต์
+//ฟังก์ชั่นของการนับยอดไลก์คอมเมนต์
 const fetchCountComment = async () => {
   const response = await CountComment(commentId.value);
   console.log("CountComment", response);
@@ -915,12 +906,12 @@ const UnlikeCommentBtn = async (id, id1) => {
 };
 
 //ฟังก์ชั่นลิสต์รายชื่อคนที่ถูกใจโพสต์, คอมเมนต์
-const ListLike = async () => {
-  const response = await ListLikePost(id.value);
-  if (response) {
-    console.log("ListLikePost", response.message);
-  }
-};
+// const ListLike = async () => {
+//   const response = await ListLikePost(id.value);
+//   if (response) {
+//     console.log("ListLikePost", response.message);
+//   }
+// };
 
 // Hide Comment
 const onHide = (index) => {
