@@ -23,7 +23,7 @@
           ref="followBtn"
           glossy
           push
-          :color="followColor"
+          color="pink-9"
           :label="followLabel"
           @click="toggleFollow"
           style="height: 20px; margin-top: 5px; width: 100px"
@@ -240,7 +240,6 @@ const checkFol = async () => {
     entityFollow.value = response;
     console.log("checkFol", entityFollow);
     fetchCountFol();
-    // count.value--;
     if (entityFollow.value.status === true) {
       followLabel.value = "following";
     } else {

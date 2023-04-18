@@ -37,6 +37,8 @@ export default {
   Posted: "โพสต์ที่ตั้ง",
   Replied: "โพสต์ที่ตอบกลับ",
   Liked: "โพสต์ที่ถูกใจ",
+  Follow: "ติดตาม",
+  Following: "กำลังติดตาม",
 
   // Navbar Add New Post
   AddPost: "เพิ่มโพสต์ใหม่",

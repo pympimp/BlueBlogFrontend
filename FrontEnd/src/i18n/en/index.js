@@ -40,6 +40,8 @@ export default {
   Posted: "Posted",
   Replied: "Replied",
   Liked: "Liked",
+  Follow: "Follow",
+  Following: "Following",
 
   // Navbar Add New Post
   AddPost: "Add New Post",

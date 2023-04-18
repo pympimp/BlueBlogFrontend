@@ -288,7 +288,7 @@
               push
               color="pink-9"
               :icon="LikeCommentIcon"
-              @click="toggleLikeComment"
+              @click="toggleLikeComment(item.commentId, item.postId)"
               style="height: 20px; margin-top: 5px; width: 40px"
             />
             &nbsp;
@@ -540,6 +540,8 @@ const {
   UnlikeComment,
   CheckLikePost,
   CheckLikeComment,
+  ListLikePost,
+  CountLike,
 } = LikeApi();
 const route = useRoute();
 const router = useRouter();
@@ -553,6 +555,7 @@ const { detailComment, addComment, deleteComment, detailCommentStatus } =
 // File Upload
 const { uploadImageApi } = FileApi();
 const postId = ref();
+const commentId = ref();
 // Post
 const entityItem = ref();
 // ตัวแปรแสดงข้อมูลคอมเมนต์ทั้งหมด
@@ -562,41 +565,6 @@ const entityItemCommentStatus = ref([]);
 
 // User Post
 let userPostId = "";
-
-// document.addEventListener("DOMContentLoaded", function () {
-//   // ตรวจสอบว่า element ที่ต้องการมีอยู่จริงหรือไม่
-//   const element = document.querySelector("#my-element");
-//   if (element) {
-//     // ใส่โค้ดที่ต้องการทำงานกับ element นี้ต่อไป
-//     element.addEventListener("click", function () {
-//       console.log("Element clicked!");
-//     });
-//   }
-// });
-
-// likeBtn.addEventListener("click", () => {
-//   if (!clicked) {
-//     clicked = true;
-//     likeIcon.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count.textContent++;
-//   } else {
-//     clicked = false;
-//     likeIcon.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count.textContent--;
-//   }
-// });
-
-// likeBtn2.addEventListener("click", () => {
-//   if (!clicked2) {
-//     clicked2 = true;
-//     likeIcon2.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count2.textContent++;
-//   } else {
-//     clicked2 = false;
-//     likeIcon2.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count2.textContent--;
-//   }
-// });
 
 // add comment
 const content = ref("");
@@ -619,6 +587,8 @@ onMounted(() => {
   if (route.params.postId) {
     postId.value = route.params.postId;
     entitycomment.value.post_id = route.params.postId;
+    commentId.value = route.params.commentId;
+    id.value = route.params.user_id;
   }
 
   if (
@@ -628,23 +598,28 @@ onMounted(() => {
     fethData();
     fethDataComment();
     ListLike();
-    checkLike();
+    CheckPost();
+    CheckComment();
     fetchCountLike();
     console.log("Comment All");
   }
 
-  if (id.value) {
+  if (postId.value) {
     fethData();
     fethDataComment();
     ListLike();
-    checkLike();
+    CheckPost();
+    CheckComment();
     fetchCountLike();
   } else {
     fethData();
     fethDataCommentStatus();
+    CheckPost();
+    CheckComment();
+    fetchCountLike();
     console.log("Comment Status 0");
   }
-  console.log("What", id.value);
+  console.log("What", CheckComment);
   console.log("get postId ", postId.value);
 });
 // Detail Post
@@ -653,6 +628,9 @@ const fethData = async () => {
   console.log("fethData", respone);
   if (respone) {
     entityItem.value = respone.entity;
+    CheckPost();
+    CheckComment();
+    fetchCountLike();
   }
 };
 
@@ -787,8 +765,8 @@ const deleteProcessPost = async (entityItem) => {
 };
 
 //เป็นการประกาศค่าตั้งต้นของไอคอน Toggle
-const LikePostIcon = ref(biHeart);
-const LikeCommentIcon = ref(biHeart);
+const LikePostIcon = ref("");
+const LikeCommentIcon = ref("");
 
 //ฟังก์ชั่นของการกดไลก์โพสต์
 function toggleLikePost(entityItem) {
@@ -806,46 +784,64 @@ function toggleLikePost(entityItem) {
 }
 
 //ฟังก์ชั่นของการกดไลก์คอมเมนต์
-function toggleLikeComment(entityItem) {
+function toggleLikeComment(id, id1) {
   if (LikeCommentIcon.value === biHeart) {
-    LikeCommentBtn(entityItem);
+    LikeCommentBtn(id, id1);
     LikeCommentIcon.value = biHeartFill;
     // followColor.value = "secondary";
     // count.value += 1;
   } else {
-    UnlikeCommentBtn(entityItem);
+    UnlikeCommentBtn(id, id1);
     LikeCommentIcon.value = biHeart;
     // followColor.value = "primary";
     // count.value -= 1;
   }
 }
 
+const entityLikePost = ref();
+const entityLikeComment = ref();
 const entityLike = ref();
 //ฟังก์ชั่นของการเช็คว่ามีการกดไลก์ไหม
-const checkLike = async () => {
-  const response = await checkFollower(id.value);
+const CheckPost = async () => {
+  const response = await CheckLikePost(postId.value);
   if (response) {
-    entityLike.value = response;
-    console.log("checkLike", entityLike);
-    // fetchCountLike();
-    // count.value--;
-    if (entityLike.value.status === true) {
-      LikePostIcon.value = biHeart;
-    } else {
-      LikePostIcon.value = biHeartFill;
-    }
+    entityLikePost.value = response;
+    console.log("Check Like Post", entityLikePost);
+  }
+  if (entityLikePost.value.status === true) {
+    console.log("Like Post Status :", entityLikePost.value.status);
+    LikePostIcon.value = biHeartFill;
+  } else {
+    console.log("Unlike Post Status :", entityLikePost);
+    LikePostIcon.value = biHeart;
+  }
+};
+
+const CheckComment = async () => {
+  const response = await CheckLikeComment(commentId.value);
+  if (response) {
+    entityLikeComment.value = response;
+    console.log("Check Like Comment", entityLikeComment);
+  }
+  if (entityLikeComment.value.status === true) {
+    console.log("Like Comment Status :", entityLikeComment.value.status);
+    LikeCommentIcon.value = biHeartFill;
+  } else {
+    console.log("Unlike Comment Status :", entityLikeComment);
+    LikeCommentIcon.value = biHeart;
   }
 };
 
 //ฟังก์ชั่นของการนับยอดไลก์
-// const fetchCountLike = async () => {
-//   const response = await CountLike(id.value);
-//   console.log("CountLike", response);
-//   if (response) {
-//     entityLike.value = response.entity;
-//   }
-//   console.log(entityLike.value.TotalLikePost);
-// };
+const fetchCountLike = async () => {
+  const response = await CountLike(id.value);
+  console.log("CountLike", response);
+  if (response) {
+    // entityLike.value = response.entity;
+    entityLike.value = response;
+  }
+  console.log("TTTTTTTTTTTTTTTT", entityLike.value.TotalLikePost);
+};
 
 //ฟังก์ชั่นกดไลก์โพสต์
 const LikePostBtn = async (entityItem) => {
@@ -855,8 +851,6 @@ const LikePostBtn = async (entityItem) => {
     if (response) {
       console.log(entityItem.id);
       console.log("Like", response.message);
-      // fetchCountLike();
-      // count.value++;
     }
   }
 };
@@ -868,29 +862,31 @@ const UnlikePostBtn = async (entityItem) => {
     const response = await UnlikePost($item);
     if (response) {
       console.log("Unlike", response.message);
-      // fetchCountLike();
-      // count.value++;
     }
   }
 };
 
 //ฟังก์ชั่นกดไลก์คอมเมนต์
-const LikeCommentBtn = async () => {
-  const response = await LikeComment(id.value);
-  if (response) {
-    console.log("LikeComment", response.message);
-    // fetchCountLike();
-    // count.value++;
+const LikeCommentBtn = async (id, id1) => {
+  const $id = id;
+  const $id1 = id1;
+  if ($id && $id1) {
+    const response = await LikeComment($id, $id1);
+    if (response) {
+      console.log("LikeComment", response.message);
+    }
   }
 };
 
 //ฟังก์ชั่นกดยกเลิกไลก์คอมเมนต์
-const UnlikeCommentBtn = async () => {
-  const response = await UnlikeComment(id.value);
-  if (response) {
-    console.log("UnlikeComment", response.message);
-    // fetchCountLike();
-    // count.value++;
+const UnlikeCommentBtn = async (id, id1) => {
+  const $id = id;
+  const $id1 = id1;
+  if ($id && $id1) {
+    const response = await UnlikeComment($id, $id1);
+    if (response) {
+      console.log("UnlikeComment", response.status);
+    }
   }
 };
 
@@ -899,8 +895,6 @@ const ListLike = async () => {
   const response = await ListLikePost(id.value);
   if (response) {
     console.log("ListLikePost", response.message);
-    // fetchCountLike();
-    // count.value++;
   }
 };
 
