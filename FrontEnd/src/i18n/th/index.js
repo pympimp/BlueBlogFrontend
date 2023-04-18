@@ -37,6 +37,8 @@ export default {
   Posted: "โพสต์ที่ตั้ง",
   Replied: "โพสต์ที่ตอบกลับ",
   Liked: "โพสต์ที่ถูกใจ",
+  Follow: "ติดตาม",
+  Following: "กำลังติดตาม",
 
   // Navbar Add New Post
   AddPost: "เพิ่มโพสต์ใหม่",
@@ -140,4 +142,7 @@ export default {
   //q.doalog UnHide Comment
   QunhideComment: "ยกเลิกซ่อนความคิดเห็น",
   QconunhideComment: "ยืนยันที่จะยกเลิกซ่อนความคิดเห็น?",
+
+  // Search
+  DataNotFound: "ไม่พบข้อมูล",
 };

@@ -16,17 +16,17 @@ export const LikeApi = () => {
     });
   };
 
-  const LikeComment = async (id) => {
+  const LikeComment = async (id, id1) => {
     return await callApi({
       method: "POST",
-      url: `/likeCommentApi?post_id=59&comment_id=${id}`,
+      url: `/likeCommentApi?post_id=${id1}&comment_id=${id}`,
     });
   };
 
-  const UnlikeComment = async (id) => {
+  const UnlikeComment = async (id, id1) => {
     return await callApi({
       method: "POST",
-      url: `/unlikeCommentApi?post_id=56&comment_id=${id}`,
+      url: `/unlikeCommentApi?post_id=${id1}comment_id=${id}`,
     });
   };
 
@@ -40,7 +40,7 @@ export const LikeApi = () => {
   const CheckLikePost = async (id) => {
     return await callApi({
       method: "GET",
-      url: `/checkLikePost?comment_id=${id}`,
+      url: `/checkLikePost?post_id=${id}`,
     });
   };
 

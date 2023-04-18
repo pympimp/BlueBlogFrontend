@@ -93,21 +93,21 @@
         <div class="comment-like" style="display: flex; margin-left: 450px">
           <div style="display: inline">
             <q-btn
-              class="likePost"
-              style="
-                background-color: #b46f8f;
-                font-size: 15px;
-                border-radius: 50px;
-                border: none;
-              "
-            >
-              <span id="icon"
+              ref="followBtn"
+              glossy
+              push
+              color="pink-9"
+              :icon="LikePostIcon"
+              @click="toggleLikePost(entityItem)"
+              style="height: 20px; margin-top: 5px; width: 40px"
+            />
+            <!-- <span id="icon"
                 ><i
                   class="fa-regular fa-thumbs-up"
                   style="color: white; height: -20px; color: white"
                 ></i>
-              </span>
-            </q-btn>
+              </span> -->
+
             &nbsp;
             <span
               id="count"
@@ -236,27 +236,19 @@
           <q-fab-action
             external-label
             color="pink-10"
-            @click="onHide(index)"
+            click=""
             :icon="biEyeSlash"
             :label="t('HideComment')"
-            v-if="
-              entityItem &&
-              entityItem.user_id === authenStore.auth.id &&
-              item.status === '0'
-            "
+            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
           />
           <!-- unhide -->
           <q-fab-action
             external-label
             color="pink-10"
-            @click="onUnhide(index)"
+            click=""
             :icon="biEye"
             :label="t('UnHideComment')"
-            v-if="
-              entityItem &&
-              entityItem.user_id === authenStore.auth.id &&
-              item.status === '1'
-            "
+            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
           />
         </q-fab>
       </div>
@@ -291,21 +283,14 @@
         <div class="comment-like2" style="display: flex">
           <div style="display: inline">
             <q-btn
-              class="like__btn2"
-              style="
-                background-color: #b46f8f;
-                font-size: 15px;
-                border-radius: 50px;
-                border: none;
-              "
-            >
-              <span id="icon2"
-                ><i
-                  class="fa-regular fa-thumbs-up"
-                  style="color: white; height: -20px; color: white"
-                ></i>
-              </span>
-            </q-btn>
+              ref="followBtn"
+              glossy
+              push
+              color="pink-9"
+              :icon="LikeCommentIcon"
+              @click="toggleLikeComment(item.commentId, item.postId)"
+              style="height: 20px; margin-top: 5px; width: 40px"
+            />
             &nbsp;
             <span
               id="count2"
@@ -408,27 +393,19 @@
           <q-fab-action
             external-label
             color="pink-10"
-            @click="onHide(index)"
+            click=""
             :icon="biEyeSlash"
             :label="t('HideComment')"
-            v-if="
-              entityItem &&
-              entityItem.user_id === authenStore.auth.id &&
-              item.status === '0'
-            "
+            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
           />
           <!-- unhide -->
           <q-fab-action
             external-label
             color="pink-10"
-            @click="onUnhide(index)"
+            click=""
             :icon="biEye"
             :label="t('UnHideComment')"
-            v-if="
-              entityItem &&
-              entityItem.user_id === authenStore.auth.id &&
-              item.status === '1'
-            "
+            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
           />
         </q-fab>
       </div>
@@ -463,21 +440,19 @@
         <div class="comment-like2" style="display: flex">
           <div style="display: inline">
             <q-btn
-              class="like__btn2"
+              ref="followBtn"
+              glossy
+              push
+              color="pink-9"
+              :icon="LikeCommentIcon"
+              @click="toggleLikeComment"
               style="
-                background-color: #b46f8f;
-                font-size: 15px;
-                border-radius: 50px;
-                border: none;
+                height: 20px;
+                margin-top: 5px;
+                width: 40px;
+                border-radius: 70px;
               "
-            >
-              <span id="icon2"
-                ><i
-                  class="fa-regular fa-thumbs-up"
-                  style="color: white; height: -20px; color: white"
-                ></i>
-              </span>
-            </q-btn>
+            />
             &nbsp;
             <span
               id="count2"
@@ -538,6 +513,8 @@ import {
   biCheck,
   biEye,
   biEyeSlash,
+  biHeart,
+  biHeartFill,
 } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { AuthenApi } from "src/api/AuthenApi";
@@ -550,88 +527,50 @@ import { PostApi } from "src/api/PostApi";
 import { CommentApi } from "src/api/CommentApi";
 import { FileApi } from "src/api/FileApi";
 
+import { LikeApi } from "src/api/LikeApi";
+
 // เรียใช้ค่าการ login API KEY
 import { useAuthenStore } from "src/stores/authen";
 const authenStore = useAuthenStore();
 
+const {
+  LikePost,
+  UnlikePost,
+  LikeComment,
+  UnlikeComment,
+  CheckLikePost,
+  CheckLikeComment,
+  ListLikePost,
+  CountLike,
+} = LikeApi();
 const route = useRoute();
 const router = useRouter();
 const $q = useQuasar();
 
-const likeBtn = document.querySelector(".like__btn");
-let likeIcon = document.querySelector("#icon");
-let count = document.querySelector("#count");
-const likeBtn2 = document.querySelector(".like__btn2");
-let likeIcon2 = document.querySelector("#icon2");
-let count2 = document.querySelector("#count2");
-
-//btn clicked test
-let clicked = false;
-let clicked2 = false;
-
 // post id
 const { detailPost, deletePost } = PostApi();
 // comment
-const {
-  detailComment,
-  addComment,
-  deleteComment,
-  detailCommentStatus,
-  hideComment,
-  unHideComment,
-} = CommentApi();
+const { detailComment, addComment, deleteComment, detailCommentStatus } =
+  CommentApi();
 // File Upload
 const { uploadImageApi } = FileApi();
 const postId = ref();
+const commentId = ref();
 // Post
 const entityItem = ref();
 // ตัวแปรแสดงข้อมูลคอมเมนต์ทั้งหมด
 const entityItemComment = ref([]);
 // ตัวแปรแสดงข้อมูลคอมเมนต์ทั้งหมด status =0
 const entityItemCommentStatus = ref([]);
+
 // User Post
 let userPostId = "";
-
-// document.addEventListener("DOMContentLoaded", function () {
-//   // ตรวจสอบว่า element ที่ต้องการมีอยู่จริงหรือไม่
-//   const element = document.querySelector("#my-element");
-//   if (element) {
-//     // ใส่โค้ดที่ต้องการทำงานกับ element นี้ต่อไป
-//     element.addEventListener("click", function () {
-//       console.log("Element clicked!");
-//     });
-//   }
-// });
-
-// likeBtn.addEventListener("click", () => {
-//   if (!clicked) {
-//     clicked = true;
-//     likeIcon.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count.textContent++;
-//   } else {
-//     clicked = false;
-//     likeIcon.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count.textContent--;
-//   }
-// });
-
-// likeBtn2.addEventListener("click", () => {
-//   if (!clicked2) {
-//     clicked2 = true;
-//     likeIcon2.innerHTML = `<i class="fa-solid fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count2.textContent++;
-//   } else {
-//     clicked2 = false;
-//     likeIcon2.innerHTML = `<i class="fa-regular fa-thumbs-up" style="color: #ffffff;"></i>`;
-//     count2.textContent--;
-//   }
-// });
 
 // add comment
 const content = ref("");
 const imageFile = ref("");
 const entitycomment = ref({
-  id: null,
+  id: "",
   post_id: "",
   user_id: "",
   content: "",
@@ -641,66 +580,77 @@ const entitycomment = ref({
   status: "0",
 });
 
+const id = ref();
 const { localeList, t, locale } = useLang();
 
 onMounted(() => {
   if (route.params.postId) {
     postId.value = route.params.postId;
     entitycomment.value.post_id = route.params.postId;
+    commentId.value = route.params.commentId;
+    id.value = route.params.user_id;
   }
 
-  // Detail Post
-  const fethData = async () => {
-    const respone = await detailPost(postId.value);
-    console.log("fethData", respone);
-    if (respone) {
-      entityItem.value = respone.entity;
-      userPostId = entityItem.value.user_id;
-      console.log("User Post ID", userPostId);
-    }
-  };
+  if (
+    (postId.value && authenStore.auth.rolesText === "Dev") ||
+    entityItemComment.value.userId === authenStore.auth.id
+  ) {
+    fethData();
+    fethDataComment();
+    ListLike();
+    CheckPost();
+    CheckComment();
+    fetchCountLike();
+    console.log("Comment All");
+  }
 
-  // เรียกใช้งาน fethData ก่อน
-  fethData().then(() => {
-    // สามารถใช้งาน userPostId ได้ที่นี่หลังจาก fethData ได้รับค่าเรียบร้อยแล้ว
-    console.log("User Post Then fetchData :", userPostId);
-
-    // Check comment
-    if (
-      (postId.value && authenStore.auth.rolesText === "Dev") ||
-      (postId.value && authenStore.auth.id === userPostId)
-    ) {
-      fethData();
-      fethDataComment();
-      console.log("Comment All");
-      console.log("userPostID in Comment :", userPostId);
-    } else {
-      fethData();
-      fethDataCommentStatus();
-      console.log("Comment Status 0");
-      console.log("userPostID in Comment :", userPostId);
-    }
-    console.log("get postId ", postId.value);
-  });
-
-  // Detail List Comment
-  const fethDataComment = async () => {
-    const respone = await detailComment(postId.value);
-    console.log("fethDataComment", respone);
-    if (respone) {
-      entityItemComment.value = respone.entity;
-    }
-  };
-
-  // Detail List Comment Status = 0
-  const fethDataCommentStatus = async () => {
-    const respone = await detailCommentStatus(postId.value);
-    console.log("fethDataCommentStatus", respone);
-    if (respone) {
-      entityItemCommentStatus.value = respone.entity;
-    }
-  };
+  if (postId.value) {
+    fethData();
+    fethDataComment();
+    ListLike();
+    CheckPost();
+    CheckComment();
+    fetchCountLike();
+  } else {
+    fethData();
+    fethDataCommentStatus();
+    CheckPost();
+    CheckComment();
+    fetchCountLike();
+    console.log("Comment Status 0");
+  }
+  console.log("What", CheckComment);
+  console.log("get postId ", postId.value);
 });
+// Detail Post
+const fethData = async () => {
+  const respone = await detailPost(postId.value);
+  console.log("fethData", respone);
+  if (respone) {
+    entityItem.value = respone.entity;
+    CheckPost();
+    CheckComment();
+    fetchCountLike();
+  }
+};
+
+// Detail List Comment
+const fethDataComment = async () => {
+  const respone = await detailComment(postId.value);
+  console.log("fethDataComment", respone);
+  if (respone) {
+    entityItemComment.value = respone.entity;
+  }
+};
+
+// Detail List Comment Status = 0
+const fethDataCommentStatus = async () => {
+  const respone = await detailCommentStatus(postId.value);
+  console.log("fethDataCommentStatus", respone);
+  if (respone) {
+    entityItemCommentStatus.value = respone.entity;
+  }
+};
 
 // Add Comment
 const onSubmit = async () => {
@@ -814,6 +764,140 @@ const deleteProcessPost = async (entityItem) => {
   }
 };
 
+//เป็นการประกาศค่าตั้งต้นของไอคอน Toggle
+const LikePostIcon = ref("");
+const LikeCommentIcon = ref("");
+
+//ฟังก์ชั่นของการกดไลก์โพสต์
+function toggleLikePost(entityItem) {
+  if (LikePostIcon.value === biHeart) {
+    LikePostBtn(entityItem);
+    LikePostIcon.value = biHeartFill;
+    // followColor.value = "secondary";
+    // count.value += 1;
+  } else {
+    UnlikePostBtn(entityItem);
+    LikePostIcon.value = biHeart;
+    // followColor.value = "primary";
+    // count.value -= 1;
+  }
+}
+
+//ฟังก์ชั่นของการกดไลก์คอมเมนต์
+function toggleLikeComment(id, id1) {
+  if (LikeCommentIcon.value === biHeart) {
+    LikeCommentBtn(id, id1);
+    LikeCommentIcon.value = biHeartFill;
+    // followColor.value = "secondary";
+    // count.value += 1;
+  } else {
+    UnlikeCommentBtn(id, id1);
+    LikeCommentIcon.value = biHeart;
+    // followColor.value = "primary";
+    // count.value -= 1;
+  }
+}
+
+const entityLikePost = ref();
+const entityLikeComment = ref();
+const entityLike = ref();
+//ฟังก์ชั่นของการเช็คว่ามีการกดไลก์ไหม
+const CheckPost = async () => {
+  const response = await CheckLikePost(postId.value);
+  if (response) {
+    entityLikePost.value = response;
+    console.log("Check Like Post", entityLikePost);
+  }
+  if (entityLikePost.value.status === true) {
+    console.log("Like Post Status :", entityLikePost.value.status);
+    LikePostIcon.value = biHeartFill;
+  } else {
+    console.log("Unlike Post Status :", entityLikePost);
+    LikePostIcon.value = biHeart;
+  }
+};
+
+const CheckComment = async () => {
+  const response = await CheckLikeComment(commentId.value);
+  if (response) {
+    entityLikeComment.value = response;
+    console.log("Check Like Comment", entityLikeComment);
+  }
+  if (entityLikeComment.value.status === true) {
+    console.log("Like Comment Status :", entityLikeComment.value.status);
+    LikeCommentIcon.value = biHeartFill;
+  } else {
+    console.log("Unlike Comment Status :", entityLikeComment);
+    LikeCommentIcon.value = biHeart;
+  }
+};
+
+//ฟังก์ชั่นของการนับยอดไลก์
+const fetchCountLike = async () => {
+  const response = await CountLike(id.value);
+  console.log("CountLike", response);
+  if (response) {
+    // entityLike.value = response.entity;
+    entityLike.value = response;
+  }
+  console.log("TTTTTTTTTTTTTTTT", entityLike.value.TotalLikePost);
+};
+
+//ฟังก์ชั่นกดไลก์โพสต์
+const LikePostBtn = async (entityItem) => {
+  const $item = entityItem.id;
+  if ($item) {
+    const response = await LikePost($item);
+    if (response) {
+      console.log(entityItem.id);
+      console.log("Like", response.message);
+    }
+  }
+};
+
+//ฟังก์ชั่นกดยกเลิกไลก์โพสต์
+const UnlikePostBtn = async (entityItem) => {
+  const $item = entityItem.id;
+  if ($item) {
+    const response = await UnlikePost($item);
+    if (response) {
+      console.log("Unlike", response.message);
+    }
+  }
+};
+
+//ฟังก์ชั่นกดไลก์คอมเมนต์
+const LikeCommentBtn = async (id, id1) => {
+  const $id = id;
+  const $id1 = id1;
+  if ($id && $id1) {
+    const response = await LikeComment($id, $id1);
+    if (response) {
+      console.log("LikeComment", response.message);
+    }
+  }
+};
+
+//ฟังก์ชั่นกดยกเลิกไลก์คอมเมนต์
+const UnlikeCommentBtn = async (id, id1) => {
+  const $id = id;
+  const $id1 = id1;
+  if ($id && $id1) {
+    const response = await UnlikeComment($id, $id1);
+    if (response) {
+      console.log("UnlikeComment", response.status);
+    }
+  }
+};
+
+//ฟังก์ชั่นลิสต์รายชื่อคนที่ถูกใจโพสต์, คอมเมนต์
+const ListLike = async () => {
+  const response = await ListLikePost(id.value);
+  if (response) {
+    console.log("ListLikePost", response.message);
+  }
+};
+
 // Hide Comment
 const onHide = (index) => {
   $q.dialog({
@@ -896,16 +980,10 @@ const unhideProcess = async (index) => {
   }
 };
 
-// const refresUnhideData = async () => {
-//   entityItemComment.value = []; // ล้างข้อมูลในตัวแปร entityItemComment
-//   await fetchDataComment();
-//   await fetchDataCommentStatus();
-// };
-
-const text = ref("");
-const third = ref(false);
-const isPwd = ref(true);
-const editor = ref("What you see is <b>what</b> you get.");
+const refreshUnHideData = async () => {
+  await fetchDataComment();
+  await fetchDataCommentStatus();
+};
 </script>
 
 <style scoped>
