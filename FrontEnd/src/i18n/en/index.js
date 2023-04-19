@@ -45,6 +45,7 @@ export default {
 
   // Navbar Add New Post
   AddPost: "Add New Post",
+  EditPost: "Edit Post",
   PostHead: "Title",
   Postbtn: "Post",
 
