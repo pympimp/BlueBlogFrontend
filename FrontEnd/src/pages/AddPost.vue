@@ -39,6 +39,19 @@
 
           <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
+          <!-- ส่วนของรูปภาพของโพสต์ -->
+          <div class="q-col-gutter-md row items-start q-mb-md">
+            <div
+              class="col-4"
+              v-for="(postImg, index) in entityItem?.postImg"
+              :key="index"
+            >
+              <q-img :src="postImg.postimg.path" class="img" :ratio="4 / 3" />
+            </div>
+          </div>
+
+          <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
           <!-- ส่วนของการแทรกไฟล์รูปภาพ -->
           <div style="display: flex; justify-content: space-between">
             <!-- ปุ่มเลือกไฟล์ -->
@@ -210,7 +223,6 @@ const updateProcess = async () => {
   align-items: center;
   flex-direction: column;
   opacity: 0.8;
-  height: 400px;
   padding: 50px 50px 50px 50px;
   border-radius: 30px;
   box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);

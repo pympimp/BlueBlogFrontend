@@ -324,19 +324,27 @@
           <q-fab-action
             external-label
             color="pink-10"
-            click=""
+            @click="onHide(index)"
             :icon="biEyeSlash"
             :label="t('HideComment')"
-            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
+            v-if="
+              entityItem &&
+              entityItem.user_id === authenStore.auth.id &&
+              item.status === '0'
+            "
           />
           <!-- unhide -->
           <q-fab-action
             external-label
             color="pink-10"
-            click=""
+            @click="onUnhide(index)"
             :icon="biEye"
             :label="t('UnHideComment')"
-            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
+            v-if="
+              entityItem &&
+              entityItem.user_id === authenStore.auth.id &&
+              item.status === '1'
+            "
           />
         </q-fab>
       </div>
@@ -485,19 +493,27 @@
           <q-fab-action
             external-label
             color="pink-10"
-            click=""
+            @click="onHide(index)"
             :icon="biEyeSlash"
             :label="t('HideComment')"
-            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
+            v-if="
+              entityItem &&
+              entityItem.user_id === authenStore.auth.id &&
+              item.status === '0'
+            "
           />
           <!-- unhide -->
           <q-fab-action
             external-label
             color="pink-10"
-            click=""
+            click="onUnhide(index)"
             :icon="biEye"
             :label="t('UnHideComment')"
-            v-if="entityItem && entityItem.user_id === authenStore.auth.id"
+            v-if="
+              entityItem &&
+              entityItem.user_id === authenStore.auth.id &&
+              item.status === '1'
+            "
           />
         </q-fab>
       </div>
@@ -648,8 +664,14 @@ const action = ref();
 // post id
 const { detailPost, deletePost } = PostApi();
 // comment
-const { detailComment, addComment, deleteComment, detailCommentStatus } =
-  CommentApi();
+const {
+  detailComment,
+  addComment,
+  deleteComment,
+  detailCommentStatus,
+  hideComment,
+  unHideComment,
+} = CommentApi();
 // File Upload
 const { uploadImageApi } = FileApi();
 const postId = ref();
