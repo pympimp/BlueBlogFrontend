@@ -122,7 +122,7 @@
                   max-height: 400px;
                   width: 300px;
                   border-radius: 20px;
-                  padding: 20px 20px 20px 20px;
+                  padding: 10px 10px 10px 10px;
                 "
               >
                 <q-card-section>
@@ -256,13 +256,13 @@
           <q-fab-action
             external-label
             color="pink-10"
-            @click="alertEdit = true"
+            @click="alertEdit(item.commentId)"
             icon="edit"
             :label="t('EditComment')"
             v-if="item.userId === authenStore.auth.id"
           />
           <!-- ส่วนของการ Pop up แจ้งเตือน -->
-          <q-dialog v-model="alertEdit">
+          <q-dialog v-model="alertEdit1">
             <q-card style="padding: 20px 20px 20px 20px; border-radius: 20px">
               <!-- หัวข้อใหญ่ว่า "Add Comment" -->
               <p
@@ -276,10 +276,11 @@
                 {{ t("EditComment") }}
               </p>
               <div class="q-pa-md q-gutter-sm">
-                <q-editor
+                <q-input
                   v-model="entitycomment.content"
-                  min-height="5rem"
-                  style="width: 500px"
+                  :label="t('ContentComment')"
+                  filled
+                  type="textarea"
                 />
               </div>
 
@@ -296,11 +297,14 @@
                     <q-icon name="attach_file" />
                   </template>
                 </q-file>
+
                 <!-- ปุ่มยืนยัน -->
                 <q-btn
                   color="pink"
                   glossy
+                  push
                   type="submit"
+                  @click="onSubmit('edit')"
                   :label="t('Submit')"
                   style="height: 5px; margin-top: 15px"
                 />
@@ -644,7 +648,7 @@ import { useAuthenStore } from "src/stores/authen";
 const authenStore = useAuthenStore();
 
 const alert = ref(false);
-const alertEdit = ref(false);
+
 const {
   LikePost,
   UnlikePost,
@@ -656,6 +660,7 @@ const {
   CountPost,
   CountComment,
 } = LikeApi();
+const { SingleComment, EditComment } = CommentApi();
 const route = useRoute();
 const router = useRouter();
 const $q = useQuasar();
@@ -809,7 +814,7 @@ const fethDataCommentStatus = async () => {
 };
 
 // Add Comment
-const onSubmit = async () => {
+const onSubmit = async (action) => {
   if (imageFile.value) {
     const fileNameResponse = await uploadImageApi(imageFile.value);
     console.log("uploadImageApi", fileNameResponse);
@@ -819,6 +824,9 @@ const onSubmit = async () => {
     }
   }
   console.log("onSubmit", entitycomment.value);
+  if (action === "edit") {
+    editProcess(entitycomment.value.post_id);
+  }
   if (entitycomment.value) {
     createProcess(entitycomment.value.post_id);
   }
@@ -941,6 +949,44 @@ function toggleLikePost(entityItem) {
 
 //ฟังก์ชั่นของการกดไลก์คอมเมนต์
 function toggleLikeComment(id, id1) {
+  if (LikeCommentIcon.value === biHeart) {
+    LikeCommentBtn(id, id1);
+    console.log("Arrey", entityCheckComment.value);
+    LikeCommentIcon.value = biHeartFill;
+    // followColor.value = "secondary";
+    // count.value += 1;
+  } else {
+    UnlikeCommentBtn(id, id1);
+    console.log("Arrey", entityCheckComment.value);
+    LikeCommentIcon.value = biHeart;
+    // followColor.value = "primary";
+    // count.value -= 1;
+  }
+}
+
+const alertEdit = async (index) => {
+  const response = await SingleComment(index);
+  if (response) {
+    entitycomment.value = response.entity;
+    alertEdit1.value = true;
+    console.log("Check Comment", entitycomment);
+  }
+};
+const alertEdit1 = ref(false);
+
+const editProcess = async () => {
+  const response = await EditComment(entitycomment.value);
+  console.log("updateUser", response);
+  if (response) {
+    $q.notify({
+      message: response.message,
+      type: "positive",
+    });
+  }
+  router.push("/postncomment/:postId");
+};
+
+function toggleEditIcon(item) {
   if (LikeCommentIcon.value === biHeart) {
     LikeCommentBtn(id, id1);
     console.log("Arrey", entityCheckComment.value);

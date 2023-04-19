@@ -51,6 +51,20 @@ export const CommentApi = () => {
     });
   };
 
+  const SingleComment = async (ids) => {
+    return await callApi({
+      method: "GET",
+      url: `/commentReadSingle?_id=${ids}`,
+    });
+  };
+
+  const EditComment = async () => {
+    return await callApi({
+      method: "PUT",
+      url: `/commentEdit`,
+    });
+  };
+
   return {
     detailComment,
     detailCommentStatus,
@@ -58,5 +72,7 @@ export const CommentApi = () => {
     deleteComment,
     hideComment,
     unHideComment,
+    SingleComment,
+    EditComment,
   };
 };
