@@ -42,6 +42,7 @@ export default {
 
   // Navbar Add New Post
   AddPost: "เพิ่มโพสต์ใหม่",
+  EditPost: "แก้ไขโพสต์",
   PostHead: "หัวข้อโพสต์",
   Postbtn: "โพสต์",
 
