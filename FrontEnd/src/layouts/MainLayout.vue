@@ -57,7 +57,7 @@
                 <template v-slot:no-option>
                   <q-item>
                     <q-item-section class="text-grey">
-                      ไม่พบข้อมูล
+                      {{ $t("DataNotFound") }}
                     </q-item-section>
                   </q-item>
                 </template>

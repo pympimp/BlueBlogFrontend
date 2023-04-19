@@ -146,4 +146,7 @@ export default {
   //Dialog
   ListLikePost: "รายชื่อคนที่ถูกใจโพสต์",
   ListLikeComment: "รายชื่อคนที่ถูกใจความคิดเห็น",
+
+  // Search
+  DataNotFound: "ไม่พบข้อมูล",
 };

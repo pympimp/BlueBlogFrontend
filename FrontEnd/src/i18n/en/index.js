@@ -148,4 +148,7 @@ export default {
   //Dialog
   ListLikePost: "Liked Post",
   ListLikeComment: "Liked Comment",
+
+  // Search
+  DataNotFound: "Data Not Found",
 };

@@ -55,7 +55,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in userList" :key="index">
+          <!-- ถ้าตัวอักษรที่ค้นหาไม่มีข้อมูลตรงกับในฐานข้อมูล -->
+          <tr v-if="filteredUserList.length === 0">
+            <td colspan="7" style="text-align: center">
+              {{ $t("DataNotFound") }}
+            </td>
+          </tr>
+          <!-- มีข้อมูลให้แสดงผล -->
+          <tr v-else v-for="(item, index) in filteredUserList" :key="index">
+            <!-- <tr v-for="(item, index) in filteredUserList" :key="index"> -->
             <td class="text-center">
               <q-avatar size="35px" rounded v-if="item.picture">
                 <img :src="item.picture.x" />
@@ -104,7 +112,7 @@
 
 <script setup>
 import { biPencil, biPlus, biTrash } from "@quasar/extras/bootstrap-icons";
-import { ref, onMounted, onUnmounted, watch } from "vue";
+import { ref, onMounted, onUnmounted, watch, computed } from "vue";
 import { useMeta, useQuasar } from "quasar";
 import { useLang } from "src/composables/useLang";
 import { useAxios } from "src/composables/useAxios";
@@ -117,15 +125,33 @@ const currentPage = ref(1);
 const recordPerPage = ref(6);
 const totalPage = ref(0);
 const userList = ref([]);
+// สำหรับค้นหา
+const search = ref("");
 
 const { t } = useLang();
 useMeta({ title: t("userList") });
 
 //onload เมื่อโหลดหน้านี้ ให้ทำคำสั่งเหล่านี้ออโต้
-onMounted(async () => {
-  fetchList();
-});
+// onMounted(async () => {
+//   fetchList();
+// });
 
+// const fetchList = async () => {
+//   loading.value = true;
+//   const response = await getUserList({
+//     page: currentPage.value,
+//     perPage: recordPerPage.value,
+//   });
+//   loading.value = false;
+//   if (response) {
+//     userList.value = response.dataList;
+//     totalPage.value = response.appPagination;
+//   }
+
+//   console.log("response", response);
+// };
+
+// fetch user list from API and update reactive variables
 const fetchList = async () => {
   loading.value = true;
   const response = await getUserList({
@@ -137,9 +163,25 @@ const fetchList = async () => {
     userList.value = response.dataList;
     totalPage.value = response.appPagination;
   }
-
-  console.log("response", response);
 };
+
+// call fetchList when component mounted
+onMounted(() => {
+  fetchList();
+});
+
+// computed property for filtered user list based on search keyword
+const filteredUserList = computed(() => {
+  const searchText = search.value.toLowerCase();
+  // ค้นหาข้อมูลตาม id,username,email
+  return userList.value.filter((user) => {
+    return (
+      user.id.toString().toLowerCase().includes(searchText) ||
+      user.email.toLowerCase().includes(searchText) ||
+      user.username.toLowerCase().includes(searchText)
+    );
+  });
+});
 
 const onDelete = (index) => {
   $q.dialog({
