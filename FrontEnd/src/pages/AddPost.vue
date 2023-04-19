@@ -4,7 +4,8 @@
       <div class="container">
         <!-- ส่วนของหัวข้อ 'เพิ่มโพสต์ใหม่' -->
         <p style="font-size: 25px; font-weight: bolder; color: #1a237e">
-          °˖ ✧◝ {{ t("AddPost") }} ◜✧˖ °
+          °˖ ✧◝
+          {{ action == "edit" ? t("EditPost") : t("AddPost") }} ◜✧˖ °
         </p>
 
         <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
@@ -72,7 +73,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { useQuasar } from "quasar";
@@ -81,7 +82,7 @@ import { PostApi } from "src/api/PostApi";
 import { FileApi } from "src/api/FileApi";
 import { useRoute, useRouter } from "vue-router";
 // Add Post
-const { addPost } = PostApi();
+const { addPost, detailPost, updateTextPost } = PostApi();
 // File Upload
 const { uploadImageApi } = FileApi();
 
@@ -94,6 +95,9 @@ const leftDrawerOpen = ref(false);
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
+const postId = ref();
+const action = ref();
+const loading = ref();
 const titlePost = ref("");
 const contentPost = ref("");
 const imageFile = ref();
@@ -107,27 +111,31 @@ const entityItem = ref({
   imageNameList: [],
 });
 
-/* const onSubmit = async () => {
-  // createProcess();
-  // // entityItem.value.imageNameList = await uploadMulipleFile();
-  // // if (imageFile.value) {
-  // //   const fileNameResponse = await uploadImageApi(imageFile.value);
-  // //   console.log("uploadImageApi", fileNameResponse);
-  // //   if (fileNameResponse && fileNameResponse.imageName) {
-  // //     entityItem.value.image_name = fileNameResponse.imageName;
-  // //     entityItem.value.haveNewImage = true;
-  // //   }
-  // // }
-  // console.log("onSubmit", entityItem.value);
+onMounted(() => {
+  // fethMajor();
+  if (route.params.postId) {
+    postId.value = route.params.postId;
+  }
+  if (route.params.action) {
+    action.value = route.params.action;
+  }
+  if (postId.value && action.value == "edit") {
+    fethData();
+    // console.log("get postId ", postId.value);
+  }
+  console.log("get postId ", postId.value);
+  console.log("get Action ", action.value);
+});
 
-  createProcess();
-  console.log("onSubmit", entityItem.value);
-  const response = await postMultipleUploadImage(
-    titlePost.value,
-    contentPost.value
-  );
-  console.log("response", response);
-}; */
+const fethData = async () => {
+  loading.value = true;
+  const respone = await detailPost(postId.value);
+  loading.value = false;
+  console.log("fethData", respone);
+  if (respone) {
+    entityItem.value = respone.entity;
+  }
+};
 
 const onSubmit = async () => {
   entityItem.value.imageNameList = await uploadMulipleFile();
@@ -140,7 +148,12 @@ const onSubmit = async () => {
     }
   }
   console.log("onSubmit", entityItem.value);
-  createProcess();
+  // createProcess();
+  if (action.value == "edit") {
+    updateProcess();
+  } else {
+    createProcess();
+  }
 };
 
 const uploadMulipleFile = async () => {
@@ -167,6 +180,20 @@ const createProcess = async () => {
       type: "positive",
     });
   }
+  router.push("/");
+};
+
+const updateProcess = async () => {
+  loading.value = true;
+  const response = await updateTextPost(entityItem.value);
+  console.log("updateTextPost", response);
+  if (response) {
+    $q.notify({
+      message: response.message,
+      type: "positive",
+    });
+  }
+  loading.value = false;
   router.push("/");
 };
 </script>

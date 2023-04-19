@@ -53,6 +53,14 @@ export const PostApi = () => {
     });
   };
 
+  const updateTextPost = async (req = {}) => {
+    return await callApi({
+      method: "PUT",
+      url: `/postEditContent`,
+      body: req,
+    });
+  };
+
   // Add Post
   const addPost = async (req = {}) => {
     return await callApi({
@@ -79,5 +87,6 @@ export const PostApi = () => {
     detailPost,
     addPost,
     deletePost,
+    updateTextPost,
   };
 };

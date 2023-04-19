@@ -10,6 +10,10 @@ const routes = [
         path: "/addpost",
         component: () => import("src/pages/AddPost.vue"),
       },
+      {
+        path: "/addpost/:action/:postId",
+        component: () => import("pages/AddPost.vue"),
+      },
       { path: "/mainpage", component: () => import("pages/MainPage.vue") },
       {
         path: "/myprofile/:user_id",

@@ -43,7 +43,7 @@
           style="margin-left: 735px; transform: scale(0.8) translate(90%, -40%)"
         >
           <q-fab-action
-            to="addpost"
+            :to="`/addpost/edit/${entityItem.id}`"
             external-label
             color="pink-10"
             @click="onClick"
@@ -643,6 +643,7 @@ const {
 const route = useRoute();
 const router = useRouter();
 const $q = useQuasar();
+const action = ref();
 
 // post id
 const { detailPost, deletePost } = PostApi();
@@ -688,35 +689,49 @@ onMounted(() => {
     id.value = route.params.user_id;
   }
 
-  if (
-    (postId.value && authenStore.auth.rolesText === "Dev") ||
-    entityItemComment.value.userId === authenStore.auth.id
-  ) {
-    fethData();
-    fethLikePost();
-    fethDataComment();
-    CheckPost();
-    fetchCountPost();
-    fethCountComment();
-    console.log("Comment All");
+  if (route.params.action) {
+    action.value = route.params.action;
+  }
+  if (postId.value && action.value == "edit") {
+    console.log("Edit Post");
   }
 
-  if (postId.value) {
-    fethData();
-    fethLikePost();
-    fethDataComment();
-    CheckPost();
-    fetchCountPost();
-    fethCountComment();
-  } else {
-    fethData();
-    fethLikePost();
-    fethDataCommentStatus();
-    CheckPost();
-    fetchCountPost();
-    fethCountComment();
-    console.log("Comment Status 0");
-  }
+  // เรียกใช้งาน fethData ก่อน
+  fethData().then(() => {
+    // สามารถใช้งาน userPostId ได้ที่นี่หลังจาก fethData ได้รับค่าเรียบร้อยแล้ว
+    console.log("User Post Then fetchData :", userPostId);
+    if (
+      (postId.value && authenStore.auth.rolesText === "Dev") ||
+      userPostId === authenStore.auth.id
+    ) {
+      fethData();
+      fethLikePost();
+      fethDataComment();
+      CheckPost();
+      fetchCountPost();
+      fethCountComment();
+      console.log("Comment All");
+      console.log("userPostID in Comment :", userPostId);
+    } else {
+      fethData();
+      fethLikePost();
+      fethDataCommentStatus();
+      CheckPost();
+      fetchCountPost();
+      fethCountComment();
+      console.log("Comment Status 0");
+      console.log("userPostID in Comment :", userPostId);
+    }
+  });
+
+  // if (postId.value) {
+  //   fethData();
+  //   fethLikePost();
+  //   fethDataComment();
+  //   CheckPost();
+  //   fetchCountPost();
+  //   fethCountComment();
+  // }
   console.log("get postId ", postId.value);
 });
 // Detail Post
@@ -725,6 +740,8 @@ const fethData = async () => {
   console.log("fethData", respone);
   if (respone) {
     entityItem.value = respone.entity;
+    userPostId = entityItem.value.user_id;
+    console.log("User Post ID", userPostId);
     CheckPost();
     fetchCountPost();
     fetchCountComment();
