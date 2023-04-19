@@ -24,7 +24,7 @@
 
         <!-- ส่วนของการจัดรูปแบบเนื้อหาโพสต์ -->
 
-        <div class="q-pa-md" style="max-width: 800px">
+        <div class="q-pa-md" style="max-width: 800px; margin-top: -10px">
           <q-input
             outlined
             v-model="entityItem.content"
@@ -61,7 +61,7 @@
               push
               color="indigo-5"
               :label="t('Postbtn')"
-              style="height: 35px; width: 50px"
+              style="height: 35px; width: 50px; margin-top: 20px"
               type="submit"
             />
           </div>
@@ -184,10 +184,9 @@ const createProcess = async () => {
   flex-direction: column;
   opacity: 0.8;
   height: 400px;
-  padding: 50px 50px 50px 50px;
+  padding: 20px 20px 20px 20px;
   border-radius: 30px;
   box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);
-  padding: 10px;
   background: white;
 }
 </style>
