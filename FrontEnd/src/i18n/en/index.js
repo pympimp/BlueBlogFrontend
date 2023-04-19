@@ -105,6 +105,8 @@ export default {
   HideComment: "Hide Comment",
   UnHideComment: "Unhide Comment",
   ChooseFile: "Choose Image",
+  ContentComment: "Comment's Content",
+  ContentPost: "Post's Content",
 
   //DashBoard
   TotalUser: "Total User",
@@ -148,6 +150,7 @@ export default {
   //Dialog
   ListLikePost: "Liked Post",
   ListLikeComment: "Liked Comment",
+  EditComment: "Edit Comment",
 
   // Search
   DataNotFound: "Data Not Found",

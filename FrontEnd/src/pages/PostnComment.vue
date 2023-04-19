@@ -117,7 +117,14 @@
             >
             <!-- Pop up รายชื่อคนกดถูกใจ -->
             <q-dialog v-model="alert">
-              <q-card style="max-height: 400px; width: 300px">
+              <q-card
+                style="
+                  max-height: 400px;
+                  width: 300px;
+                  border-radius: 20px;
+                  padding: 20px 20px 20px 20px;
+                "
+              >
                 <q-card-section>
                   <div
                     class="text-h6"
@@ -147,14 +154,6 @@
                   </router-link>
                 </q-card-section>
                 <!-- ปุ่มโอเคของ Dialog -->
-                <q-card-actions align="right">
-                  <q-btn
-                    flat
-                    :label="t('okay')"
-                    color="pink-10"
-                    v-close-popup
-                  />
-                </q-card-actions>
               </q-card>
             </q-dialog>
           </div>
@@ -192,11 +191,12 @@
         </p>
         <br />
         <!-- ช่องจัดรูปแบบของการเขียนคอมเมนต์ -->
-        <div class="q-pa-md q-gutter-sm">
-          <q-editor
+        <div class="q-pa-md" style="max-width: 700px">
+          <q-input
             v-model="entitycomment.content"
-            min-height="5rem"
-            style="width: 600px"
+            :label="t('ContentComment')"
+            filled
+            type="textarea"
           />
         </div>
 
@@ -254,14 +254,60 @@
         >
           <!-- Edit -->
           <q-fab-action
-            to="addpost"
             external-label
             color="pink-10"
-            @click="onClick"
+            @click="alertEdit = true"
             icon="edit"
             :label="t('EditComment')"
             v-if="item.userId === authenStore.auth.id"
           />
+          <!-- ส่วนของการ Pop up แจ้งเตือน -->
+          <q-dialog v-model="alertEdit">
+            <q-card style="padding: 20px 20px 20px 20px; border-radius: 20px">
+              <!-- หัวข้อใหญ่ว่า "Add Comment" -->
+              <p
+                style="
+                  font-size: 25px;
+                  font-weight: bolder;
+                  margin-bottom: -10px;
+                  color: #b03367;
+                "
+              >
+                {{ t("EditComment") }}
+              </p>
+              <div class="q-pa-md q-gutter-sm">
+                <q-editor
+                  v-model="entitycomment.content"
+                  min-height="5rem"
+                  style="width: 500px"
+                />
+              </div>
+
+              <div style="display: flex">
+                <!-- ปุ่มเลือกไฟล์ -->
+                <q-file
+                  color="pink"
+                  v-model="imageFile"
+                  :label="t('ChooseFile')"
+                  borderless
+                  style="padding-right: 300px; text-decoration: none"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="attach_file" />
+                  </template>
+                </q-file>
+                <!-- ปุ่มยืนยัน -->
+                <q-btn
+                  color="pink"
+                  glossy
+                  type="submit"
+                  :label="t('Submit')"
+                  style="height: 5px; margin-top: 15px"
+                />
+              </div>
+            </q-card>
+          </q-dialog>
+
           <!-- Delete -->
           <q-fab-action
             external-label
@@ -582,6 +628,7 @@ import { useAuthenStore } from "src/stores/authen";
 const authenStore = useAuthenStore();
 
 const alert = ref(false);
+const alertEdit = ref(false);
 const {
   LikePost,
   UnlikePost,

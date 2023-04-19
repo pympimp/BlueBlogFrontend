@@ -102,6 +102,8 @@ export default {
   HideComment: "ซ่อนความคิดเห็น",
   UnHideComment: "ยกเลิกซ่อนความคิดเห็น",
   ChooseFile: "เลือกไฟล์รูปภาพ",
+  ContentComment: "เนื้อหาความคิดเห็น",
+  ContentPost: "เนื้อหาโพสต์",
 
   //DashBoard
   TotalUser: "จำนวนผู้ใช้",
@@ -146,6 +148,7 @@ export default {
   //Dialog
   ListLikePost: "รายชื่อคนที่ถูกใจโพสต์",
   ListLikeComment: "รายชื่อคนที่ถูกใจความคิดเห็น",
+  EditComment: "แก้ไขความคิดเห็น",
 
   // Search
   DataNotFound: "ไม่พบข้อมูล",
