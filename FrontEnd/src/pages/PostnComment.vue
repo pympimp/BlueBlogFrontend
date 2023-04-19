@@ -297,12 +297,14 @@
                     <q-icon name="attach_file" />
                   </template>
                 </q-file>
+
                 <!-- ปุ่มยืนยัน -->
                 <q-btn
                   color="pink"
                   glossy
                   push
                   type="submit"
+                  @click="onSubmit('edit')"
                   :label="t('Submit')"
                   style="height: 5px; margin-top: 15px"
                 />
@@ -642,7 +644,7 @@ const {
   CountPost,
   CountComment,
 } = LikeApi();
-const { SingleComment } = CommentApi();
+const { SingleComment, EditComment } = CommentApi();
 const route = useRoute();
 const router = useRouter();
 const $q = useQuasar();
@@ -773,7 +775,7 @@ const fethDataCommentStatus = async () => {
 };
 
 // Add Comment
-const onSubmit = async () => {
+const onSubmit = async (action) => {
   if (imageFile.value) {
     const fileNameResponse = await uploadImageApi(imageFile.value);
     console.log("uploadImageApi", fileNameResponse);
@@ -783,6 +785,9 @@ const onSubmit = async () => {
     }
   }
   console.log("onSubmit", entitycomment.value);
+  if (action === "edit") {
+    editProcess(entitycomment.value.post_id);
+  }
   if (entitycomment.value) {
     createProcess(entitycomment.value.post_id);
   }
@@ -928,8 +933,20 @@ const alertEdit = async (index) => {
     console.log("Check Comment", entitycomment);
   }
 };
-
 const alertEdit1 = ref(false);
+
+const editProcess = async () => {
+  const response = await EditComment(entitycomment.value);
+  console.log("updateUser", response);
+  if (response) {
+    $q.notify({
+      message: response.message,
+      type: "positive",
+    });
+  }
+  router.push("/postncomment/:postId");
+};
+
 function toggleEditIcon(item) {
   if (LikeCommentIcon.value === biHeart) {
     LikeCommentBtn(id, id1);

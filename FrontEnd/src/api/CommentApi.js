@@ -58,6 +58,13 @@ export const CommentApi = () => {
     });
   };
 
+  const EditComment = async () => {
+    return await callApi({
+      method: "PUT",
+      url: `/commentEdit`,
+    });
+  };
+
   return {
     detailComment,
     detailCommentStatus,
@@ -66,5 +73,6 @@ export const CommentApi = () => {
     hideComment,
     unHideComment,
     SingleComment,
+    EditComment,
   };
 };
