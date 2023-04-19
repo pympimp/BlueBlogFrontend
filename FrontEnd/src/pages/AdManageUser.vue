@@ -187,6 +187,10 @@ const onDelete = (index) => {
       color: "grey",
     },
   }).onOk(() => {
+    $q.notify({
+      message: "Success!",
+      type: "positive",
+    });
     console.log("OK");
     deleteProcess(index);
   });
@@ -197,15 +201,18 @@ const deleteProcess = async (index) => {
   if (item) {
     const respone = await deleteUser(item.id);
     console.log("deleteUser", respone);
-    refreshData();
+    // refreshData();
+    setTimeout(() => {
+      location.reload();
+    }, 1000);
   }
 };
 
-const refreshData = () => {
-  userList.value = [];
-  currentPage.value = 1;
-  fetchList();
-};
+// const refreshData = () => {
+//   userList.value = [];
+//   currentPage.value = 1;
+//   fetchList();
+// };
 </script>
 
 <style scoped>

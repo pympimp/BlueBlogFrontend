@@ -155,7 +155,7 @@ const updateProcess = async () => {
   console.log("updateUser", response);
   if (response) {
     $q.notify({
-      message: response.message,
+      message: "Success!",
       type: "positive",
     });
   }
