@@ -142,4 +142,6 @@ export default {
   //q.doalog UnHide Comment
   QunhideComment: "ยกเลิกซ่อนความคิดเห็น",
   QconunhideComment: "ยืนยันที่จะยกเลิกซ่อนความคิดเห็น?",
+
+  //Dialog
 };
