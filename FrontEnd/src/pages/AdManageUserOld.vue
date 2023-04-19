@@ -39,67 +39,71 @@
       />
 
       <!-- ส่วนของหัวข้ออย่างเช่น ID Username etc. -->
-      <q-scroll-area style="height: 380px">
-        <q-markup-table
-          style="
-            margin-top: 20px;
-            border-radius: 10px;
-            padding: 5px 0px 10px 0px;
-          "
-        >
-          <thead>
-            <tr style="font-weight: bold">
-              <th class="text-center">{{ t("Profile") }}</th>
-              <th class="text-center">{{ t("Id") }}</th>
-              <th class="text-center">{{ t("Username") }}</th>
-              <th class="text-center">{{ t("Email") }}</th>
-              <th class="text-center">{{ t("Type") }}</th>
-              <th class="text-center">{{ t("Status") }}</th>
-              <th class="text-center">{{ t("Tools") }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- ถ้าตัวอักษรที่ค้นหาไม่มีข้อมูลตรงกับในฐานข้อมูล -->
-            <tr v-if="filteredUserList.length === 0">
-              <td colspan="7" style="text-align: center">
-                {{ $t("DataNotFound") }}
-              </td>
-            </tr>
-            <!-- มีข้อมูลให้แสดงผล -->
-            <tr v-else v-for="(item, index) in filteredUserList" :key="index">
-              <!-- <tr v-for="(item, index) in filteredUserList" :key="index"> -->
-              <td class="text-center">
-                <q-avatar size="35px" rounded v-if="item.picture">
-                  <img :src="item.picture.x" />
-                </q-avatar>
-              </td>
-              <td class="text-center">{{ item.id }}</td>
-              <td class="text-center">{{ item.username }}</td>
-              <td class="text-center">{{ item.email }}</td>
-              <td class="text-center">{{ item.userRoles }}</td>
-              <td class="text-center">{{ item.status }}</td>
-              <td>
-                <q-btn
-                  :icon="biPencil"
-                  :to="`/adedituser/edit/${item.id}`"
-                  flat
-                  color="pink"
-                >
-                  <q-tooltip> {{ t("edit") }} </q-tooltip></q-btn
-                >
-                <q-btn
-                  @click="onDelete(index)"
-                  :icon="biTrash"
-                  flat
-                  color="pink"
-                >
-                  <q-tooltip> {{ t("delete") }} </q-tooltip></q-btn
-                >
-              </td>
-            </tr>
-          </tbody>
-        </q-markup-table>
-      </q-scroll-area>
+
+      <q-markup-table
+        style="margin-top: 20px; border-radius: 10px; padding: 5px 0px 10px 0px"
+      >
+        <thead>
+          <tr style="font-weight: bold">
+            <th class="text-center">{{ t("Profile") }}</th>
+            <th class="text-center">{{ t("Id") }}</th>
+            <th class="text-center">{{ t("Username") }}</th>
+            <th class="text-center">{{ t("Email") }}</th>
+            <th class="text-center">{{ t("Type") }}</th>
+            <th class="text-center">{{ t("Status") }}</th>
+            <th class="text-center">{{ t("Tools") }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- ถ้าตัวอักษรที่ค้นหาไม่มีข้อมูลตรงกับในฐานข้อมูล -->
+          <tr v-if="filteredUserList.length === 0">
+            <td colspan="7" style="text-align: center">
+              {{ $t("DataNotFound") }}
+            </td>
+          </tr>
+          <!-- มีข้อมูลให้แสดงผล -->
+          <tr v-else v-for="(item, index) in filteredUserList" :key="index">
+            <!-- <tr v-for="(item, index) in filteredUserList" :key="index"> -->
+            <td class="text-center">
+              <q-avatar size="35px" rounded v-if="item.picture">
+                <img :src="item.picture.x" />
+              </q-avatar>
+            </td>
+            <td class="text-center">{{ item.id }}</td>
+            <td class="text-center">{{ item.username }}</td>
+            <td class="text-center">{{ item.email }}</td>
+            <td class="text-center">{{ item.userRoles }}</td>
+            <td class="text-center">{{ item.status }}</td>
+            <td>
+              <q-btn
+                :icon="biPencil"
+                :to="`/adedituser/edit/${item.id}`"
+                flat
+                color="pink"
+              >
+                <q-tooltip> {{ t("edit") }} </q-tooltip></q-btn
+              >
+              <q-btn @click="onDelete(index)" :icon="biTrash" flat color="pink">
+                <q-tooltip> {{ t("delete") }} </q-tooltip></q-btn
+              >
+            </td>
+          </tr>
+        </tbody>
+      </q-markup-table>
+
+      <!-- แถบเลขด้านล่าง -->
+      <br />
+      <div class="q-gutter-md" style="display: flex; justify-content: center">
+        <q-pagination
+          v-model="currentPage"
+          :max="totalPage"
+          direction-links
+          flat
+          color="grey"
+          active-color="pink"
+        />
+      </div>
+
       <!-- ส่วนของรายชื่อสมาชิกไล่ลงไป -->
     </div>
   </q-page>
@@ -117,6 +121,9 @@ import { UserApi } from "src/api/UserApi";
 const $q = useQuasar();
 const { getUserList, getOne, createUser, updateUser, deleteUser } = UserApi();
 const loading = ref(false);
+const currentPage = ref(1);
+const recordPerPage = ref(6);
+const totalPage = ref(0);
 const userList = ref([]);
 // สำหรับค้นหา
 const search = ref("");
@@ -147,10 +154,14 @@ useMeta({ title: t("userList") });
 // fetch user list from API and update reactive variables
 const fetchList = async () => {
   loading.value = true;
-  const response = await getUserList({});
+  const response = await getUserList({
+    page: currentPage.value,
+    perPage: recordPerPage.value,
+  });
   loading.value = false;
   if (response) {
     userList.value = response.dataList;
+    totalPage.value = response.appPagination;
   }
 };
 
@@ -206,6 +217,11 @@ const refreshData = () => {
   currentPage.value = 1;
   fetchList();
 };
+
+watch(currentPage, async (newVal, oldVal) => {
+  fetchList();
+  console.log("currentPage changed :", newVal);
+});
 </script>
 
 <style scoped>
