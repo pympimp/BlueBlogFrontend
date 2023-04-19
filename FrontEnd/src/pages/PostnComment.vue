@@ -650,7 +650,7 @@ onMounted(() => {
     fethDataComment();
     CheckPost();
     fetchCountPost();
-    fetchCountComment();
+    fethCountComment();
     console.log("Comment All");
   }
 
@@ -660,14 +660,14 @@ onMounted(() => {
     fethDataComment();
     CheckPost();
     fetchCountPost();
-    fetchCountComment();
+    fethCountComment();
   } else {
     fethData();
     fethLikePost();
     fethDataCommentStatus();
     CheckPost();
     fetchCountPost();
-    fetchCountComment();
+    fethCountComment();
     console.log("Comment Status 0");
   }
   console.log("get postId ", postId.value);
@@ -685,11 +685,20 @@ const fethData = async () => {
 };
 
 const entityListLikePost = ref([]);
+//ฟังก์ชั่นโชว์รายชื่อผู้กดไลก์โพสต์
 const fethLikePost = async () => {
   const response = await ListLikePost(postId.value);
   console.log("Fetch Who Like Post", response);
   if (response) {
     entityListLikePost.value = response.dataList;
+  }
+};
+
+//ฟังก์ชั่นโชว์จำนวนผู้กดไลก์คอมเมนต์
+const fethCountComment = async () => {
+  const response = await CountComment(commentId.value);
+  if (response) {
+    entityLikeComment.value = response.TotalLikeComment;
   }
 };
 
