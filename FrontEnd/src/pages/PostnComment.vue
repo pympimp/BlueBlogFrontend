@@ -105,10 +105,58 @@
             &nbsp;
             <span
               id="count"
-              style="display: inline; color: #b46f8f; text-weight: bolder"
+              @click="alert = true"
+              style="
+                display: inline;
+                color: #b46f8f;
+                text-weight: bolder;
+                cursor: pointer;
+              "
               >{{ entityLikePost ? entityLikePost["TotalLikePost"] : "" }}
               {{ t("Like") }}</span
             >
+            <!-- Pop up รายชื่อคนกดถูกใจ -->
+            <q-dialog v-model="alert">
+              <q-card style="max-height: 400px; width: 300px">
+                <q-card-section>
+                  <div
+                    class="text-h6"
+                    style="font-weight: bold; color: #1a237e"
+                  >
+                    {{ t("ListLikePost") }}
+                  </div>
+                </q-card-section>
+
+                <q-card-section
+                  class="q-pt-none text-red"
+                  v-for="(item, index) in entityListLikePost"
+                  :key="index"
+                >
+                  <ion-avatar>
+                    <img
+                      :src="item.picture.path"
+                      style="width: 30px; height: 30px"
+                    />
+                  </ion-avatar>
+                  &nbsp;
+                  <router-link
+                    :to="'/myprofile/' + item.user_id"
+                    style="text-decoration: none; color: #1d1917"
+                  >
+                    {{ item.username }}
+                  </router-link>
+                </q-card-section>
+                <!-- ปุ่มโอเคของ Dialog -->
+                <q-card-actions align="right">
+                  <q-btn
+                    flat
+                    :label="t('okay')"
+                    color="pink-10"
+                    v-close-popup
+                  />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
           </div>
 
           <br />
@@ -289,6 +337,8 @@
             <span
               id="count2"
               style="display: inline; color: #b46f8f; text-weight: bolder"
+              v-for="(item, index) in entityLikeComment"
+              :key="index"
             >
               {{
                 entityLikeComment ? entityLikeComment["TotalLikeComment"] : ""
@@ -531,6 +581,7 @@ import { LikeApi } from "src/api/LikeApi";
 import { useAuthenStore } from "src/stores/authen";
 const authenStore = useAuthenStore();
 
+const alert = ref(false);
 const {
   LikePost,
   UnlikePost,
@@ -595,9 +646,9 @@ onMounted(() => {
     entityItemComment.value.userId === authenStore.auth.id
   ) {
     fethData();
+    fethLikePost();
     fethDataComment();
     CheckPost();
-    CheckComment();
     fetchCountPost();
     fetchCountComment();
     console.log("Comment All");
@@ -605,16 +656,16 @@ onMounted(() => {
 
   if (postId.value) {
     fethData();
+    fethLikePost();
     fethDataComment();
     CheckPost();
-    CheckComment();
     fetchCountPost();
     fetchCountComment();
   } else {
     fethData();
+    fethLikePost();
     fethDataCommentStatus();
     CheckPost();
-    CheckComment();
     fetchCountPost();
     fetchCountComment();
     console.log("Comment Status 0");
@@ -628,9 +679,17 @@ const fethData = async () => {
   if (respone) {
     entityItem.value = respone.entity;
     CheckPost();
-    CheckComment();
     fetchCountPost();
     fetchCountComment();
+  }
+};
+
+const entityListLikePost = ref([]);
+const fethLikePost = async () => {
+  const response = await ListLikePost(postId.value);
+  console.log("Fetch Who Like Post", response);
+  if (response) {
+    entityListLikePost.value = response.dataList;
   }
 };
 
@@ -640,6 +699,8 @@ const fethDataComment = async () => {
   console.log("fethDataComment", respone);
   if (respone) {
     entityItemComment.value = respone.entity;
+    entityCheckComment.value = respone.entity;
+    CheckComment();
   }
 };
 
@@ -787,11 +848,13 @@ function toggleLikePost(entityItem) {
 function toggleLikeComment(id, id1) {
   if (LikeCommentIcon.value === biHeart) {
     LikeCommentBtn(id, id1);
+    console.log("Arrey", entityCheckComment.value);
     LikeCommentIcon.value = biHeartFill;
     // followColor.value = "secondary";
     // count.value += 1;
   } else {
     UnlikeCommentBtn(id, id1);
+    console.log("Arrey", entityCheckComment.value);
     LikeCommentIcon.value = biHeart;
     // followColor.value = "primary";
     // count.value -= 1;
@@ -817,19 +880,22 @@ const CheckPost = async () => {
   }
 };
 
+const entityCheckComment = ref({});
 const CheckComment = async () => {
-  const response = await CheckLikeComment(commentId.value);
-  if (response) {
-    entityLikeComment.value = response;
-    console.log("Check Like Comment", entityLikeComment);
-  }
-  if (entityLikeComment.value.status === true) {
-    console.log("Like Comment Status :", entityLikeComment.value.status);
-    LikeCommentIcon.value = biHeartFill;
-  } else {
-    console.log("Unlike Comment Status :", entityLikeComment.value.status);
-    LikeCommentIcon.value = biHeart;
-  }
+  entityCheckComment.value.forEach(async (item) => {
+    const response = await CheckLikeComment(item.commentId);
+    if (response) {
+      entityCheckComment.value = response;
+      console.log("entityComment Check", entityCheckComment.value);
+    }
+    if (entityCheckComment.value.status === true) {
+      console.log("entityCommentTrue", entityCheckComment.value.status);
+      LikeCommentIcon.value = biHeartFill;
+    } else {
+      console.log("entityComment", entityCheckComment.value.status);
+      LikeCommentIcon.value = biHeart;
+    }
+  });
 };
 
 //ฟังก์ชั่นของการนับยอดไลก์โพสต์
@@ -863,6 +929,7 @@ const LikePostBtn = async (entityItem) => {
       console.log(entityItem.id);
       console.log("Like", response.message);
       fetchCountPost();
+      fethLikePost();
     }
   }
 };
@@ -875,6 +942,7 @@ const UnlikePostBtn = async (entityItem) => {
     if (response) {
       console.log("Unlike", response.message);
       fetchCountPost();
+      fethLikePost();
     }
   }
 };

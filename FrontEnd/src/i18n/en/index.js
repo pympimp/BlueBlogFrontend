@@ -144,4 +144,8 @@ export default {
   //q.doalog UnHide Comment
   QunhideComment: "Unhide Comment",
   QconunhideComment: "Confirm to unhide comment?",
+
+  //Dialog
+  ListLikePost: "Liked Post",
+  ListLikeComment: "Liked Comment",
 };

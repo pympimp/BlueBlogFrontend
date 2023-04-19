@@ -144,4 +144,6 @@ export default {
   QconunhideComment: "ยืนยันที่จะยกเลิกซ่อนความคิดเห็น?",
 
   //Dialog
+  ListLikePost: "รายชื่อคนที่ถูกใจโพสต์",
+  ListLikeComment: "รายชื่อคนที่ถูกใจความคิดเห็น",
 };

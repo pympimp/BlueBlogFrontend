@@ -170,9 +170,6 @@ const search = ref("");
 // คัดเลือกโพสต์ post
 const url = ref("CreateDateDesc");
 
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value;
-}
 // แสดง List Post
 onMounted(async () => {
   fetchList();
