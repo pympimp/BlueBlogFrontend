@@ -223,12 +223,8 @@ const updateProcess = async () => {
   align-items: center;
   flex-direction: column;
   opacity: 0.8;
-<<<<<<< HEAD
   padding: 50px 50px 50px 50px;
-=======
-  height: 400px;
   padding: 20px 20px 20px 20px;
->>>>>>> f9cb14c265bac6ca220fb45adf52aeeb00017d8e
   border-radius: 30px;
   box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);
   background: white;
