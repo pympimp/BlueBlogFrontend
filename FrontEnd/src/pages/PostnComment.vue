@@ -519,14 +519,63 @@
         >
           <!-- Edit -->
           <q-fab-action
-            to="addpost"
             external-label
             color="pink-10"
-            @click="onClick"
+            @click="alertEdit(item.commentId)"
             icon="edit"
             :label="t('EditComment')"
             v-if="item.userId === authenStore.auth.id"
           />
+          <!-- ส่วนของการ Pop up แจ้งเตือน -->
+          <q-dialog v-model="alertEdit1">
+            <q-card style="padding: 20px 20px 20px 20px; border-radius: 20px">
+              <!-- หัวข้อใหญ่ว่า "Add Comment" -->
+              <p
+                style="
+                  font-size: 25px;
+                  font-weight: bolder;
+                  margin-bottom: -10px;
+                  color: #b03367;
+                "
+              >
+                {{ t("EditComment") }}
+              </p>
+              <div class="q-pa-md q-gutter-sm">
+                <q-input
+                  v-model="entitycomment.content"
+                  :label="t('ContentComment')"
+                  filled
+                  type="textarea"
+                />
+              </div>
+
+              <div style="display: flex">
+                <!-- ปุ่มเลือกไฟล์ -->
+                <q-file
+                  color="pink"
+                  v-model="imageFile"
+                  :label="t('ChooseFile')"
+                  borderless
+                  style="padding-right: 300px; text-decoration: none"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="attach_file" />
+                  </template>
+                </q-file>
+
+                <!-- ปุ่มยืนยัน -->
+                <q-btn
+                  color="pink"
+                  glossy
+                  push
+                  type="submit"
+                  @click="onSubmit('edit')"
+                  :label="t('Submit')"
+                  style="height: 5px; margin-top: 15px"
+                />
+              </div>
+            </q-card>
+          </q-dialog>
 
           <!-- Delete -->
           <q-fab-action
@@ -603,19 +652,65 @@
               glossy
               push
               color="pink-9"
-              :icon="LikeCommentIcon"
-              @click="toggleLikeComment(item.commentId, item.postId)"
+              :icon="
+                item.check === true
+                  ? (LikeCommentIcon = biHeartFill)
+                  : (LikeCommentIcon = biHeart)
+              "
+              @click="
+                toggleLikeComment(item.commentId, item.postId, item.check)
+              "
               style="height: 20px; margin-top: 5px; width: 40px"
             />
             &nbsp;
             <span
               id="count2"
-              style="display: inline; color: #b46f8f; text-weight: bolder"
+              @click="fethLikeComment(item.commentId)"
+              style="display: inline; color: #b46f8f; cursor: pointer"
             >
               {{ item.CountLikeComment }}
             </span>
+            <!-- Pop up รายชื่อคนกดถูกใจ -->
+            <q-dialog v-model="alertComment">
+              <q-card
+                style="
+                  max-height: 400px;
+                  width: 300px;
+                  border-radius: 20px;
+                  padding: 10px 10px 10px 10px;
+                "
+              >
+                <q-card-section>
+                  <div
+                    class="text-h6"
+                    style="font-weight: bold; color: #1a237e"
+                  >
+                    {{ t("ListLikeComment") }}
+                  </div>
+                </q-card-section>
 
-            <!-- จำนวนยอดไลก์โพสต์ -->
+                <q-card-section
+                  class="q-pt-none text-red"
+                  v-for="(item, index) in entityListLikeComment"
+                  :key="index"
+                >
+                  <ion-avatar>
+                    <img
+                      :src="item.picture.path"
+                      style="width: 30px; height: 30px"
+                    />
+                  </ion-avatar>
+                  &nbsp;
+                  <router-link
+                    :to="'/myprofile/' + item.user_id"
+                    style="text-decoration: none; color: #1d1917"
+                  >
+                    {{ item.username }}
+                  </router-link>
+                </q-card-section>
+              </q-card>
+            </q-dialog>
+            <!-- จำนวนยอดไลก์คอมเมนต์ -->
             <b
               style="
                 color: #b46f8f;
@@ -660,12 +755,10 @@
 </template>
 
 <script setup>
-import { defineComponent, ref, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 // import icon bootstrap
 import {
-  biTranslate,
-  biCheck,
   biEye,
   biEyeSlash,
   biHeart,
@@ -762,6 +855,7 @@ onMounted(() => {
   if (route.params.action) {
     action.value = route.params.action;
   }
+
   if (postId.value && action.value == "edit") {
     console.log("Edit Post");
   }
@@ -785,7 +879,7 @@ onMounted(() => {
       fethData();
       fethLikePost();
       fethDataCommentStatus();
-      fethDataComment();
+      // fethDataComment();
       CheckPost();
       fetchCountPost();
       console.log("Comment Status 0");
@@ -861,6 +955,9 @@ const fethDataCommentStatus = async () => {
   console.log("fethDataCommentStatus", respone);
   if (respone) {
     entityItemCommentStatus.value = respone.entity;
+    entityCheckCommentStatus.value = respone.entity;
+    CheckComment0();
+    fetchCountCommentStatus();
   }
 };
 
@@ -1033,13 +1130,14 @@ const editProcess = async () => {
   console.log("updateUser", response);
   if (response) {
     $q.notify({
-      message: "Update Success",
+      message: response.message,
       type: "positive",
     });
   }
   // router.push("/postncomment/:postId");
   alertEdit1.value = false;
   fethDataComment();
+  fethDataCommentStatus();
 };
 
 function toggleEditIcon(item) {
@@ -1079,6 +1177,7 @@ const CheckPost = async () => {
 };
 
 const entityCheckComment = ref({});
+const entityCheckCommentStatus = ref({});
 const ArrayCountComment = ref([]);
 
 //แล้วมาทำการลูปให้ไอดีใน entityCHeckCommant มาเรียกข้อมูลของ API CheckLikeComment
@@ -1090,7 +1189,18 @@ const CheckComment = async () => {
       entityItemComment.value[index].check = response.status;
     }
   });
-  console.log("มีแล้วจ้า", entityItemComment.value);
+  console.log("มี 1 แล้วจ้า", entityItemComment.value);
+};
+
+//เช็คคอมเมนต์ที่มี status 0
+const CheckComment0 = async () => {
+  entityCheckCommentStatus.value.forEach(async (item, index) => {
+    const response = await CheckLikeComment(item.commentId);
+    if (response) {
+      entityItemCommentStatus.value[index].check = response.status;
+    }
+  });
+  console.log("มี 0 แล้วจ้า", entityItemCommentStatus.value);
 };
 
 //ฟังก์ชั่นของการนับยอดไลก์โพสต์
@@ -1115,6 +1225,19 @@ const fetchCountComment = async () => {
     }
   });
   console.log("มานะมานนี", entityItemComment.value);
+};
+
+//ฟังก์ชั่นของการนับยอดไลก์คอมเมนต์ status 0
+const fetchCountCommentStatus = async () => {
+  entityItemCommentStatus.value.forEach(async (item, index) => {
+    const response = await CountComment(item.commentId);
+    if (response) {
+      entityItemCommentStatus.value[index].CountLikeComment =
+        response.TotalLikeComment;
+      entityCheckComment.value = response.entity;
+    }
+  });
+  console.log("มานะมานนี 0", entityItemCommentStatus.value);
 };
 
 //ฟังก์ชั่นกดไลก์โพสต์
@@ -1148,13 +1271,23 @@ const UnlikePostBtn = async (entityItem) => {
 const LikeCommentBtn = async (id, id1) => {
   const $id = id;
   const $id1 = id1;
-  if ($id && $id1) {
+  if (
+    authenStore.auth.rolesText === "Dev" ||
+    userPostId === authenStore.auth.id
+  ) {
     const response = await LikeComment($id, $id1);
     if (response) {
       console.log("LikeComment", response.message);
       fetchCountComment();
+      // fetchCountCommentStatus();
       // CheckComment();
       fethDataComment();
+    }
+  } else {
+    const response = await LikeComment($id, $id1);
+    if (response) {
+      fethDataCommentStatus();
+      fetchCountCommentStatus();
     }
   }
 };
@@ -1163,13 +1296,23 @@ const LikeCommentBtn = async (id, id1) => {
 const UnlikeCommentBtn = async (id, id1) => {
   const $id = id;
   const $id1 = id1;
-  if ($id && $id1) {
+  if (
+    authenStore.auth.rolesText === "Dev" ||
+    userPostId === authenStore.auth.id
+  ) {
     const response = await UnlikeComment($id, $id1);
     if (response) {
       console.log("UnlikeComment", response.message);
       fetchCountComment();
+      // fetchCountCommentStatus();
       // CheckComment();
       fethDataComment();
+    }
+  } else {
+    const response = await UnlikeComment($id, $id1);
+    if (response) {
+      fethDataCommentStatus();
+      fetchCountCommentStatus();
     }
   }
 };
@@ -1374,3 +1517,4 @@ p {
   cursor: pointer;
 }
 </style>
+!

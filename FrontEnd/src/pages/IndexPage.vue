@@ -36,13 +36,13 @@
 
             <q-item clickable v-close-popup @click="change('PopularAsc')">
               <q-item-section>
-                <q-item-label>{{ $t("PopMore") }}</q-item-label>
+                <q-item-label>{{ $t("PopLess") }}</q-item-label>
               </q-item-section>
             </q-item>
 
             <q-item clickable v-close-popup @click="change('PopularDesc')">
               <q-item-section>
-                <q-item-label>{{ $t("PopLess") }}</q-item-label>
+                <q-item-label>{{ $t("PopMore") }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>

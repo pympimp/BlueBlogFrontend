@@ -77,8 +77,8 @@ export default {
   FilterPost: "คัดกรองโพสต์",
   PostOld: "โพสต์เก่า - ใหม่",
   PostNew: "โพสต์ใหม่ - เก่า",
-  PopMore: "ความนิยมน้อย - มาก",
-  PopLess: "ความนิยมมาก - น้อย",
+  PopMore: "ความนิยมมาก - น้อย",
+  PopLess: "ความนิยมน้อย - มาก",
 
   //Setting
   Setting: "การตั้งค่า",
