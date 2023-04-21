@@ -42,7 +42,7 @@
               </ion-avatar>
               &nbsp;
               <router-link
-                :to="'/myprofile/' + item.user_id"
+                :to="'/myprofile/' + item.postUserId"
                 style="
                   text-decoration: none;
                   color: black;
@@ -50,7 +50,7 @@
                   color: #1a237e;
                 "
               >
-                {{ item.username }}
+                {{ item.postUserUsername }}
               </router-link>
               &nbsp;
               <!-- ส่วนของไลก์และคอมเมนต์ -->
