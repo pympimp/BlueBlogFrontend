@@ -134,6 +134,10 @@ export default {
   QdelPost: "ลบข้อมูลโพสต์",
   QconPost: "ยืนยันที่จะลบข้อมูลโพสต์?",
 
+  //q.doalog Post Img
+  QdelPostImg: "ลบข้อมูลรูปภาพโพสต์",
+  QconPostImg: "ยืนยันที่จะลบข้อมูลรูปภาพโพสต์?",
+
   //q.doalog Comment
   QdelComment: "ลบข้อมูลความคิดเห็น",
   QconComment: "ยืนยันที่จะลบข้อมูลความคิดเห็น?",
