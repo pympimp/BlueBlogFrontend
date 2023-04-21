@@ -68,7 +68,11 @@
       <!-- ส่วนของรูปภาพของโพสต์ -->
 
       <template v-for="(postImg, index) in entityItem?.postImg" :key="index">
-        <q-img :src="postImg.postimg.path" class="img"></q-img>
+        <q-img
+          :src="postImg.postimg.path"
+          class="img"
+          style="border-radius: 20px"
+        ></q-img>
         <br />
       </template>
 
@@ -105,7 +109,7 @@
             &nbsp;
             <span
               id="count"
-              @click="alert = true"
+              @click="alertPost = true"
               style="
                 display: inline;
                 color: #b46f8f;
@@ -116,7 +120,7 @@
               {{ t("Like") }}</span
             >
             <!-- Pop up รายชื่อคนกดถูกใจ -->
-            <q-dialog v-model="alert">
+            <q-dialog v-model="alertPost">
               <q-card
                 style="
                   max-height: 400px;
@@ -157,7 +161,6 @@
               </q-card>
             </q-dialog>
           </div>
-
           <br />
         </div>
         <br />
@@ -387,22 +390,65 @@
               glossy
               push
               color="pink-9"
-              :icon="LikeCommentIcon"
-              @click="toggleLikeComment(item.commentId, item.postId)"
+              :icon="
+                item.check === true
+                  ? (LikeCommentIcon = biHeartFill)
+                  : (LikeCommentIcon = biHeart)
+              "
+              @click="
+                toggleLikeComment(item.commentId, item.postId, item.check)
+              "
               style="height: 20px; margin-top: 5px; width: 40px"
             />
             &nbsp;
             <span
               id="count2"
-              style="display: inline; color: #b46f8f; text-weight: bolder"
-              v-for="(item, index) in entityLikeComment"
-              :key="index"
+              @click="fethLikeComment(item.commentId)"
+              style="display: inline; color: #b46f8f; cursor: pointer"
             >
-              {{
-                entityLikeComment ? entityLikeComment["TotalLikeComment"] : ""
-              }}
+              {{ item.CountLikeComment }}
             </span>
-            <!-- จำนวนยอดไลก์โพสต์ -->
+            <!-- Pop up รายชื่อคนกดถูกใจ -->
+            <q-dialog v-model="alertComment">
+              <q-card
+                style="
+                  max-height: 400px;
+                  width: 300px;
+                  border-radius: 20px;
+                  padding: 10px 10px 10px 10px;
+                "
+              >
+                <q-card-section>
+                  <div
+                    class="text-h6"
+                    style="font-weight: bold; color: #1a237e"
+                  >
+                    {{ t("ListLikeComment") }}
+                  </div>
+                </q-card-section>
+
+                <q-card-section
+                  class="q-pt-none text-red"
+                  v-for="(item, index) in entityListLikeComment"
+                  :key="index"
+                >
+                  <ion-avatar>
+                    <img
+                      :src="item.picture.path"
+                      style="width: 30px; height: 30px"
+                    />
+                  </ion-avatar>
+                  &nbsp;
+                  <router-link
+                    :to="'/myprofile/' + item.user_id"
+                    style="text-decoration: none; color: #1d1917"
+                  >
+                    {{ item.username }}
+                  </router-link>
+                </q-card-section>
+              </q-card>
+            </q-dialog>
+            <!-- จำนวนยอดไลก์คอมเมนต์ -->
             <b
               style="
                 color: #b46f8f;
@@ -481,6 +527,7 @@
             :label="t('EditComment')"
             v-if="item.userId === authenStore.auth.id"
           />
+
           <!-- Delete -->
           <q-fab-action
             external-label
@@ -556,24 +603,18 @@
               glossy
               push
               color="pink-9"
-              :icon="(LikeCommentIcon = biHeart ? 'biHeartFill' : 'biHeart')"
-              @click="toggleLikeComment"
-              style="
-                height: 20px;
-                margin-top: 5px;
-                width: 40px;
-                border-radius: 70px;
-              "
+              :icon="LikeCommentIcon"
+              @click="toggleLikeComment(item.commentId, item.postId)"
+              style="height: 20px; margin-top: 5px; width: 40px"
             />
             &nbsp;
             <span
               id="count2"
               style="display: inline; color: #b46f8f; text-weight: bolder"
             >
-              {{
-                entityLikeComment ? entityLikeComment["TotalLikeComment"] : ""
-              }}
+              {{ item.CountLikeComment }}
             </span>
+
             <!-- จำนวนยอดไลก์โพสต์ -->
             <b
               style="
@@ -647,7 +688,8 @@ import { LikeApi } from "src/api/LikeApi";
 import { useAuthenStore } from "src/stores/authen";
 const authenStore = useAuthenStore();
 
-const alert = ref(false);
+const alertPost = ref(false);
+const alertComment = ref(false);
 
 const {
   LikePost,
@@ -657,6 +699,7 @@ const {
   CheckLikePost,
   CheckLikeComment,
   ListLikePost,
+  ListLikeComment,
   CountPost,
   CountComment,
 } = LikeApi();
@@ -736,16 +779,15 @@ onMounted(() => {
       fethDataComment();
       CheckPost();
       fetchCountPost();
-      fethCountComment();
       console.log("Comment All");
       console.log("userPostID in Comment :", userPostId);
     } else {
       fethData();
       fethLikePost();
       fethDataCommentStatus();
+      fethDataComment();
       CheckPost();
       fetchCountPost();
-      fethCountComment();
       console.log("Comment Status 0");
       console.log("userPostID in Comment :", userPostId);
     }
@@ -761,6 +803,7 @@ onMounted(() => {
   // }
   console.log("get postId ", postId.value);
 });
+
 // Detail Post
 const fethData = async () => {
   const respone = await detailPost(postId.value);
@@ -785,15 +828,22 @@ const fethLikePost = async () => {
   }
 };
 
-//ฟังก์ชั่นโชว์จำนวนผู้กดไลก์คอมเมนต์
-const fethCountComment = async () => {
-  const response = await CountComment(commentId.value);
+const entityListLikeComment = ref([]);
+//ฟังก์ชั่นโชว์รายชื่อผู้กดไลก์โพสต์
+const fethLikeComment = async (commentId) => {
+  const response = await ListLikeComment(commentId);
+  console.log("Fetch Who Like Comment", response);
   if (response) {
-    entityLikeComment.value = response.TotalLikeComment;
+    entityListLikeComment.value = response;
+    if (entityListLikeComment.value) {
+      alertComment.value = true;
+      console.log("Fetch Who Like Comment", entityListLikeComment.value);
+    }
   }
 };
 
 // Detail List Comment
+//เริ่มจากการเรียกข้อมูลของคอมเมนต์ โดยส่ง postId เข้ามา ละเอาไปเก็บไว้ใน entityItemComment.value
 const fethDataComment = async () => {
   const respone = await detailComment(postId.value);
   console.log("fethDataComment", respone);
@@ -801,6 +851,7 @@ const fethDataComment = async () => {
     entityItemComment.value = respone.entity;
     entityCheckComment.value = respone.entity;
     CheckComment();
+    fetchCountComment();
   }
 };
 
@@ -871,6 +922,7 @@ const onDelete = (index) => {
   });
 };
 
+//Delete Function
 const deleteProcess = async (index) => {
   const item = entityItemComment.value[index];
   // console.log(entityItemComment.value[index]);
@@ -915,6 +967,7 @@ const onDeletePost = (entityItem) => {
   });
 };
 
+//Delete Post Function
 const deleteProcessPost = async (entityItem) => {
   const item = entityItem.id;
   console.log(entityItem.id);
@@ -947,22 +1000,23 @@ function toggleLikePost(entityItem) {
 }
 
 //ฟังก์ชั่นของการกดไลก์คอมเมนต์
-function toggleLikeComment(id, id1) {
-  if (LikeCommentIcon.value === biHeart) {
+function toggleLikeComment(id, id1, check) {
+  if (check === false) {
     LikeCommentBtn(id, id1);
     console.log("Arrey", entityCheckComment.value);
-    LikeCommentIcon.value = biHeartFill;
+    // LikeCommentIcon.value = biHeartFill;
     // followColor.value = "secondary";
     // count.value += 1;
   } else {
     UnlikeCommentBtn(id, id1);
     console.log("Arrey", entityCheckComment.value);
-    LikeCommentIcon.value = biHeart;
+    // LikeCommentIcon.value = biHeart;
     // followColor.value = "primary";
     // count.value -= 1;
   }
 }
 
+//Pop up หลังจากกดแก้ไขคอมเมนต์
 const alertEdit = async (index) => {
   const response = await SingleComment(index);
   if (response) {
@@ -973,6 +1027,7 @@ const alertEdit = async (index) => {
 };
 const alertEdit1 = ref(false);
 
+//ฟังก์ชั่นการแก้ไขคอมเมนต์
 const editProcess = async () => {
   const response = await EditComment(entitycomment.value);
   console.log("updateUser", response);
@@ -1006,6 +1061,7 @@ function toggleEditIcon(item) {
 const entityLikePost = ref();
 const entityLikeComment = ref();
 const entityLike = ref();
+
 //ฟังก์ชั่นของการเช็คว่ามีการกดไลก์ไหม
 const CheckPost = async () => {
   const response = await CheckLikePost(postId.value);
@@ -1023,21 +1079,18 @@ const CheckPost = async () => {
 };
 
 const entityCheckComment = ref({});
+const ArrayCountComment = ref([]);
+
+//แล้วมาทำการลูปให้ไอดีใน entityCHeckCommant มาเรียกข้อมูลของ API CheckLikeComment
+//โดยสร้าง check เข้ามาให้เป็น index โดยอ้างอิงจาก status
 const CheckComment = async () => {
-  entityCheckComment.value.forEach(async (item) => {
+  entityCheckComment.value.forEach(async (item, index) => {
     const response = await CheckLikeComment(item.commentId);
     if (response) {
-      entityCheckComment.value = response;
-      console.log("entityComment Check", entityCheckComment.value);
-    }
-    if (entityCheckComment.value.status === true) {
-      console.log("entityCommentTrue", entityCheckComment.value.status);
-      LikeCommentIcon.value = biHeartFill;
-    } else {
-      console.log("entityComment", entityCheckComment.value.status);
-      LikeCommentIcon.value = biHeart;
+      entityItemComment.value[index].check = response.status;
     }
   });
+  console.log("มีแล้วจ้า", entityItemComment.value);
 };
 
 //ฟังก์ชั่นของการนับยอดไลก์โพสต์
@@ -1053,13 +1106,15 @@ const fetchCountPost = async () => {
 
 //ฟังก์ชั่นของการนับยอดไลก์คอมเมนต์
 const fetchCountComment = async () => {
-  const response = await CountComment(commentId.value);
-  console.log("CountComment", response);
-  if (response) {
-    // entityLike.value = response.entity;
-    entityLikeComment.value = response;
-  }
-  console.log("GGGGGGG", entityLikeComment.value.TotalLikeComment);
+  entityItemComment.value.forEach(async (item, index) => {
+    const response = await CountComment(item.commentId);
+    if (response) {
+      entityItemComment.value[index].CountLikeComment =
+        response.TotalLikeComment;
+      entityCheckComment.value = response.entity;
+    }
+  });
+  console.log("มานะมานนี", entityItemComment.value);
 };
 
 //ฟังก์ชั่นกดไลก์โพสต์
@@ -1098,6 +1153,8 @@ const LikeCommentBtn = async (id, id1) => {
     if (response) {
       console.log("LikeComment", response.message);
       fetchCountComment();
+      // CheckComment();
+      fethDataComment();
     }
   }
 };
@@ -1111,6 +1168,8 @@ const UnlikeCommentBtn = async (id, id1) => {
     if (response) {
       console.log("UnlikeComment", response.message);
       fetchCountComment();
+      // CheckComment();
+      fethDataComment();
     }
   }
 };

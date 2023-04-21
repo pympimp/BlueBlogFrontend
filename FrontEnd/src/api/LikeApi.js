@@ -66,6 +66,14 @@ export const LikeApi = () => {
     });
   };
 
+  //ไว้รอทำฟังก์ชั่นดูรายชื่อว่าใครไลก์คอมเมนต์บ้าง
+  const ListLikeComment = async (id) => {
+    return await callApi({
+      method: "GET",
+      url: `/ListLikeComment?comment_id=${id}`,
+    });
+  };
+
   return {
     LikePost,
     UnlikePost,
@@ -74,6 +82,7 @@ export const LikeApi = () => {
     CountPost,
     CountComment,
     ListLikePost,
+    ListLikeComment,
     CheckLikePost,
     CheckLikeComment,
   };
