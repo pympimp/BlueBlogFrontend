@@ -136,6 +136,10 @@ export default {
   QdelPost: "Delete Post",
   QconPost: "Confirm to delete post?",
 
+  //q.doalog Post Img
+  QdelPostImg: "Delete Post Image",
+  QconPostImg: "Confirm to delete post image?",
+
   //q.doalog Comment
   QdelComment: "Delete Comment",
   QconComment: "Confirm to delete comment?",
