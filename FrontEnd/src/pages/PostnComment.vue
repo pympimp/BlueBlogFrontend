@@ -68,7 +68,11 @@
       <!-- ส่วนของรูปภาพของโพสต์ -->
 
       <template v-for="(postImg, index) in entityItem?.postImg" :key="index">
-        <q-img :src="postImg.postimg.path" class="img"></q-img>
+        <q-img
+          :src="postImg.postimg.path"
+          class="img"
+          style="border-radius: 20px"
+        ></q-img>
         <br />
       </template>
 
