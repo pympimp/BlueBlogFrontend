@@ -58,10 +58,11 @@ export const CommentApi = () => {
     });
   };
 
-  const EditComment = async () => {
+  const EditComment = async (req = {}) => {
     return await callApi({
       method: "PUT",
       url: `/commentEdit`,
+      body: req,
     });
   };
 

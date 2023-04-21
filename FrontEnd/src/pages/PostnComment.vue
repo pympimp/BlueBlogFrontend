@@ -825,9 +825,8 @@ const onSubmit = async (action) => {
   }
   console.log("onSubmit", entitycomment.value);
   if (action === "edit") {
-    editProcess(entitycomment.value.post_id);
-  }
-  if (entitycomment.value) {
+    editProcess();
+  } else {
     createProcess(entitycomment.value.post_id);
   }
 };
@@ -979,11 +978,13 @@ const editProcess = async () => {
   console.log("updateUser", response);
   if (response) {
     $q.notify({
-      message: response.message,
+      message: "Update Success",
       type: "positive",
     });
   }
-  router.push("/postncomment/:postId");
+  // router.push("/postncomment/:postId");
+  alertEdit1.value = false;
+  fethDataComment();
 };
 
 function toggleEditIcon(item) {
