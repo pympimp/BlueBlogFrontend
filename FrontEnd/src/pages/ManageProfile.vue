@@ -3,41 +3,55 @@
     <div class="container">
       <q-spinner v-if="loading == true" color="indigo-12" size="3em" />
       <template v-else>
-        <q-form @submit="onSubmit" class="q-gutter-md">
-          <!-- หัวข้อ Edit Profile -->
-          <p style="font-size: 25px; font-weight: bolder; color: #880e4f">
-            {{ t("ManageProfile") }}
-          </p>
-
-          <!-- รูปโปรไฟล์ -->
+        <q-form @submit="onSubmit" class="q-gutter-md" style="display: inline">
           <div class="top" style="display: inline">
-            <q-avatar
-              v-if="authenStore.auth.picture"
-              size="60px"
-              class="shadow-5"
+            <!-- หัวข้อ Edit Profile -->
+            <p
+              class="row justify-center"
+              style="font-size: 2em; font-weight: bolder; color: #880e4f"
             >
-              <q-img :src="authenStore.auth.picture.path" />
-            </q-avatar>
+              {{ t("ManageProfile") }}
+            </p>
 
-            <!-- ส่วนของการแทรกไฟล์รูปภาพ -->
-            <div style="margin-top: 10px; color: #3949ab">
-              <!-- <q-input
-            @update:model-value="
-              (val) => {
-                files = val;
-              }
-            "
-            multiple
-            type="file"
-            style="width: 200px,height: 0px;"
-            borderless
-          /> -->
+            <!-- รูปโปรไฟล์ -->
+            <div class="row justify-center q-mt-lg">
+              <q-avatar
+                v-if="authenStore.auth.picture"
+                size="60px"
+                class="shadow-5"
+              >
+                <q-img :src="authenStore.auth.picture.path" />
+              </q-avatar>
+
+              <!-- ส่วนของการแทรกไฟล์รูปภาพ -->
+              <q-file
+                filled
+                bottom-slots
+                v-model="imageFile"
+                :label="t('ImageFile')"
+                counter
+                class="q-ml-lg"
+                style="max-width: 250px"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="attachment" @click.stop.prevent />
+                </template>
+                <template v-slot:append>
+                  <q-icon
+                    name="close"
+                    @click.stop.prevent="imageFile = null"
+                    class="cursor-pointer"
+                  />
+                </template>
+              </q-file>
+            </div>
+            <!-- <div class="q-my-md" style="color: #3949ab; max-width: 100px">
               <q-file
                 outlined
                 v-model="imageFile"
                 :label="t('ImageFile')"
               ></q-file>
-            </div>
+            </div> -->
             <!-- ส่วนของการเปลี่ยนอีเมล -->
             <i style="color: #3949ab">{{ t("Email") }} :</i>
             <q-input
