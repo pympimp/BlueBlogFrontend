@@ -39,6 +39,7 @@ export default {
   Liked: "โพสต์ที่ถูกใจ",
   Follow: "ติดตาม",
   Following: "กำลังติดตาม",
+  EditProfile: "แก้ไขโปรไฟล์",
 
   // Navbar Add New Post
   AddPost: "เพิ่มโพสต์ใหม่",

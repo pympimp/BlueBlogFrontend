@@ -196,7 +196,7 @@
         <!-- ช่องจัดรูปแบบของการเขียนคอมเมนต์ -->
         <div class="q-pa-md" style="max-width: 700px">
           <q-input
-            v-model="entitycomment.content"
+            v-model="entityAdd.content"
             :label="t('ContentComment')"
             filled
             type="textarea"
@@ -577,6 +577,57 @@
             </q-card>
           </q-dialog>
 
+          <!-- ส่วนของการ Pop up แจ้งเตือน -->
+          <q-dialog v-model="alertEdit1">
+            <q-card style="padding: 20px 20px 20px 20px; border-radius: 20px">
+              <!-- หัวข้อใหญ่ว่า "Add Comment" -->
+              <p
+                style="
+                  font-size: 25px;
+                  font-weight: bolder;
+                  margin-bottom: -10px;
+                  color: #b03367;
+                "
+              >
+                {{ t("EditComment") }}
+              </p>
+              <div class="q-pa-md q-gutter-sm">
+                <q-input
+                  v-model="entitycomment.content"
+                  :label="t('ContentComment')"
+                  filled
+                  type="textarea"
+                />
+              </div>
+
+              <div style="display: flex">
+                <!-- ปุ่มเลือกไฟล์ -->
+                <q-file
+                  color="pink"
+                  v-model="imageFile"
+                  :label="t('ChooseFile')"
+                  borderless
+                  style="padding-right: 300px; text-decoration: none"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="attach_file" />
+                  </template>
+                </q-file>
+
+                <!-- ปุ่มยืนยัน -->
+                <q-btn
+                  color="pink"
+                  glossy
+                  push
+                  type="submit"
+                  @click="onSubmit('edit')"
+                  :label="t('Submit')"
+                  style="height: 5px; margin-top: 15px"
+                />
+              </div>
+            </q-card>
+          </q-dialog>
+
           <!-- Delete -->
           <q-fab-action
             external-label
@@ -841,6 +892,16 @@ const entitycomment = ref({
   status: "0",
 });
 
+// V-Model ที่สร้างขึ้นเพื่อไม่ให้เนื้อความคิดเห็นซ้ำกับกระบวนการเพิ่มคอมเมนต์
+const entityAdd = ref({
+  post_id: "",
+  user_id: "",
+  content: "",
+  img_name: "",
+  create_date: "",
+  status: "0",
+});
+
 const id = ref();
 const { localeList, t, locale } = useLang();
 
@@ -981,7 +1042,7 @@ const onSubmit = async (action) => {
 
 // Function Add Comment
 const createProcess = async (postId) => {
-  const response = await addComment(postId, entitycomment.value);
+  const response = await addComment(postId, entityAdd.value);
   console.log("addComment", response);
   if (response) {
     $q.notify({
@@ -1128,16 +1189,19 @@ const alertEdit1 = ref(false);
 const editProcess = async () => {
   const response = await EditComment(entitycomment.value);
   console.log("updateUser", response);
-  if (response) {
+  if (
+    authenStore.auth.rolesText === "Dev" ||
+    userPostId === authenStore.auth.id
+  ) {
     $q.notify({
       message: response.message,
       type: "positive",
     });
+    fethDataComment();
+  } else {
+    fethDataCommentStatus();
   }
-  // router.push("/postncomment/:postId");
   alertEdit1.value = false;
-  fethDataComment();
-  fethDataCommentStatus();
 };
 
 function toggleEditIcon(item) {
