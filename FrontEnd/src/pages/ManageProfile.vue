@@ -32,7 +32,11 @@
             style="width: 200px,height: 0px;"
             borderless
           /> -->
-              <q-file outlined v-model="imageFile" label="Image"></q-file>
+              <q-file
+                outlined
+                v-model="imageFile"
+                :label="t('ImageFile')"
+              ></q-file>
             </div>
             <!-- ส่วนของการเปลี่ยนอีเมล -->
             <i style="color: #3949ab">{{ t("Email") }} :</i>

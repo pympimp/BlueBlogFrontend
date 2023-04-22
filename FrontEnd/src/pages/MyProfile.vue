@@ -37,9 +37,9 @@
           glossy
           push
           color="pink-9"
-          :label="followLabel"
+          :label="followLabel === 'Follow' ? t('Follow') : t('Following')"
           @click="toggleFollow"
-          style="height: 20px; margin-top: 5px; width: 100px"
+          style="height: 20px; margin-top: 5px"
         />
 
         <!-- <q-btn
@@ -165,14 +165,13 @@ onMounted(async () => {
 
 // ปุ่ม Toggle เพิ่ม-ลดจำนวนผู้ติดตาม
 function toggleFollow() {
-  if (followLabel.value === "Following") {
+  if (entityFollow.value.status != false) {
     unFol();
-    followLabel.value = "Follow";
     // followColor.value = "secondary";
     // count.value += 1;
   } else {
     Fol();
-    followLabel.value = "Following";
+
     // followColor.value = "primary";
     // count.value -= 1;
   }
@@ -232,6 +231,7 @@ const Fol = async () => {
   if (response) {
     console.log("Fol", response.message);
     fetchCountFol();
+    checkFol();
     // count.value++;
   }
 };
@@ -242,6 +242,7 @@ const unFol = async () => {
   if (response) {
     console.log("unFol", response.message);
     fetchCountFol();
+    checkFol();
     // count.value--;
   }
 };
@@ -254,9 +255,9 @@ const checkFol = async () => {
     console.log("checkFol", entityFollow);
     fetchCountFol();
     if (entityFollow.value.status === true) {
-      followLabel.value = "following";
+      followLabel.value = "Following";
     } else {
-      followLabel.value = "follow";
+      followLabel.value = "Follow";
     }
   }
 };

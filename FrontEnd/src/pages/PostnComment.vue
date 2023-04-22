@@ -375,12 +375,15 @@
           {{ item.content }}
         </Content>
         <br />
-        <q-img
-          class="img"
-          :src="item.commentimg.path ? item.commentimg.path : ''"
-          style="width: 200px; height: 200px"
-        >
-        </q-img>
+        <!-- ส่วนของรูปภาพคอมเมนต์ -->
+        <div class="row justify-center">
+          <q-img
+            class="q-mt-md"
+            :src="item.commentimg.path ? item.commentimg.path : ''"
+            style="width: 200px; height: 200px; border-radius: 15px"
+          >
+          </q-img>
+        </div>
         <br /><br />
         <!-- ปุ่มไลก์คอมเมนต์ -->
         <div class="comment-like2" style="display: flex">

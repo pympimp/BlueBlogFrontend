@@ -31,6 +31,7 @@ export default {
 
   //ManageProfile
   Bio: "ข้อมูลเพิ่มเติม",
+  ImageFile: "ไฟล์รูปภาพ",
 
   //My Profile
   Manage: "แก้ไข",
@@ -40,6 +41,8 @@ export default {
   Follow: "ติดตาม",
   Following: "กำลังติดตาม",
   EditProfile: "แก้ไขโปรไฟล์",
+  Follow: "ติดตาม",
+  Following: "กำลังติดตาม",
 
   // Navbar Add New Post
   AddPost: "เพิ่มโพสต์ใหม่",

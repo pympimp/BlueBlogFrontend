@@ -155,7 +155,7 @@
           </div>
 
           <!-- ส่วนของปุ่มเพิ่มโพส -->
-          <router-link to="addpost/new/0">
+          <router-link to="/addpost/new/0">
             <img
               src="/public/add-white.png"
               alt=""
