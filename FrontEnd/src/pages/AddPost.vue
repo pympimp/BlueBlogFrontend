@@ -3,7 +3,10 @@
     <q-form @submit="onSubmit">
       <div class="container">
         <!-- ส่วนของหัวข้อ 'เพิ่มโพสต์ใหม่' -->
-        <p style="font-size: 25px; font-weight: bolder; color: #1a237e">
+        <p
+          class="q-py-md"
+          style="font-size: 25px; font-weight: bolder; color: #1a237e"
+        >
           °˖ ✧◝
           {{ action == "edit" ? t("EditPost") : t("AddPost") }} ◜✧˖ °
         </p>
@@ -11,28 +14,34 @@
         <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
         <!-- ส่วนของการใส่หัวข้อโพสต์ -->
-        <q-input
-          outlined
-          v-model="entityItem.title"
-          :label="t('PostHead')"
-          color="indigo-10"
-          stack-label
-          style="width: 600px; color: #1a237e"
-          :rules="[(val) => !!val || 'Field is required']"
-        />
+        <div class="q-pl-md row justify-center">
+          <q-input
+            class="row justify-center"
+            outlined
+            v-model="entityItem.title"
+            :label="t('PostHead')"
+            color="indigo-10"
+            stack-label
+            style="width: 500px; color: #1a237e"
+            :rules="[(val) => !!val || 'Field is required']"
+          />
+        </div>
 
         <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
         <!-- ส่วนของการจัดรูปแบบเนื้อหาโพสต์ -->
 
-        <div class="q-pa-md" style="max-width: 800px; margin-top: -10px">
+        <div
+          class="q-pa-md row justify-center"
+          style="max-width: 570px; margin-top: -10px"
+        >
           <q-input
             outlined
             v-model="entityItem.content"
             :label="t('ContentPost')"
             color="indigo-10"
             stack-label
-            style="width: 600px; color: #1a237e"
+            style="width: 500px; color: #1a237e"
             :rules="[(val) => !!val || 'Field is required']"
             type="textarea"
           />
@@ -60,7 +69,10 @@
           <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
           <!-- ส่วนของการแทรกไฟล์รูปภาพ -->
-          <div style="display: flex; justify-content: space-between">
+          <div
+            class="row items-center"
+            style="display: flex; justify-content: space-between"
+          >
             <!-- ปุ่มเลือกไฟล์ -->
             <q-file
               color="pink"
@@ -68,7 +80,11 @@
               :label="t('ChooseFile')"
               borderless
               multiple
-              style="padding-right: 50px; text-decoration: none"
+              style="
+                padding-right: 50px;
+                text-decoration: none;
+                max-width: 500px;
+              "
             >
               <template v-slot:prepend>
                 <q-icon name="attach_file" />
@@ -137,9 +153,8 @@ const entityItem = ref({
 
 const entityItemPostImg = ref({
   id: null,
-  post_id: postId.value, // ให้กำหนดค่า post_id ด้วย postId.value ที่ถูกกำหนดไว้ก่อนหน้า
-  // img_name: "",
-  imageNameList: [],
+  post_id: "",
+  img_name: "",
 });
 
 // const entityItemPostImg = ref({
@@ -197,6 +212,7 @@ const fethData = async () => {
 // };
 
 const onSubmit = async () => {
+<<<<<<< HEAD
   if (route.params.action == "edit") {
     console.log("edit Action");
     entityItemPostImg.value.imageNameList = await uploadMulipleFile();
@@ -205,16 +221,24 @@ const onSubmit = async () => {
     entityItem.value.imageNameList = await uploadMulipleFile();
   }
 
+=======
+  entityItem.value.imageNameList = await uploadMulipleFile();
+>>>>>>> 6fb6b1a74edfc7c95ac2d0e50fb95131e25267e1
   if (imageFile.value) {
     const fileNameResponse = await uploadImageApi(imageFile.value);
     console.log("uploadImageApi", fileNameResponse);
     if (fileNameResponse && fileNameResponse.imageName) {
+<<<<<<< HEAD
       if (route.params.action == "edit") {
         entityItemPostImg.value.img_name = fileNameResponse.imageName;
       } else {
         entityItem.value.img_name = fileNameResponse.imageName;
         entityItem.value.haveNewImage = true;
       }
+=======
+      entityItem.value.img_name = fileNameResponse.imageName;
+      entityItem.value.haveNewImage = true;
+>>>>>>> 6fb6b1a74edfc7c95ac2d0e50fb95131e25267e1
     }
   }
   console.log("onSubmit", entityItem.value);

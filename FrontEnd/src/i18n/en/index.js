@@ -34,6 +34,7 @@ export default {
 
   //ManageProfile
   Bio: "Bio",
+  ImageFile: "Image File",
 
   //My Profile
   Manage: "Edit",
@@ -43,6 +44,10 @@ export default {
   Follow: "Follow",
   Following: "Following",
   EditProfile: "Edit Profile",
+  Follow: "Follow",
+  Following: "Following",
+  ListFollower: "Follower Lists",
+  Followers: "Follower",
 
   // Navbar Add New Post
   AddPost: "Add New Post",

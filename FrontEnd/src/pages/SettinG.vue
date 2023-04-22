@@ -30,7 +30,7 @@
           </div>
 
           <!-- ส่วนของการแก้ไข password ใหม่-->
-          <div style="display: flex; align-items: center">
+          <div style="display: flex; align-items: center" class="q-mt-md">
             <i style="margin-right: 10px; color: #3949ab"
               >{{ t("NewPassword") }} :</i
             >

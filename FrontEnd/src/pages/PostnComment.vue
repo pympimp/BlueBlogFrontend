@@ -183,6 +183,7 @@
       <q-form @submit="onSubmit">
         <!-- หัวข้อใหญ่ว่า "Add Comment" -->
         <p
+          class="q-pt-md"
           style="
             font-size: 25px;
             font-weight: bolder;
@@ -194,7 +195,7 @@
         </p>
         <br />
         <!-- ช่องจัดรูปแบบของการเขียนคอมเมนต์ -->
-        <div class="q-pa-md" style="max-width: 700px">
+        <div class="q-pa-md justify-center" style="max-width: 700px">
           <q-input
             v-model="entityAdd.content"
             :label="t('ContentComment')"
@@ -375,12 +376,15 @@
           {{ item.content }}
         </Content>
         <br />
-        <q-img
-          class="img"
-          :src="item.commentimg.path ? item.commentimg.path : ''"
-          style="width: 200px; height: 200px"
-        >
-        </q-img>
+        <!-- ส่วนของรูปภาพคอมเมนต์ -->
+        <div class="row justify-center">
+          <q-img
+            class="q-mt-md"
+            :src="item.commentimg.path ? item.commentimg.path : ''"
+            style="width: 200px; height: 200px; border-radius: 15px"
+          >
+          </q-img>
+        </div>
         <br /><br />
         <!-- ปุ่มไลก์คอมเมนต์ -->
         <div class="comment-like2" style="display: flex">
