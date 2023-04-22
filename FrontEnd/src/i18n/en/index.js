@@ -45,7 +45,7 @@ export default {
 
   // Navbar Add New Post
   AddPost: "Add New Post",
-  EditPost: "Edit Post",
+  EditPost: "Edit Post 123",
   PostHead: "Title",
   Postbtn: "Post",
 
@@ -99,7 +99,7 @@ export default {
 
   //PostnComment
   AddComment: "Add Comment",
-  EditPost: "Edit Post",
+  EditPost: "Edit Post 123456",
   EditComment: "Edit Comment",
   DeletePost: "Delete Post",
   DeleteComment: "Delete Comment",

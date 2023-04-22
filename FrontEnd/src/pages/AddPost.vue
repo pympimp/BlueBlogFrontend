@@ -5,7 +5,7 @@
         <!-- ส่วนของหัวข้อ 'เพิ่มโพสต์ใหม่' -->
         <p style="font-size: 25px; font-weight: bolder; color: #1a237e">
           °˖ ✧◝
-          {{ action == "edit" ? t("EditPost") : t("AddPost") }} ◜✧˖ °
+          {{ action == "edit" ? t("EditPost") : t("AddPost") }} ◜✧˖ ° 123
         </p>
 
         <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
@@ -83,13 +83,15 @@
               color="indigo-5"
               :label="t('Postbtn')"
               style="height: 35px; width: 50px; margin-top: 20px"
-              type="submit"
+              @click="onSubmit()"
             />
+
           </div>
         </div>
       </div>
     </q-form>
   </q-page>
+  
 </template>
 
 <script setup>
@@ -126,19 +128,24 @@ const contentPost = ref("");
 const imageFile = ref();
 const imageFileList = ref([]);
 const myImage = ref("");
-const entityItem = ref({
+const entityItem = ref(
+  {
   id: null,
   user_id: "",
   title: "",
   content: "",
   haveNewImage: false,
   imageNameList: [],
-});
+}
+);
+
+const entitytest = ref({});
 
 const entityItemPostImg = ref({
   id: null,
-  post_id: "",
-  img_name: "",
+  post_id: postId.value, // ให้กำหนดค่า post_id ด้วย postId.value ที่ถูกกำหนดไว้ก่อนหน้า
+  // img_name: "",
+  imageNameList: [],
 });
 
 // const entityItemPostImg = ref({
@@ -171,6 +178,8 @@ const fethData = async () => {
   console.log("fethData", respone);
   if (respone) {
     entityItem.value = respone.entity;
+    entitytest.value = respone.entity;
+    console.log("fetchData Test", entitytest.value);
   }
 };
 
@@ -196,20 +205,46 @@ const fethData = async () => {
 // };
 
 const onSubmit = async () => {
-  entityItem.value.imageNameList = await uploadMulipleFile();
+  // if(route.params.action == "edit"){
+console.log("Edit Action");
+    // entityItemPostImg.value.img_name = await uploadMulipleFile();
+    // entityItemPostImg.value.imageNameList = await uploadMulipleFile();
+    const uploadImg = await uploadMulipleFile();
+    for (let item of uploadImg) {
+    console.log("entity img item", item);
+    entityItemPostImg.value.img_name = item;
+  const response = await postImgAddMore(entityItemPostImg.value);
+      console.log("response img update", response);
+      
+    }
+    console.log("entity img", entityItemPostImg.value);
+
+  // }else{
+    // console.log("New");
+    // entityItem.value.imageNameList = await uploadMulipleFile();
+  // }
+  // const qwe = await uploadMulipleFile();
+  // console.error(qwe);
   if (imageFile.value) {
     const fileNameResponse = await uploadImageApi(imageFile.value);
     console.log("uploadImageApi", fileNameResponse);
     if (fileNameResponse && fileNameResponse.imageName) {
       entityItem.value.img_name = fileNameResponse.imageName;
       entityItem.value.haveNewImage = true;
+
+      entityItemPostImg.value.img_name = fileNameResponse.imageName; // ตั้งค่าค่า img_name ให้กับ entityItemPostImg
     }
   }
   console.log("onSubmit", entityItem.value);
-  // createProcess();
+
   if (action.value == "edit") {
     updateProcess();
     createImgProcess();
+
+    // if (entityItemPostImg.value.img_name) {
+    //   await createImgProcess();
+    // }
+
     for (let i = 0; i < entityItem.value.postImg.length; i++) {
       await deletePostImg(entityItem.value.postImg[i].postimg.id);
     }
@@ -218,8 +253,9 @@ const onSubmit = async () => {
   }
 };
 
+
 const uploadMulipleFile = async () => {
-  return new Promise(async (resolve) => {
+  return new Promise(async (resolve, reject) => {
     let fileNameFromServer = [];
     if (imageFileList.value.length > 0) {
       for (const f of imageFileList.value) {
@@ -231,6 +267,7 @@ const uploadMulipleFile = async () => {
       }
     }
     resolve(fileNameFromServer);
+    reject("Error");
   });
 };
 
@@ -247,10 +284,14 @@ const createProcess = async () => {
 };
 
 const createImgProcess = async () => {
-  const response = await postImgAddMore(entityItemPostImg.value);
+  // entityItemPostImg.value.post_id = postId.value; // กำหนดค่า post_id ก่อนเรียกใช้ postImgAddMore
+  const id = parseInt(postId.value); // แปลงค่า postId เป็นตัวเลข
+  entityItemPostImg.value.post_id = id; // กำหนดค่า post_id ให้เป็นตัวเลข
+  // ส่ง entityItemPostImg.value ไปที่ postImgAddMore ที่มีการเพิ่ม post_id เข้าไปใน body
+  // const response = await postImgAddMore(entityItemPostImg.value, id);
   // entityItemPostImg.value.post_id = postId.value;
-  console.log("Post Id form addmore", postId.value);
-  // console.log("Post Id form item post_id", entityItemPostImg.value.post_id);
+  console.log("Post Id form Addmore", postId.value);
+  console.log("Post Id form item post_id", entityItemPostImg.value.post_id);
   console.log("postImgAddMore", response);
   if (response) {
     $q.notify({
@@ -330,8 +371,10 @@ const deletePostImg = async (id) => {
   background-color: #d6e3ea;
   background-image: url(./public/background.jpg);
   background-size: cover;
+  /* background-repeat: no-repeat; */
   width: 100%;
   height: auto;
+  /* max-width: 100vh; */
 }
 .container {
   display: flex;

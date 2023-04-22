@@ -71,13 +71,22 @@ export const PostApi = () => {
   };
 
   // postImgAddMore For Edit Post
-  const postImgAddMore = async (id, req = {}) => {
+  // const postImgAddMore = async (id, req = {}) => {
+  //   return await callApi({
+  //     method: "POST",
+  //     // url: `/postImgAddMore?post_id=${id}`,
+  //     url: `/postImgAddMore?post_id=${parseInt(id)}`,
+  //     body: req,
+  //   });
+  // };
+  const postImgAddMore = async (req = {}, id) => {
     return await callApi({
       method: "POST",
-      url: `/postImgAddMore?post_id=${id}`,
+      url: `/postImgAddMore`,
       body: req,
     });
   };
+
 
   // const postEditMultipleUploadImage = async (file) => {
   //   const postImgData = new FormData();
