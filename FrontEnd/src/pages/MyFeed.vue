@@ -3,12 +3,8 @@
     <div class="container">
       <div class="q-pa-md">
         <p
-          style="
-            font-size: 25px;
-            font-weight: bolder;
-            margin-bottom: -10px;
-            color: #880e4f;
-          "
+          class="q-pb-xs text-left"
+          style="font-size: 25px; font-weight: bolder; color: #880e4f"
         >
           🏠&nbsp; {{ $t("MyFeed") }}
         </p>

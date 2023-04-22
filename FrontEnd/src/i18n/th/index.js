@@ -43,6 +43,8 @@ export default {
   EditProfile: "แก้ไขโปรไฟล์",
   Follow: "ติดตาม",
   Following: "กำลังติดตาม",
+  ListFollower: "รายชื่อผู้ติดตาม",
+  Followers: "ผู้ติดตาม",
 
   // Navbar Add New Post
   AddPost: "เพิ่มโพสต์ใหม่",

@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center column">
+  <q-page class="BackGround flex flex-center column">
     <!-- ส่วนข้อมูลหลักของผู้ใช้ -->
     <div class="container-header" @click="toggleBtn">
       <!-- รูปโปรไฟล์ -->
@@ -7,14 +7,13 @@
         <q-img :src="UserData ? UserData.picture.path : ''" />
       </q-avatar>
       <!-- username และ bio -->
-      <div
-        class="details"
-        style="display: inline; margin-left: -150px; margin-top: 10px"
-      >
-        <b class="text-start" style="color: #1a237e">
+      <div class="details" style="display: inline; margin-top: 10px">
+        <b class="text-start q-pl-md" style="color: #1a237e">
           {{ UserData.username }}</b
         >
-        <p class="text-start" style="color: #5c6bc0">{{ UserData.bio }}</p>
+        <p class="text-start text-start q-pl-md" style="color: #5c6bc0">
+          {{ UserData.bio }}
+        </p>
       </div>
 
       <!-- :to="`/manageprofile/${id}`" -->
@@ -25,9 +24,14 @@
           push
           color="pink-9"
           :label="t('EditProfile')"
+          @click="toggleFollow"
           style="height: 20px; margin-top: 5px"
         />
-        <p class="text-center" style="margin-top: 5px">
+        <p
+          class="text-center"
+          style="margin-top: 5px; cursor: pointer"
+          @click="alertFollower = true"
+        >
           {{ entityUser ? entityUser["count"] : "" }} Follower
         </p>
       </div>
@@ -42,21 +46,49 @@
           style="height: 20px; margin-top: 5px"
         />
 
-        <!-- <q-btn
-        v-else
-        ref="followBtn"
-        glossy
-        push
-        :color="followColor"
-        :label="followLabel"
-        @click="toggleFollow"
-        style="height: 20px; margin-top: 5px; width: 100px"
-      /> -->
-
-        <p class="text-center" style="margin-top: 5px">
-          {{ entityUser ? entityUser["count"] : "" }} Follower
+        <p
+          @click="alertFollower = true"
+          class="text-center"
+          style="margin-top: 5px; cursor: pointer"
+        >
+          {{ entityUser ? entityUser["count"] : "" }} {{ t("Followers") }}
         </p>
       </div>
+      <!-- Pop up รายชื่อคนที่ติดตาม -->
+      <q-dialog v-model="alertFollower">
+        <q-card
+          style="
+            max-height: 400px;
+            width: 300px;
+            border-radius: 20px;
+            padding: 10px 10px 10px 10px;
+          "
+        >
+          <q-card-section>
+            <div class="text-h6" style="font-weight: bold; color: #1a237e">
+              {{ t("ListFollower") }}
+            </div>
+          </q-card-section>
+
+          <q-card-section
+            class="q-pt-none text-red"
+            v-for="(item, index) in entityListFollower"
+            :key="index"
+          >
+            <ion-avatar>
+              <img :src="item.picture.path" style="width: 30px; height: 30px" />
+            </ion-avatar>
+            &nbsp;
+            <router-link
+              :to="'/myprofile/' + item.id"
+              style="text-decoration: none; color: #1d1917"
+            >
+              {{ item.username }}
+            </router-link>
+          </q-card-section>
+          <!-- ปุ่มโอเคของ Dialog -->
+        </q-card>
+      </q-dialog>
     </div>
 
     <!-- ส่วนข้อมูลเพิ่มเติมของผู้ใช้ -->
@@ -64,29 +96,29 @@
       class="container-content"
       style="padding: 20px 20px 20px 20px; width: 500px"
     >
-      <div
-        style="
-          display: flex;
-          justify-content: space-around;
-          font-weight: bolder;
-          color: #880e4f;
-        "
-      >
-        <div @click="fetchPost" style="cursor: pointer">{{ t("Posted") }}</div>
-        <div @click="findMyReplyPost" style="cursor: pointer">
-          {{ t("Replied") }}
-        </div>
-        <div @click="findMyLikePost" style="cursor: pointer">
-          {{ t("Liked") }}
-        </div>
+      <div class="q-pb-md" style="font-weight: bolder; color: #880e4f">
+        <q-tabs>
+          <q-tab
+            @click="fetchPost"
+            style="cursor: pointer; background-color: azure"
+            >{{ t("Posted") }}</q-tab
+          >
+          <q-tab @click="findMyReplyPost" style="cursor: pointer">
+            {{ t("Replied") }}
+          </q-tab>
+          <q-tab @click="findMyLikePost" style="cursor: pointer">
+            {{ t("Liked") }}
+          </q-tab>
+        </q-tabs>
       </div>
-      <hr
+
+      <!-- <hr
         style="
           border: 1px thin gray;
           margin: 15px 15px 15px 15px;
           color: #880e4f;
         "
-      />
+      /> -->
 
       <!-- ส่วนของโพสต์ต่างๆของผู้ใช้ -->
       <q-scroll-area style="height: 200px; max-width: 500px">
@@ -118,13 +150,12 @@ import { UserApi } from "src/api/UserApi";
 import { useRoute } from "vue-router";
 import { FollowApi } from "src/api/FollowApi";
 import { LocalStorage, useQuasar } from "quasar";
-import { followLabel1 } from "src/utils/config";
 import { useAuthenStore } from "src/stores/authen";
 import { AuthenApi } from "src/api/AuthenApi";
 
 const { getUserDataByAuth } = AuthenApi();
 const authenStore = useAuthenStore();
-const { Follow, unFollow, countFol, checkFollower } = FollowApi();
+const { Follow, unFollow, countFol, checkFollower, showFollower } = FollowApi();
 const { localeList, t, locale } = useLang();
 const { findAllByMyPost, findAllByMyReplyPost, findAllByMyLikePost } =
   PostApi();
@@ -136,7 +167,6 @@ const PostList = ref([]);
 const $q = useQuasar();
 const id = ref();
 
-const count = ref(0);
 const followLabel = ref("");
 
 // ทำก่อน เวลาโหลดหน้าเว็บมา
@@ -151,6 +181,7 @@ onMounted(async () => {
     fetchCountFol();
     getUserDataByAuth;
     checkFol();
+    fethFollower();
   }
   console.log(UserData);
 
@@ -159,14 +190,22 @@ onMounted(async () => {
   // }
 });
 
-// watch(followLabel, (newfollowLabel) => {
-//   localStorage.followLabel = JSON.stringify.newfollowLabel;
-// });
+//ฟังก์ชั่นโชว์รายชื่อผู้กดไลก์โพสต์
+const alertFollower = ref(false);
+const entityListFollower = ref([]);
+const fethFollower = async () => {
+  const response = await showFollower(id.value);
+  console.log("Fetch Follower", response);
+  if (response) {
+    entityListFollower.value = response.dataList;
+  }
+};
 
 // ปุ่ม Toggle เพิ่ม-ลดจำนวนผู้ติดตาม
 function toggleFollow() {
   if (entityFollow.value.status != false) {
     unFol();
+
     // followColor.value = "secondary";
     // count.value += 1;
   } else {
@@ -232,6 +271,7 @@ const Fol = async () => {
     console.log("Fol", response.message);
     fetchCountFol();
     checkFol();
+    fethFollower();
     // count.value++;
   }
 };
@@ -243,6 +283,7 @@ const unFol = async () => {
     console.log("unFol", response.message);
     fetchCountFol();
     checkFol();
+    fethFollower();
     // count.value--;
   }
 };
@@ -270,7 +311,7 @@ const checkFol = async () => {
 </script>
 
 <style scoped>
-.flex {
+.BackGround {
   background-color: #d6e3ea;
   background-image: url(./public/background.jpg);
   background-size: cover;

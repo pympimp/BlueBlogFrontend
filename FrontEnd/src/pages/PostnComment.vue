@@ -183,6 +183,7 @@
       <q-form @submit="onSubmit">
         <!-- หัวข้อใหญ่ว่า "Add Comment" -->
         <p
+          class="q-pt-md"
           style="
             font-size: 25px;
             font-weight: bolder;
@@ -194,7 +195,7 @@
         </p>
         <br />
         <!-- ช่องจัดรูปแบบของการเขียนคอมเมนต์ -->
-        <div class="q-pa-md" style="max-width: 700px">
+        <div class="q-pa-md justify-center" style="max-width: 700px">
           <q-input
             v-model="entityAdd.content"
             :label="t('ContentComment')"

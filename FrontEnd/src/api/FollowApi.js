@@ -30,10 +30,18 @@ export const FollowApi = () => {
     });
   };
 
+  const showFollower = async (id) => {
+    return await callApi({
+      method: "GET",
+      url: `/showFollow?user_id=${id}`,
+    });
+  };
+
   return {
     Follow,
     unFollow,
     countFol,
     checkFollower,
+    showFollower,
   };
 };
