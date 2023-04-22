@@ -139,7 +139,7 @@
                   :key="index"
                   clickable
                   v-close-popup
-                  @click="locale = item.locale"
+                  @click="(locale = item.locale), menuListcheck()"
                 >
                   <q-item-section>{{ item.text }}</q-item-section>
                   <!-- ไอคอน Check -->

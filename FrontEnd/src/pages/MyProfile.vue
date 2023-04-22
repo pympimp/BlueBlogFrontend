@@ -18,7 +18,20 @@
       </div>
 
       <!-- :to="`/manageprofile/${id}`" -->
-      <div>
+      <div v-if="authenStore.auth.id == id">
+        <q-btn
+          :to="`/manageprofile/${authenStore.auth.id}`"
+          glossy
+          push
+          color="pink-9"
+          :label="t('EditProfile')"
+          style="height: 20px; margin-top: 5px"
+        />
+        <p class="text-center" style="margin-top: 5px">
+          {{ entityUser ? entityUser["count"] : "" }} Follower
+        </p>
+      </div>
+      <div v-else>
         <q-btn
           ref="followBtn"
           glossy
@@ -30,15 +43,15 @@
         />
 
         <!-- <q-btn
-          v-else
-          ref="followBtn"
-          glossy
-          push
-          :color="followColor"
-          :label="followLabel"
-          @click="toggleFollow"
-          style="height: 20px; margin-top: 5px; width: 100px"
-        /> -->
+        v-else
+        ref="followBtn"
+        glossy
+        push
+        :color="followColor"
+        :label="followLabel"
+        @click="toggleFollow"
+        style="height: 20px; margin-top: 5px; width: 100px"
+      /> -->
 
         <p class="text-center" style="margin-top: 5px">
           {{ entityUser ? entityUser["count"] : "" }} Follower
@@ -271,7 +284,7 @@ const checkFol = async () => {
   margin-bottom: 10px;
   border-radius: 30px;
   box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);
-  padding: 20px 20px 20px 20px;
+  padding: 20px 20px 10px 20px;
   background: white;
 }
 

@@ -42,6 +42,7 @@ export default {
   Liked: "Liked",
   Follow: "Follow",
   Following: "Following",
+  EditProfile: "Edit Profile",
 
   // Navbar Add New Post
   AddPost: "Add New Post",
