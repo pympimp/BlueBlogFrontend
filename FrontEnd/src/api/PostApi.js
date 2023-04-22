@@ -84,9 +84,9 @@ export const PostApi = () => {
       method: "POST",
       url: `/postImgAddMore`,
       body: req,
+      id,
     });
   };
-
 
   // const postEditMultipleUploadImage = async (file) => {
   //   const postImgData = new FormData();
