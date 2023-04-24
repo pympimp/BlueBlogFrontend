@@ -73,7 +73,10 @@
               <Content style="color: #5c6bc0"> {{ item.content }} </Content
               ><br />
               <ion-avatar>
-                <img :src="item.picture.x" style="width: 30px; height: 30px" />
+                <img
+                  :src="item.picture.path"
+                  style="width: 30px; height: 30px"
+                />
               </ion-avatar>
               &nbsp;
               <router-link
@@ -144,7 +147,6 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from "vue";
-import { fabYoutube } from "@quasar/extras/fontawesome-v6";
 import { biTranslate, biGlobe, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 

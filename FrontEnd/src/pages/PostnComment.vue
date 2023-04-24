@@ -70,7 +70,7 @@
       <template v-for="(postImg, index) in entityItem?.postImg" :key="index">
         <q-img
           :src="postImg.postimg.path"
-          class="img"
+          class="img q-mt-lg"
           style="border-radius: 20px"
         ></q-img>
         <br />

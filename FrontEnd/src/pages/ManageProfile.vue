@@ -179,7 +179,7 @@ const updateProcess = async () => {
     });
   }
   loading.value = false;
-  router.push("/");
+  window.location.replace("/#/");
 };
 
 const { localeList, t, locale } = useLang();
