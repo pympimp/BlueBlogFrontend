@@ -79,16 +79,24 @@
       <br />
 
       <div class="details-user">
-        <ion-avatar class="profile" style="display: inline">
-          <img
-            :src="entityItem ? entityItem.picture.path : ''"
-            style="width: 30px; height: 30px"
-          />
-        </ion-avatar>
+        <router-link
+          :to="'/myprofile/' + (entityItem ? entityItem['user_id'] : '')"
+        >
+          <ion-avatar class="profile" style="display: inline">
+            <img
+              :src="entityItem ? entityItem.picture.path : ''"
+              style="width: 30px; height: 30px"
+            />
+          </ion-avatar>
+        </router-link>
         &nbsp;&nbsp;&nbsp;
-        <b style="color: #1a237e">{{
-          entityItem ? entityItem["username"] : ""
-        }}</b>
+        <router-link
+          :to="'/myprofile/' + (entityItem ? entityItem['user_id'] : '')"
+        >
+          <b style="color: #1a237e">{{
+            entityItem ? entityItem["username"] : ""
+          }}</b>
+        </router-link>
         <i style="color: #5c6bc0"
           ><br />{{ entityItem ? entityItem["create_date"] : "" }}</i
         >
@@ -378,10 +386,19 @@
         <br />
         <!-- ส่วนของรูปภาพคอมเมนต์ -->
         <div class="row justify-center">
+          <p
+            v-if="
+              item.commentimg.path ==
+              'http://localhost/php-rest-api/data/img/no_picture.jpg'
+            "
+          >
+            <!-- no picture -->
+          </p>
           <q-img
             class="q-mt-md"
             :src="item.commentimg.path ? item.commentimg.path : ''"
             style="width: 200px; height: 200px; border-radius: 15px"
+            v-else
           >
           </q-img>
         </div>
@@ -661,7 +678,7 @@
           <q-fab-action
             external-label
             color="pink-10"
-            click="onUnhide(index)"
+            @click="onUnhide(index)"
             :icon="biEye"
             :label="t('UnHideComment')"
             v-if="
@@ -692,12 +709,23 @@
           {{ item.content }}
         </Content>
         <br />
-        <q-img
-          class="img"
-          :src="item.commentimg.path ? item.commentimg.path : ''"
-          style="width: 200px; height: 200px"
-        >
-        </q-img>
+        <div class="row justify-center">
+          <p
+            v-if="
+              item.commentimg.path ==
+              'http://localhost/php-rest-api/data/img/no_picture.jpg'
+            "
+          >
+            <!-- no picture -->
+          </p>
+          <q-img
+            class="q-mt-md"
+            :src="item.commentimg.path ? item.commentimg.path : ''"
+            style="width: 200px; height: 200px; border-radius: 15px"
+            v-else
+          >
+          </q-img>
+        </div>
         <br /><br />
         <!-- ปุ่มไลก์คอมเมนต์ -->
         <div class="comment-like2" style="display: flex">
@@ -1032,8 +1060,13 @@ const onSubmit = async (action) => {
     const fileNameResponse = await uploadImageApi(imageFile.value);
     console.log("uploadImageApi", fileNameResponse);
     if (fileNameResponse && fileNameResponse.imageName) {
-      entitycomment.value.img_name = fileNameResponse.imageName;
-      entitycomment.value.haveNewImage = true;
+      if (action === "edit") {
+        entitycomment.value.img_name = fileNameResponse.imageName;
+        entitycomment.value.haveNewImage = true;
+      } else {
+        entityAdd.value.img_name = fileNameResponse.imageName;
+        entityAdd.value.haveNewImage = true;
+      }
     }
   }
   console.log("onSubmit", entitycomment.value);
@@ -1056,7 +1089,16 @@ const createProcess = async (postId) => {
     // refresh page to display the latest data
     location.reload();
   }
-  router.push(`/postncomment/${postId.value}`);
+  // router.push(`/postncomment/${postId.value}`);
+  fethData();
+  if (
+    authenStore.auth.rolesText === "Dev" ||
+    userPostId === authenStore.auth.id
+  ) {
+    fethDataComment();
+  } else {
+    fethDataCommentStatus();
+  }
 };
 
 // Delete Comment
@@ -1081,20 +1123,29 @@ const onDelete = (index) => {
       type: "positive",
     });
     deleteProcess(index);
+    console.log("comment index", index);
   });
 };
 
 //Delete Function
 const deleteProcess = async (index) => {
   const item = entityItemComment.value[index];
-  // console.log(entityItemComment.value[index]);
+  console.log("item", item.commentId);
   if (item) {
     const respone = await deleteComment(item.commentId);
     console.log("deleteComment", respone);
     console.log(item.commentId);
     // refresh page to display the latest data
-    location.reload();
+    // location.reload();
     // refreshData();
+    if (
+      authenStore.auth.rolesText === "Dev" ||
+      userPostId === authenStore.auth.id
+    ) {
+      fethDataComment();
+    } else {
+      fethDataCommentStatus();
+    }
   }
 };
 
@@ -1193,14 +1244,14 @@ const alertEdit1 = ref(false);
 const editProcess = async () => {
   const response = await EditComment(entitycomment.value);
   console.log("updateUser", response);
+  $q.notify({
+    message: response.message,
+    type: "positive",
+  });
   if (
     authenStore.auth.rolesText === "Dev" ||
     userPostId === authenStore.auth.id
   ) {
-    $q.notify({
-      message: response.message,
-      type: "positive",
-    });
     fethDataComment();
   } else {
     fethDataCommentStatus();
@@ -1426,9 +1477,17 @@ const hideProcess = async (index) => {
     console.log("hideComment", respone);
     console.log(item.commentId);
     // refresh page to display the latest data
-    location.reload();
+    // location.reload();
     // await refreshideData(); // เรียกใช้งานฟังก์ชัน refreshHideData() เพื่อดึงข้อมูลใหม่จากแหล่งข้อมูล
     // router.push(`/postncomment/${postId.value}`);
+    if (
+      authenStore.auth.rolesText === "Dev" ||
+      userPostId === authenStore.auth.id
+    ) {
+      fethDataComment();
+    } else {
+      fethDataCommentStatus();
+    }
   }
 };
 
@@ -1469,9 +1528,17 @@ const unhideProcess = async (index) => {
     const response = await unHideComment(item.commentId);
     console.log("unhideComment", response);
     console.log(item.commentId);
-    location.reload();
+    // location.reload();
     // await refresUnhideData(); // เรียกใช้งานฟังก์ชัน refreshHideData() เพื่อดึงข้อมูลใหม่จากแหล่งข้อมูล
     // router.push(`/postncomment/${postId.value}`);
+    if (
+      authenStore.auth.rolesText === "Dev" ||
+      userPostId === authenStore.auth.id
+    ) {
+      fethDataComment();
+    } else {
+      fethDataCommentStatus();
+    }
   }
 };
 
