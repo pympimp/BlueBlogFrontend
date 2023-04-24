@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="background flex flex-center">
     <div class="container">
       <div class="q-pa-md">
         <p
@@ -54,6 +54,7 @@
           <q-scroll-area style="height: 380px">
             <!-- Post -->
             <!-- loop ข้อมูลโพสต์ -->
+
             <section
               class="post"
               v-for="(item, index) in postList"
@@ -72,40 +73,45 @@
               <br />
               <Content style="color: #5c6bc0"> {{ item.content }} </Content
               ><br />
-              <ion-avatar>
-                <img
-                  :src="item.picture.path"
-                  style="width: 30px; height: 30px"
-                />
-              </ion-avatar>
-              &nbsp;
-              <router-link
-                :to="'/myprofile/' + item.user_id"
-                style="
-                  text-decoration: none;
-                  color: black;
-                  font-weight: bolder;
-                  color: #1a237e;
-                "
-              >
-                {{ item.username }}
-              </router-link>
-              &nbsp;
-              <!-- ส่วนของไลก์และคอมเมนต์ -->
-              <p style="display: inline; color: #5c6bc0">
-                {{ item.create_date }}
-              </p>
-              <i
-                class="fa-solid fa-heart"
-                style="color: #880e4f; margin-left: 370px"
-              ></i>
-              <i style="color: #880e4f; margin-right: 5px">
-                {{ item.like_count }}
-              </i>
-              <i class="fa-solid fa-comment" style="color: #880e4f"></i>
-              <i style="color: #880e4f; margin-right: 5px">
-                {{ item.comment_count }}
-              </i>
+              <div class="row items-start q-mt-sm">
+                <div class="col self-end">
+                  <ion-avatar>
+                    <img
+                      :src="item.picture.path"
+                      style="width: 30px; height: 30px"
+                    />
+                  </ion-avatar>
+                  &nbsp;
+                  <router-link
+                    :to="'/myprofile/' + item.user_id"
+                    style="
+                      text-decoration: none;
+                      color: black;
+                      font-weight: bolder;
+                      color: #1a237e;
+                    "
+                  >
+                    {{ item.username }}
+                  </router-link>
+                  &nbsp;
+                  <!-- ส่วนของเวลาที่โพสต์ -->
+                  <p style="display: inline; color: #5c6bc0">
+                    {{ item.create_date }}
+                  </p>
+                </div>
+
+                <!-- ส่วนของยอดไลก์และคอมเมนต์ -->
+                <div class="col self-end flex justify-end">
+                  <i class="fa-solid fa-heart" style="color: #880e4f"></i>
+                  <i style="color: #880e4f; margin-right: 5px">
+                    {{ item.like_count }}
+                  </i>
+                  <i class="fa-solid fa-comment" style="color: #880e4f"></i>
+                  <i style="color: #880e4f; margin-right: 40px">
+                    {{ item.comment_count }}
+                  </i>
+                </div>
+              </div>
               <hr style="width: 650px" />
             </section>
             <!-- post -->
@@ -255,7 +261,7 @@ const handleScrolledToBottom = (isVisible) => {
 </script>
 
 <style scoped>
-.flex {
+.background {
   background-image: url(./public/background.jpg);
   background-size: cover;
   width: 100%;

@@ -146,7 +146,7 @@
               <Content style="color: #5c6bc0">{{ item.content }}</Content
               ><br />
               <div class="row items-start q-mt-sm">
-                <div class="col-3">
+                <div class="col">
                   <ion-avatar>
                     <img
                       :src="item.picture.path"
@@ -165,31 +165,27 @@
                   >
                     {{ item.username }} </router-link
                   >&nbsp;
-                </div>
-                <div class="col-6 self-end">
+
                   <p style="display: inline; color: #5c6bc0">
                     {{ item.create_date }}
                   </p>
                 </div>
-                <div class="col-3 self-end">
-                  <i
-                    class="fa-solid fa-heart"
-                    style="color: #880e4f; margin-left: 45px"
-                  ></i>
+                <div class="col self-end flex justify-end">
+                  <i class="fa-solid fa-heart" style="color: #880e4f"></i>
                   <i style="color: #880e4f; margin-right: 5px">{{
                     item.like_count
                   }}</i>
                   <i class="fa-solid fa-comment" style="color: #880e4f"></i>
-                  <i style="color: #880e4f; margin-right: 5px">{{
+                  <i style="color: #880e4f; margin-right: 20px">{{
                     item.comment_count
                   }}</i>
                 </div>
-                <hr style="border: 0.5px thin gray" />
               </div>
+              <hr style="border: 0.5px thin gray" />
             </div>
           </div>
-          <div v-else>
-            <h6 class="text-center self-center" style="color: #880e4f">
+          <div class="flex justify-center" v-else>
+            <h6 class="ml-3" style="color: #880e4f">
               {{ t("NoPost") }}
             </h6>
           </div>

@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="background flex flex-center">
     <div class="container">
       <div class="q-pa-md">
         <p
@@ -33,40 +33,45 @@
               <br />
               <Content style="color: #5c6bc0"> {{ item.content }} </Content
               ><br />
-              <ion-avatar>
-                <img :src="item.picture.x" style="width: 30px; height: 30px" />
-              </ion-avatar>
-              &nbsp;
-              <router-link
-                :to="'/myprofile/' + item.postUserId"
-                style="
-                  text-decoration: none;
-                  color: black;
-                  font-weight: bolder;
-                  color: #1a237e;
-                "
-              >
-                {{ item.postUserUsername }}
-              </router-link>
-              &nbsp;
-              <!-- ส่วนของไลก์และคอมเมนต์ -->
-              <p style="display: inline; color: #5c6bc0">
-                {{ item.create_date }}
-              </p>
-              <i
-                class="fa-solid fa-heart"
-                style="color: #880e4f; margin-left: 370px"
-              ></i>
-              <i style="color: #880e4f; margin-right: 5px">
-                {{ item.like_count }}
-              </i>
-              <i class="fa-solid fa-comment" style="color: #880e4f"></i>
-              <i style="color: #880e4f; margin-right: 5px">
-                {{ item.comment_count }}
-              </i>
+              <div class="row">
+                <div class="col">
+                  <ion-avatar>
+                    <img
+                      :src="item.picture.x"
+                      style="width: 30px; height: 30px"
+                    />
+                  </ion-avatar>
+                  &nbsp;
+                  <router-link
+                    :to="'/myprofile/' + item.postUserId"
+                    style="
+                      text-decoration: none;
+                      color: black;
+                      font-weight: bolder;
+                      color: #1a237e;
+                    "
+                  >
+                    {{ item.postUserUsername }}
+                  </router-link>
+                  &nbsp;
+                  <p style="display: inline; color: #5c6bc0">
+                    {{ item.create_date }}
+                  </p>
+                </div>
+                <!-- ส่วนของไลก์และคอมเมนต์ -->
+                <div class="col self-end flex justify-end">
+                  <i class="fa-solid fa-heart" style="color: #880e4f"></i>
+                  <i style="color: #880e4f; margin-right: 5px">
+                    {{ item.like_count }}
+                  </i>
+                  <i class="fa-solid fa-comment" style="color: #880e4f"></i>
+                  <i style="color: #880e4f; margin-right: 40px">
+                    {{ item.comment_count }}
+                  </i>
+                </div>
+              </div>
               <hr style="width: 650px" />
             </section>
-            <!-- post -->
 
             <!-- loading -->
             <div
@@ -139,35 +144,6 @@ onMounted(async () => {
   fetchList();
 });
 
-// const fetchList = async () => {
-//   const response = await getPostList({
-//     page: currentPage.value, //method: "GET",
-//     perPage: recordPerPage.value,
-//     body: url.value,
-//   });
-//   if (response) {
-//     // postList.value = response.dataList;
-//     postList.value.push(...response.dataList);
-//     totalPage.value = response.appPagination;
-//     console.log(response);
-//   }
-// };
-
-// change url
-const change = async (value) => {
-  // กำหนดให้ postList.value เป็น array ว่าง
-  postList.value = [];
-
-  // เปลี่ยน url
-  url.value = value;
-
-  // recordPerPage.value = 3;
-  currentPage.value = 1;
-
-  // โหลดข้อมูลใหม่
-  // await fetchList();
-};
-
 const fetchList = async () => {
   const response = await getPostList({
     page: currentPage.value,
@@ -182,6 +158,12 @@ const fetchList = async () => {
     // อัปเดตค่า totalPage.value
     totalPage.value = response.appPagination;
     console.log(response);
+    if (postList.value && postList.value.length !== 0) {
+      console.log("!= 0");
+    } else {
+      postList.value = null;
+      console.log(postList.value);
+    }
   }
 };
 
@@ -190,10 +172,6 @@ watch(url, () => {
   fetchList();
 });
 
-// watch(currentPage, async (newVal, oldVal) => {
-//   fetchList();
-//   console.log("CurrentPage change from", newVal);
-// });
 // เมื่อเลื่อน Scroll ลงมา
 const handleScrolledToBottom = (isVisible) => {
   setTimeout(() => {
@@ -217,7 +195,7 @@ const handleScrolledToBottom = (isVisible) => {
 </script>
 
 <style scoped>
-.flex {
+.background {
   background-image: url(./public/background.jpg);
   background-size: cover;
   width: 100%;
