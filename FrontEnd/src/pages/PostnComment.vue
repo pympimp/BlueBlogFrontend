@@ -1130,11 +1130,30 @@ const onDelete = (index) => {
 //Delete Function
 const deleteProcess = async (index) => {
   const item = entityItemComment.value[index];
-  console.log("item", item.commentId);
+  const itemStatus = entityItemCommentStatus.value[index];
+  console.log("item", item);
+  console.log("item status", item);
   if (item) {
     const respone = await deleteComment(item.commentId);
     console.log("deleteComment", respone);
     console.log(item.commentId);
+    // refresh page to display the latest data
+    // location.reload();
+    // refreshData();
+    if (
+      authenStore.auth.rolesText === "Dev" ||
+      userPostId === authenStore.auth.id
+    ) {
+      fethDataComment();
+    } else {
+      fethDataCommentStatus();
+    }
+  }
+
+  if (itemStatus) {
+    const respone = await deleteComment(itemStatus.commentId);
+    console.log("deleteComment", respone);
+    console.log(itemStatus.commentId);
     // refresh page to display the latest data
     // location.reload();
     // refreshData();
