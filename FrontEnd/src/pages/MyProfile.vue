@@ -90,6 +90,7 @@
                 :to="'/myprofile/' + item.id"
                 style="text-decoration: none; color: #1d1917"
               >
+                {{ item.username }}
               </router-link>
             </q-card-section>
             <!-- ปุ่มโอเคของ Dialog -->
@@ -129,62 +130,69 @@
 
       <!-- ส่วนของโพสต์ต่างๆของผู้ใช้ -->
       <q-scroll-area style="height: 280px; max-width: 500px">
-        <div class="post" v-for="(item, index) in PostList" :key="index">
-          <router-link
-            :to="'/postncomment/' + item.id"
-            style="
-              text-decoration: none;
-              color: black;
-              font-weight: bolder;
-              color: #1a237e;
-            "
-            >{{ item.id }} {{ item.title }}
-          </router-link>
-          <br />
-          <Content style="color: #5c6bc0"> {{ item.content }} </Content><br />
-          <div class="row items-start q-mt-sm">
-            <div class="col-3">
-              <ion-avatar>
-                <img
-                  :src="item.picture.path"
-                  style="width: 30px; height: 30px"
-                />
-              </ion-avatar>
+        <div>
+          <div v-if="PostList != null">
+            <div class="post" v-for="(item, index) in PostList" :key="index">
               <router-link
-                class="q-ml-sm"
-                :to="'/myprofile/' + item.user_id"
+                :to="'/postncomment/' + item.id"
                 style="
                   text-decoration: none;
                   color: black;
                   font-weight: bolder;
                   color: #1a237e;
                 "
-              >
-                {{ item.username }}
-              </router-link>
-              &nbsp;
-            </div>
-            <div class="col-6 self-end">
-              <p style="display: inline; color: #5c6bc0">
-                {{ item.create_date }}
-              </p>
-            </div>
-            <div class="col-3 self-end">
-              <!-- ส่วนของไลก์และคอมเมนต์ -->
-              <i
-                class="fa-solid fa-heart"
-                style="color: #880e4f; margin-left: 45px"
-              ></i>
-              <i style="color: #880e4f; margin-right: 5px">
-                {{ item.like_count }}
-              </i>
-              <i class="fa-solid fa-comment" style="color: #880e4f"></i>
-              <i style="color: #880e4f; margin-right: 5px">
-                {{ item.comment_count }}
-              </i>
+                >{{ item.id }} {{ item.title }}</router-link
+              ><br />
+              <Content style="color: #5c6bc0">{{ item.content }}</Content
+              ><br />
+              <div class="row items-start q-mt-sm">
+                <div class="col-3">
+                  <ion-avatar>
+                    <img
+                      :src="item.picture.path"
+                      style="width: 30px; height: 30px"
+                    />
+                  </ion-avatar>
+                  <router-link
+                    class="q-ml-sm"
+                    :to="'/myprofile/' + item.user_id"
+                    style="
+                      text-decoration: none;
+                      color: black;
+                      font-weight: bolder;
+                      color: #1a237e;
+                    "
+                  >
+                    {{ item.username }} </router-link
+                  >&nbsp;
+                </div>
+                <div class="col-6 self-end">
+                  <p style="display: inline; color: #5c6bc0">
+                    {{ item.create_date }}
+                  </p>
+                </div>
+                <div class="col-3 self-end">
+                  <i
+                    class="fa-solid fa-heart"
+                    style="color: #880e4f; margin-left: 45px"
+                  ></i>
+                  <i style="color: #880e4f; margin-right: 5px">{{
+                    item.like_count
+                  }}</i>
+                  <i class="fa-solid fa-comment" style="color: #880e4f"></i>
+                  <i style="color: #880e4f; margin-right: 5px">{{
+                    item.comment_count
+                  }}</i>
+                </div>
+                <hr style="border: 0.5px thin gray" />
+              </div>
             </div>
           </div>
-          <hr style="border: 0.5px thin gray" />
+          <div v-else>
+            <h6 class="text-center self-center" style="color: #880e4f">
+              {{ t("NoPost") }}
+            </h6>
+          </div>
         </div>
       </q-scroll-area>
     </div>
@@ -282,7 +290,13 @@ const fetchPost = async () => {
   const response = await findAllByMyPost(id.value);
   if (response) {
     PostList.value = response.dataList;
-    console.log(PostList);
+    console.log("PostList", PostList);
+    if (PostList.value && PostList.value.length !== 0) {
+      console.log("!= 0");
+    } else {
+      PostList.value = null;
+      console.log(PostList.value);
+    }
   }
 };
 
@@ -291,7 +305,13 @@ const findMyLikePost = async () => {
   const response = await findAllByMyLikePost(id.value);
   if (response) {
     PostList.value = response.dataList;
-    console.log(PostList);
+    console.log("PostList", PostList);
+    if (PostList.value && PostList.value.length !== 0) {
+      console.log("!= 0");
+    } else {
+      PostList.value = null;
+      console.log(PostList.value);
+    }
   }
 };
 
@@ -300,7 +320,13 @@ const findMyReplyPost = async () => {
   const response = await findAllByMyReplyPost(id.value);
   if (response) {
     PostList.value = response.dataList;
-    console.log(PostList);
+    console.log("PostList", PostList);
+    if (PostList.value && PostList.value.length !== 0) {
+      console.log("!= 0");
+    } else {
+      PostList.value = null;
+      console.log(PostList.value);
+    }
   }
 };
 
