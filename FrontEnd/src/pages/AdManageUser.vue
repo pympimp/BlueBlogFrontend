@@ -22,7 +22,7 @@
         filled
         dense
         type="search"
-        style="width: 250px; position: absolute; right: 430px"
+        style="width: 250px; position: absolute; right: 500px"
       >
         <template v-slot:append>
           <q-icon name="search" color="pink" />

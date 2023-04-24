@@ -100,7 +100,7 @@
                       style="display: flex; align-items: center"
                     >
                       <q-avatar class="q-mr-auto">
-                        <img :src="opt.picture.x" />
+                        <img :src="opt.picture.path" />
                       </q-avatar>
                       <div
                         style="
@@ -333,6 +333,7 @@ const menuList = ref([]);
 const openMenu = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
+
 const menuListcheck = () => {
   if (authenStore.auth.rolesText === "User") {
     menuList.value = [

@@ -34,9 +34,9 @@ const routes = [
         path: "/editpost/:postId",
         component: () => import("src/pages/EditPost.vue"),
       },
-
       {
         path: "/addashboard",
+        meta: { rolesText: "Dev" },
         component: () => import("src/pages/AdDashboard.vue"),
       },
       {
