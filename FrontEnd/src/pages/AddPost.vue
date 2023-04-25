@@ -261,15 +261,15 @@ const createImgProcess = async () => {
   // ส่ง entityItemPostImg.value ไปที่ postImgAddMore ที่มีการเพิ่ม post_id เข้าไปใน body
   const response = await postImgAddMore(entityItemPostImg.value);
   // entityItemPostImg.value.post_id = postId.value;
-  console.log("Post Id form addmore", postId.value);
-  console.log("Post Id form item post_id", entityItemPostImg.value.post_id);
+  // console.log("Post Id form addmore", postId.value);
+  // console.log("Post Id form item post_id", entityItemPostImg.value.post_id);
   console.log("postImgAddMore", response);
-  if (response) {
-    $q.notify({
-      message: response.message,
-      type: "positive",
-    });
-  }
+  // if (response) {
+  //   $q.notify({
+  //     message: response.message,
+  //     type: "positive",
+  //   });
+  // }
   // router.push("/");
 };
 
@@ -306,10 +306,10 @@ function hideImage(id, index) {
     },
   }).onOk(() => {
     console.log("OK");
-    $q.notify({
-      message: "Success!",
-      type: "positive",
-    });
+    // $q.notify({
+    //   message: "Success!",
+    //   type: "positive",
+    // });
     entityItem.value.postImg.splice(index, 1);
     deletePostImg(id, index);
   });

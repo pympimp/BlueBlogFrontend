@@ -52,7 +52,7 @@ export default {
 
   // Navbar Add New Post
   AddPost: "Add New Post",
-  EditPost: "Edit Post 123",
+  EditPost: "Edit Post",
   PostHead: "Title",
   Postbtn: "Post",
 
@@ -106,7 +106,7 @@ export default {
 
   //PostnComment
   AddComment: "Add Comment",
-  EditPost: "Edit Post 123456",
+  EditPost: "Edit Post",
   EditComment: "Edit Comment",
   DeletePost: "Delete Post",
   DeleteComment: "Delete Comment",
@@ -166,4 +166,7 @@ export default {
 
   // Search
   DataNotFound: "Data Not Found",
+
+  // Noti
+  Success: "Successfully !",
 };

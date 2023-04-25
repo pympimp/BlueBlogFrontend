@@ -1083,7 +1083,7 @@ const createProcess = async (postId) => {
   console.log("addComment", response);
   if (response) {
     $q.notify({
-      message: "Success!",
+      message: t("Success"),
       type: "positive",
     });
     // refresh page to display the latest data
@@ -1119,7 +1119,7 @@ const onDelete = (index) => {
   }).onOk(() => {
     console.log("OK");
     $q.notify({
-      message: "Success!",
+      message: t("Success"),
       type: "positive",
     });
     deleteProcess(index);
@@ -1191,7 +1191,7 @@ const onDeletePost = (entityItem) => {
   }).onOk(() => {
     console.log("OK");
     $q.notify({
-      message: "Success!",
+      message: t("Success"),
       type: "positive",
     });
     console.log(entityItem);
@@ -1264,7 +1264,7 @@ const editProcess = async () => {
   const response = await EditComment(entitycomment.value);
   console.log("updateUser", response);
   $q.notify({
-    message: response.message,
+    message: t("Success"),
     type: "positive",
   });
   if (
@@ -1481,7 +1481,7 @@ const onHide = (index) => {
   }).onOk(() => {
     console.log("OK");
     $q.notify({
-      message: "Success!",
+      message: t("Success"),
       type: "positive",
     });
     hideProcess(index);
@@ -1534,7 +1534,7 @@ const onUnhide = (index) => {
   }).onOk(() => {
     console.log("OK");
     $q.notify({
-      message: "Success!",
+      message: t("Success"),
       type: "positive",
     });
     unhideProcess(index);
