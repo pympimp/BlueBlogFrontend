@@ -1116,7 +1116,7 @@ const createProcess = async (postId) => {
   console.log("addComment", response);
   if (response) {
     $q.notify({
-      message: "Success!",
+      message: t("Success"),
       type: "positive",
     });
     // refresh page to display the latest data
@@ -1152,7 +1152,7 @@ const onDelete = (index) => {
   }).onOk(() => {
     console.log("OK");
     $q.notify({
-      message: "Success!",
+      message: t("Success"),
       type: "positive",
     });
     deleteProcess(index);
@@ -1224,7 +1224,7 @@ const onDeletePost = (entityItem) => {
   }).onOk(() => {
     console.log("OK");
     $q.notify({
-      message: "Success!",
+      message: t("Success"),
       type: "positive",
     });
     console.log(entityItem);
@@ -1392,10 +1392,10 @@ const fetchCountComment = async () => {
     if (response) {
       entityItemComment.value[index].CountLikeComment =
         response.TotalLikeComment;
-      entityCheckComment.value = response.entity;
+      // entityCheckCommentStatus.value = response.entity;
     }
   });
-  console.log("มานะมานนี", entityItemComment.value);
+  // console.log("มานะมานนี", entityItemComment.value);
 };
 
 //ฟังก์ชั่นของการนับยอดไลก์คอมเมนต์ status 0
@@ -1405,10 +1405,10 @@ const fetchCountCommentStatus = async () => {
     if (response) {
       entityItemCommentStatus.value[index].CountLikeComment =
         response.TotalLikeComment;
-      entityCheckComment.value = response.entity;
+      // entityCheckComment.value = response.entity;
     }
   });
-  console.log("มานะมานนี 0", entityItemCommentStatus.value);
+  // console.log("มานะมานนี 0", entityItemCommentStatus.value);
 };
 
 //ฟังก์ชั่นกดไลก์โพสต์
@@ -1516,7 +1516,7 @@ const onHide = (index) => {
   }).onOk(() => {
     console.log("OK");
     $q.notify({
-      message: "Success!",
+      message: t("Success"),
       type: "positive",
     });
     hideProcess(index);
@@ -1569,7 +1569,7 @@ const onUnhide = (index) => {
   }).onOk(() => {
     console.log("OK");
     $q.notify({
-      message: "Success!",
+      message: t("Success"),
       type: "positive",
     });
     unhideProcess(index);

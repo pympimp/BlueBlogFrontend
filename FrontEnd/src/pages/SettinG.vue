@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { biTranslate, biCheck } from "@quasar/extras/bootstrap-icons";
 import { useLang } from "src/composables/useLang";
 import { UserApi } from "src/api/UserApi";
@@ -88,13 +88,14 @@ const onSubmit = () => {
     updateProcess();
     console.log("changepass", entityItem.value);
   } else {
-    console.log(response.message);
+    console.log(entityItem.value.message);
   }
 };
 
 const updateProcess = async () => {
   loading.value = true;
   const response = await userChangePwd(entityItem.value);
+
   // console.log("userChangePwd ", response);
   if (response.status === true) {
     $q.notify({

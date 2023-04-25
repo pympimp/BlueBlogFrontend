@@ -158,6 +158,7 @@ const fetchList = async () => {
     // อัปเดตค่า totalPage.value
     totalPage.value = response.appPagination;
     console.log(response);
+
     if (postList.value && postList.value.length !== 0) {
       console.log("!= 0");
     } else {
@@ -174,17 +175,24 @@ watch(url, () => {
 
 // เมื่อเลื่อน Scroll ลงมา
 const handleScrolledToBottom = (isVisible) => {
+  // console.log("Welcome to HandelScroll");
   setTimeout(() => {
     loading.value = true;
     if (!isVisible) {
+      // console.log("!isVisible");
       return;
     }
+
     if (currentPage.value >= totalPage.value) {
+      // console.log("Current Page :", currentPage.value);
+      // console.log("Total Page :", totalPage.value);
       return;
     }
-    // เพิ่มหน้ารายการ ทีละ 2 รายการ
+
+    // เพิ่มหน้ารายการ
     currentPage.value++;
     // recordPerPage.value = 2;
+    console.log("current page", currentPage.value);
     fetchList();
     // ถ้าหมดแล้วจะ timelog
     console.log("timeout");

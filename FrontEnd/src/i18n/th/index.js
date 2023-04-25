@@ -165,4 +165,7 @@ export default {
 
   // Search
   DataNotFound: "ไม่พบข้อมูล",
+
+  // Noti
+  Success: "ดำเนินการสำเร็จ",
 };
