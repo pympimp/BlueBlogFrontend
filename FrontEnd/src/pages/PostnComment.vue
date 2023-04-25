@@ -125,6 +125,7 @@
                 cursor: pointer;
               "
               >{{ entityLikePost ? entityLikePost["TotalLikePost"] : "" }}
+
               {{ t("Like") }}</span
             >
             <!-- Pop up รายชื่อคนกดถูกใจ -->
@@ -1445,13 +1446,14 @@ const LikeCommentBtn = async (id, id1) => {
       console.log("LikeComment", response.message);
       fetchCountComment();
       // fetchCountCommentStatus();
-      // CheckComment();
-      fethDataComment();
+      CheckComment();
+      // fethDataComment();
     }
   } else {
     const response = await LikeComment($id, $id1);
     if (response) {
-      fethDataCommentStatus();
+      // fethDataCommentStatus();
+      CheckComment0();
       fetchCountCommentStatus();
     }
   }
@@ -1470,13 +1472,14 @@ const UnlikeCommentBtn = async (id, id1) => {
       console.log("UnlikeComment", response.message);
       fetchCountComment();
       // fetchCountCommentStatus();
-      // CheckComment();
-      fethDataComment();
+      CheckComment();
+      // fethDataComment();
     }
   } else {
     const response = await UnlikeComment($id, $id1);
     if (response) {
-      fethDataCommentStatus();
+      // fethDataCommentStatus();
+      CheckComment0();
       fetchCountCommentStatus();
     }
   }
