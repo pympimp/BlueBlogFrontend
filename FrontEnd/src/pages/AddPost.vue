@@ -11,28 +11,26 @@
         <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
         <!-- ส่วนของการใส่หัวข้อโพสต์ -->
-        <q-input
-          outlined
-          v-model="entityItem.title"
-          :label="t('PostHead')"
-          color="indigo-10"
-          stack-label
-          style="width: 600px; color: #1a237e"
-          :rules="[(val) => !!val || 'Field is required']"
-        />
+        <div class="q-pa-md" style="max-width: 1200px; max-height: 800px">
+          <q-input
+            outlined
+            v-model="entityItem.title"
+            :label="t('PostHead')"
+            color="indigo-10"
+            stack-label
+            style="color: #1a237e"
+            :rules="[(val) => !!val || 'Field is required']"
+          />
+          <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
-        <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
-
-        <!-- ส่วนของการจัดรูปแบบเนื้อหาโพสต์ -->
-
-        <div class="q-pa-md" style="max-width: 800px; margin-top: -10px">
+          <!-- ส่วนของการจัดรูปแบบเนื้อหาโพสต์ -->
           <q-input
             outlined
             v-model="entityItem.content"
             :label="t('ContentPost')"
             color="indigo-10"
             stack-label
-            style="width: 600px; color: #1a237e"
+            style="color: #1a237e"
             :rules="[(val) => !!val || 'Field is required']"
             type="textarea"
           />
@@ -48,10 +46,9 @@
             >
               <q-img :src="postImg.postimg.path" class="img" :ratio="4 / 3" />
               <q-btn
-                label="Delete Image"
                 color="dark"
                 icon="mdi-delete"
-                class="q-mt-sm"
+                class="q-ma-xs"
                 @click="hideImage(postImg.id, index)"
               />
             </div>

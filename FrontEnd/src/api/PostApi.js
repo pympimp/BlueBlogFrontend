@@ -70,15 +70,6 @@ export const PostApi = () => {
     });
   };
 
-  // postImgAddMore For Edit Post
-  // const postImgAddMore = async (id, req = {}) => {
-  //   return await callApi({
-  //     method: "POST",
-  //     // url: `/postImgAddMore?post_id=${id}`,
-  //     url: `/postImgAddMore?post_id=${parseInt(id)}`,
-  //     body: req,
-  //   });
-  // };
   const postImgAddMore = async (req = {}, id) => {
     return await callApi({
       method: "POST",
@@ -87,17 +78,6 @@ export const PostApi = () => {
       id,
     });
   };
-
-  // const postEditMultipleUploadImage = async (file) => {
-  //   const postImgData = new FormData();
-  //   postData.append("fileName_", file);
-  //   return await callApi({
-  //     method: "POST",
-  //     url: "/postEditMultipleUploadImage",
-  //     contentType: "multipart/form-data",
-  //     body: postImgData,
-  //   });
-  // };
 
   // Delete Post
   const deletePost = async (ids) => {
