@@ -46,6 +46,7 @@ export default {
   ListFollower: "รายชื่อผู้ติดตาม",
   Followers: "ผู้ติดตาม",
   NoPost: "ไม่มีโพสต์ที่แสดง",
+  NotFound: "ไม่พบข้อมูล",
 
   // Navbar Add New Post
   AddPost: "เพิ่มโพสต์ใหม่",

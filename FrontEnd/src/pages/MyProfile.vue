@@ -80,24 +80,32 @@
                 </div>
               </q-card-section>
 
-              <q-card-section
-                class="q-pt-none text-red"
-                v-for="(item, index) in entityListFollower"
-                :key="index"
-              >
-                <ion-avatar>
-                  <img
-                    :src="item.picture.path"
-                    style="width: 30px; height: 30px"
-                  />
-                </ion-avatar>
-                &nbsp;
-                <router-link
-                  :to="'/myprofile/' + item.id"
-                  style="text-decoration: none; color: #1d1917"
+              <div v-for="(item, index) in entityListFollower" :key="index">
+                <q-card-section
+                  class="q-pt-none text-red"
+                  v-if="entityUser.count > 0"
                 >
-                  {{ item.username }}
-                </router-link>
+                  <ion-avatar>
+                    <img
+                      :src="item.picture.path"
+                      style="width: 30px; height: 30px"
+                    />
+                  </ion-avatar>
+                  &nbsp;
+                  <router-link
+                    :to="'/myprofile/' + item.id"
+                    style="text-decoration: none; color: #1d1917"
+                  >
+                    {{ item.username }}
+                  </router-link>
+                </q-card-section>
+              </div>
+              <q-card-section
+                v-if="entityUser.count == 0"
+                class="q-pb-xl text-center"
+                style="color: #1a237e; font-size: large"
+              >
+                <q-item-label> {{ t("NotFound") }}</q-item-label>
               </q-card-section>
               <!-- ปุ่มโอเคของ Dialog -->
             </q-card>
@@ -191,8 +199,8 @@
               <hr style="border: 0.5px thin gray" />
             </div>
           </div>
-          <div class="flex justify-center" v-else>
-            <h6 class="ml-3" style="color: #880e4f">
+          <div class="column fit content-center justify-end" v-else>
+            <h6 class="q-pt-xl self-end" style="color: #880e4f">
               {{ t("NoPost") }}
             </h6>
           </div>
