@@ -49,6 +49,7 @@ export default {
   ListFollower: "Follower Lists",
   Followers: "Follower",
   NoPost: "No Post",
+  NotFound: "Not Found",
 
   // Navbar Add New Post
   AddPost: "Add New Post",

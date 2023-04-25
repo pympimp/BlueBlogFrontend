@@ -111,6 +111,7 @@ const route = useRoute();
 const router = useRouter();
 const { uploadImageApi, updateAvatar } = FileApi();
 const { getOne, updateUser } = UserApi();
+const { getUserDataByAuth } = AuthenApi();
 
 const loading = ref(false);
 const userId = ref();
@@ -179,11 +180,20 @@ const updateProcess = async () => {
     });
   }
   loading.value = false;
+  fetchUserData();
   window.location.replace("/#/");
 };
 
 const { localeList, t, locale } = useLang();
 const authenStore = useAuthenStore();
+
+const fetchUserData = async () => {
+  const response = await getUserDataByAuth();
+  console.log("App.vue> getUserDataByAuth", response);
+  if (response && response.userData) {
+    authenStore.setAuthen(response.userData);
+  }
+};
 </script>
 
 <style scoped>

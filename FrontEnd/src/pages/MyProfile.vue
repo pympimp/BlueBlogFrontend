@@ -2,100 +2,115 @@
   <q-page class="BackGround flex flex-center column">
     <!-- ส่วนข้อมูลหลักของผู้ใช้ -->
     <div class="container-header" @click="toggleBtn">
-      <div class="row">
-        <!-- รูปโปรไฟล์ -->
-        <q-avatar size="65px" class="shadow-5">
-          <q-img :src="UserData ? UserData.picture.path : ''" />
-        </q-avatar>
-        <!-- username และ bio -->
-        <div
-          class="details self-start"
-          style="display: inline; margin-top: 10px"
-        >
-          <b class="text-start q-pl-md" style="color: #1a237e">
-            {{ UserData.username }}</b
-          >
-          <p class="text-start text-start q-pl-md" style="color: #5c6bc0">
-            {{ UserData.bio }}
-          </p>
-        </div>
+      <div class="row fit">
+        <div class="col self-start flex justify-start">
+          <!-- รูปโปรไฟล์ -->
+          <q-avatar size="65px" class="shadow-5">
+            <q-img :src="UserData ? UserData.picture.path : ''" />
+          </q-avatar>
 
-        <!-- :to="`/manageprofile/${id}`" -->
-        <div v-if="authenStore.auth.id == id">
-          <q-btn
-            :to="`/manageprofile/${authenStore.auth.id}`"
-            glossy
-            push
-            color="pink-9"
-            :label="t('EditProfile')"
-            @click="toggleFollow"
-            style="height: 20px; margin-top: 5px"
-          />
-          <p
-            class="text-center"
-            style="margin-top: 5px; cursor: pointer"
-            @click="alertFollower = true"
+          <!-- username และ bio -->
+          <div
+            class="details self-start"
+            style="display: inline; margin-top: 10px"
           >
-            {{ entityUser ? entityUser["count"] : "" }} Follower
-          </p>
-        </div>
-        <div v-else>
-          <q-btn
-            ref="followBtn"
-            glossy
-            push
-            color="pink-9"
-            :label="followLabel === 'Follow' ? t('Follow') : t('Following')"
-            @click="toggleFollow"
-            style="height: 20px; margin-top: 5px"
-          />
-
-          <p
-            @click="alertFollower = true"
-            class="text-center"
-            style="margin-top: 5px; cursor: pointer"
-          >
-            {{ entityUser ? entityUser["count"] : "" }} {{ t("Followers") }}
-          </p>
-        </div>
-        <!-- Pop up รายชื่อคนที่ติดตาม -->
-        <q-dialog v-model="alertFollower">
-          <q-card
-            style="
-              max-height: 400px;
-              width: 300px;
-              border-radius: 20px;
-              padding: 10px 10px 10px 10px;
-            "
-          >
-            <q-card-section>
-              <div class="text-h6" style="font-weight: bold; color: #1a237e">
-                {{ t("ListFollower") }}
-              </div>
-            </q-card-section>
-
-            <q-card-section
-              class="q-pt-none text-red"
-              v-for="(item, index) in entityListFollower"
-              :key="index"
+            <b class="text-start q-pl-md" style="color: #1a237e">
+              {{ UserData.username }}</b
             >
-              <ion-avatar>
-                <img
-                  :src="item.picture.path"
-                  style="width: 30px; height: 30px"
-                />
-              </ion-avatar>
-              &nbsp;
-              <router-link
-                :to="'/myprofile/' + item.id"
-                style="text-decoration: none; color: #1d1917"
+            <p class="text-start q-pl-md" style="color: #5c6bc0">
+              {{ UserData.bio }}
+            </p>
+          </div>
+        </div>
+
+        <div class="col fit self-end flex justify-end">
+          <!-- :to="`/manageprofile/${id}`" -->
+          <div v-if="authenStore.auth.id == id">
+            <q-btn
+              class="text-center"
+              :to="`/manageprofile/${authenStore.auth.id}`"
+              glossy
+              push
+              color="pink-9"
+              :label="t('EditProfile')"
+              @click="toggleFollow"
+              style="height: 20px; margin-top: 5px"
+            />
+            <p
+              class="text-center"
+              style="margin-top: 5px; cursor: pointer"
+              @click="alertFollower = true"
+            >
+              {{ entityUser ? entityUser["count"] : "" }} Follower
+            </p>
+          </div>
+          <div v-else>
+            <q-btn
+              class="text-center"
+              ref="followBtn"
+              glossy
+              push
+              color="pink-9"
+              :label="followLabel === 'Follow' ? t('Follow') : t('Following')"
+              @click="toggleFollow"
+              style="height: 20px; margin-top: 5px"
+            />
+
+            <p
+              @click="alertFollower = true"
+              class="text-center"
+              style="margin-top: 5px; cursor: pointer"
+            >
+              {{ entityUser ? entityUser["count"] : "" }} {{ t("Followers") }}
+            </p>
+          </div>
+          <!-- Pop up รายชื่อคนที่ติดตาม -->
+          <q-dialog v-model="alertFollower">
+            <q-card
+              style="
+                max-height: 400px;
+                width: 300px;
+                border-radius: 20px;
+                padding: 10px 10px 10px 10px;
+              "
+            >
+              <q-card-section>
+                <div class="text-h6" style="font-weight: bold; color: #1a237e">
+                  {{ t("ListFollower") }}
+                </div>
+              </q-card-section>
+
+              <div v-for="(item, index) in entityListFollower" :key="index">
+                <q-card-section
+                  class="q-pt-none text-red"
+                  v-if="entityUser.count > 0"
+                >
+                  <ion-avatar>
+                    <img
+                      :src="item.picture.path"
+                      style="width: 30px; height: 30px"
+                    />
+                  </ion-avatar>
+                  &nbsp;
+                  <router-link
+                    :to="'/myprofile/' + item.id"
+                    style="text-decoration: none; color: #1d1917"
+                  >
+                    {{ item.username }}
+                  </router-link>
+                </q-card-section>
+              </div>
+              <q-card-section
+                v-if="entityUser.count == 0"
+                class="q-pb-xl text-center"
+                style="color: #1a237e; font-size: large"
               >
-                {{ item.username }}
-              </router-link>
-            </q-card-section>
-            <!-- ปุ่มโอเคของ Dialog -->
-          </q-card>
-        </q-dialog>
+                <q-item-label> {{ t("NotFound") }}</q-item-label>
+              </q-card-section>
+              <!-- ปุ่มโอเคของ Dialog -->
+            </q-card>
+          </q-dialog>
+        </div>
       </div>
     </div>
 
@@ -184,8 +199,8 @@
               <hr style="border: 0.5px thin gray" />
             </div>
           </div>
-          <div class="flex justify-center" v-else>
-            <h6 class="ml-3" style="color: #880e4f">
+          <div class="column fit content-center justify-end" v-else>
+            <h6 class="q-pt-xl self-end" style="color: #880e4f">
               {{ t("NoPost") }}
             </h6>
           </div>

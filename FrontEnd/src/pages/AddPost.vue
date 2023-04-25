@@ -10,31 +10,37 @@
 
         <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
-        <!-- ส่วนของการใส่หัวข้อโพสต์ -->
-        <div class="q-pa-md" style="max-width: 1200px; max-height: 800px">
-          <q-input
-            outlined
-            v-model="entityItem.title"
-            :label="t('PostHead')"
-            color="indigo-10"
-            stack-label
-            style="color: #1a237e"
-            :rules="[(val) => !!val || 'Field is required']"
-          />
+        <div class="column">
+          <div class="col self-center">
+            <!-- ส่วนของการใส่หัวข้อโพสต์ -->
+            <q-input
+              outlined
+              v-model="entityItem.title"
+              :label="t('PostHead')"
+              color="indigo-10"
+              stack-label
+              style="width: 600px; color: #1a237e"
+              :rules="[(val) => !!val || 'Field is required']"
+            />
+          </div>
           <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
-          <!-- ส่วนของการจัดรูปแบบเนื้อหาโพสต์ -->
-          <q-input
-            outlined
-            v-model="entityItem.content"
-            :label="t('ContentPost')"
-            color="indigo-10"
-            stack-label
-            style="color: #1a237e"
-            :rules="[(val) => !!val || 'Field is required']"
-            type="textarea"
-          />
+          <div class="col self-center">
+            <!-- ส่วนของการจัดรูปแบบเนื้อหาโพสต์ -->
 
+            <div class="q-pa-md" style="max-width: 800px; margin-top: -10px">
+              <q-input
+                outlined
+                v-model="entityItem.content"
+                :label="t('ContentPost')"
+                color="indigo-10"
+                stack-label
+                style="width: 600px; color: #1a237e"
+                :rules="[(val) => !!val || 'Field is required']"
+                type="textarea"
+              />
+            </div>
+          </div>
           <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
           <!-- ส่วนของรูปภาพของโพสต์ -->
@@ -349,6 +355,7 @@ const deletePostImg = async (id) => {
   display: flex;
   align-items: center;
   flex-direction: column;
+  max-width: 700px;
   opacity: 0.8;
   padding: 50px 50px 50px 50px;
   padding: 20px 20px 20px 20px;

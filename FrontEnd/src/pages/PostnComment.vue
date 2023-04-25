@@ -125,6 +125,7 @@
                 cursor: pointer;
               "
               >{{ entityLikePost ? entityLikePost["TotalLikePost"] : "" }}
+
               {{ t("Like") }}</span
             >
             <!-- Pop up รายชื่อคนกดถูกใจ -->
@@ -151,19 +152,28 @@
                   v-for="(item, index) in entityListLikePost"
                   :key="index"
                 >
-                  <ion-avatar>
-                    <img
-                      :src="item.picture.path"
-                      style="width: 30px; height: 30px"
-                    />
-                  </ion-avatar>
-                  &nbsp;
-                  <router-link
-                    :to="'/myprofile/' + item.user_id"
-                    style="text-decoration: none; color: #1d1917"
-                  >
-                    {{ item.username }}
-                  </router-link>
+                  <div v-if="entityLikePost.TotalLikePost > 0">
+                    <ion-avatar>
+                      <img
+                        :src="item.picture.path"
+                        style="width: 30px; height: 30px"
+                      />
+                    </ion-avatar>
+                    &nbsp;
+                    <router-link
+                      :to="'/myprofile/' + item.user_id"
+                      style="text-decoration: none; color: #1d1917"
+                    >
+                      {{ item.username }}
+                    </router-link>
+                  </div>
+                </q-card-section>
+                <q-card-section
+                  v-if="entityLikePost.TotalLikePost == 0"
+                  class="q-pb-xl text-center"
+                  style="color: #1a237e; font-size: large"
+                >
+                  <q-item-label> {{ t("NotFound") }}</q-item-label>
                 </q-card-section>
                 <!-- ปุ่มโอเคของ Dialog -->
               </q-card>
@@ -453,19 +463,28 @@
                   v-for="(item, index) in entityListLikeComment"
                   :key="index"
                 >
-                  <ion-avatar>
-                    <img
-                      :src="item.picture.path"
-                      style="width: 30px; height: 30px"
-                    />
-                  </ion-avatar>
-                  &nbsp;
-                  <router-link
-                    :to="'/myprofile/' + item.user_id"
-                    style="text-decoration: none; color: #1d1917"
-                  >
-                    {{ item.username }}
-                  </router-link>
+                  <div v-if="entityListLikeComment[0]">
+                    <ion-avatar>
+                      <img
+                        :src="item.picture.path"
+                        style="width: 30px; height: 30px"
+                      />
+                    </ion-avatar>
+                    &nbsp;
+                    <router-link
+                      :to="'/myprofile/' + item.user_id"
+                      style="text-decoration: none; color: #1d1917"
+                    >
+                      {{ item.username }}
+                    </router-link>
+                  </div>
+                </q-card-section>
+                <q-card-section
+                  class="q-pb-xl text-center"
+                  style="color: #1a237e; font-size: large"
+                  v-if="!entityListLikeComment[0]"
+                >
+                  <q-item-label> {{ t("NotFound") }}</q-item-label>
                 </q-card-section>
               </q-card>
             </q-dialog>
@@ -777,19 +796,28 @@
                   v-for="(item, index) in entityListLikeComment"
                   :key="index"
                 >
-                  <ion-avatar>
-                    <img
-                      :src="item.picture.path"
-                      style="width: 30px; height: 30px"
-                    />
-                  </ion-avatar>
-                  &nbsp;
-                  <router-link
-                    :to="'/myprofile/' + item.user_id"
-                    style="text-decoration: none; color: #1d1917"
-                  >
-                    {{ item.username }}
-                  </router-link>
+                  <div v-if="entityListLikeComment[0]">
+                    <ion-avatar>
+                      <img
+                        :src="item.picture.path"
+                        style="width: 30px; height: 30px"
+                      />
+                    </ion-avatar>
+                    &nbsp;
+                    <router-link
+                      :to="'/myprofile/' + item.user_id"
+                      style="text-decoration: none; color: #1d1917"
+                    >
+                      {{ item.username }}
+                    </router-link>
+                  </div>
+                </q-card-section>
+                <q-card-section
+                  class="q-pb-xl text-center"
+                  style="color: #1a237e; font-size: large"
+                  v-if="!entityListLikeComment[0]"
+                >
+                  <q-item-label> {{ t("NotFound") }}</q-item-label>
                 </q-card-section>
               </q-card>
             </q-dialog>
@@ -1418,13 +1446,14 @@ const LikeCommentBtn = async (id, id1) => {
       console.log("LikeComment", response.message);
       fetchCountComment();
       // fetchCountCommentStatus();
-      // CheckComment();
-      fethDataComment();
+      CheckComment();
+      // fethDataComment();
     }
   } else {
     const response = await LikeComment($id, $id1);
     if (response) {
-      fethDataCommentStatus();
+      // fethDataCommentStatus();
+      CheckComment0();
       fetchCountCommentStatus();
     }
   }
@@ -1443,13 +1472,14 @@ const UnlikeCommentBtn = async (id, id1) => {
       console.log("UnlikeComment", response.message);
       fetchCountComment();
       // fetchCountCommentStatus();
-      // CheckComment();
-      fethDataComment();
+      CheckComment();
+      // fethDataComment();
     }
   } else {
     const response = await UnlikeComment($id, $id1);
     if (response) {
-      fethDataCommentStatus();
+      // fethDataCommentStatus();
+      CheckComment0();
       fetchCountCommentStatus();
     }
   }
