@@ -78,6 +78,7 @@
 
       <br />
 
+      <!-- ข้อมูลของผู้โพสต์ -->
       <div class="details-user">
         <router-link
           :to="'/myprofile/' + (entityItem ? entityItem['user_id'] : '')"
@@ -90,19 +91,22 @@
           </ion-avatar>
         </router-link>
         &nbsp;&nbsp;&nbsp;
-        <router-link
-          :to="'/myprofile/' + (entityItem ? entityItem['user_id'] : '')"
-        >
-          <b style="color: #1a237e">{{
-            entityItem ? entityItem["username"] : ""
-          }}</b>
-        </router-link>
-        <i style="color: #5c6bc0"
-          ><br />{{ entityItem ? entityItem["create_date"] : "" }}</i
-        >
+
+        <div>
+          <router-link
+            :to="'/myprofile/' + (entityItem ? entityItem['user_id'] : '')"
+          >
+            <b style="color: #1a237e">{{
+              entityItem ? entityItem["username"] : ""
+            }}</b>
+          </router-link>
+          <i style="color: #5c6bc0"
+            ><br />{{ entityItem ? entityItem["create_date"] : "" }}</i
+          >
+        </div>
 
         <!-- ปุ่มไลก์โพส -->
-        <div class="comment-like" style="display: flex; margin-left: 450px">
+        <div class="comment-like" style="display: flex; margin-left: 550px">
           <div style="display: inline">
             <q-btn
               ref="followBtn"
@@ -502,6 +506,7 @@
           </div>
 
           <!-- ข้อมูลผู้คอมเมนต์ -->
+          <div></div>
           <ion-avatar class="profile">
             <img
               :src="item.picture.path"
