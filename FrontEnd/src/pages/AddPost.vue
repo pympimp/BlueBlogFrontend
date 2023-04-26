@@ -73,7 +73,6 @@
               multiple
               use-chips
               counter
-              max-files="6"
               style="padding-right: 50px; text-decoration: none"
             >
               <template v-slot:prepend>
