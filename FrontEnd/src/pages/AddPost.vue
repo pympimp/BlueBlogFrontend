@@ -71,12 +71,22 @@
               :label="t('ChooseFile')"
               borderless
               multiple
+              use-chips
+              counter
+              max-files="6"
               style="padding-right: 50px; text-decoration: none"
             >
               <template v-slot:prepend>
                 <q-icon name="attach_file" />
               </template>
             </q-file>
+
+            <!-- <q-uploader
+              :url="imageFileList"
+              :label="t('ChooseFile')"
+              multiple
+              style="max-width: 300px"
+            /> -->
 
             <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
@@ -151,6 +161,9 @@ const entityItemPostImg = ref({
 //   img_name: "",
 //   haveNewImage: false,
 // });
+
+let imgInput = document.getElementById("imgInput");
+let previewImg = document.getElementById("previewImg");
 
 onMounted(() => {
   // fethMajor();
