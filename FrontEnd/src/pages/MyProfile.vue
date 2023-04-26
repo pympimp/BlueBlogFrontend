@@ -246,8 +246,37 @@ const followLabel = ref("");
 
 // ทำก่อน เวลาโหลดหน้าเว็บมา
 onMounted(async () => {
+  // if (route.params.user_id) {
+  //   id.value = route.params.user_id;
+  //   console.log("route user id", route.params.user_id);
+  // }
+
+  watchRoute();
+
+  // if (id.value) {
+  //   fetchUser();
+  //   fetchPost();
+  //   fetchCountFol();
+  //   getUserDataByAuth;
+  //   checkFol();
+  //   fethFollower();
+  // }
+  // console.log(UserData);
+
+  // if (followLabel.value) {
+  //   followLabel.value = LocalStorage.getItem(followLabel1);
+  // }
+});
+
+watch(route, async (newVal, oldVal) => {
+  console.log("id from", oldVal, newVal);
+  watchRoute();
+});
+
+const watchRoute = () => {
   if (route.params.user_id) {
     id.value = route.params.user_id;
+    console.log("route user id", route.params.user_id);
   }
 
   if (id.value) {
@@ -259,11 +288,7 @@ onMounted(async () => {
     fethFollower();
   }
   console.log(UserData);
-
-  // if (followLabel.value) {
-  //   followLabel.value = LocalStorage.getItem(followLabel1);
-  // }
-});
+};
 
 //ฟังก์ชั่นโชว์รายชื่อผู้กดไลก์โพสต์
 const alertFollower = ref(false);
