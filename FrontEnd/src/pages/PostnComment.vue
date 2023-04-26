@@ -329,6 +329,7 @@
                   v-model="imageFile"
                   :label="t('ChooseFile')"
                   borderless
+                  use-chips
                   style="padding-right: 300px; text-decoration: none"
                 >
                   <template v-slot:prepend>
@@ -613,6 +614,7 @@
                   v-model="imageFile"
                   :label="t('ChooseFile')"
                   borderless
+                  use-chips
                   style="padding-right: 300px; text-decoration: none"
                 >
                   <template v-slot:prepend>
@@ -664,6 +666,7 @@
                   v-model="imageFile"
                   :label="t('ChooseFile')"
                   borderless
+                  use-chips
                   style="padding-right: 300px; text-decoration: none"
                 >
                   <template v-slot:prepend>
