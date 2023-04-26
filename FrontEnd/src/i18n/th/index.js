@@ -168,4 +168,10 @@ export default {
 
   // Noti
   Success: "ดำเนินการสำเร็จ",
+
+  // comment
+  orderComment: "ความคิดเห็นที่",
+
+  // changePW
+  passwordCurrentWrong: "รหัสผ่านเก่าไม่ถูกต้อง",
 };
