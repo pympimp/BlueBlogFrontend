@@ -233,6 +233,7 @@
             :label="t('ChooseFile')"
             borderless
             use-chips
+            accept=".png, .jpg, .jpeg"
             style="padding-right: 300px; text-decoration: none"
           >
             <template v-slot:prepend>
@@ -328,6 +329,7 @@
                   :label="t('ChooseFile')"
                   borderless
                   use-chips
+                  accept=".png, .jpg, .jpeg"
                   style="padding-right: 300px; text-decoration: none"
                 >
                   <template v-slot:prepend>
@@ -612,6 +614,7 @@
                   :label="t('ChooseFile')"
                   borderless
                   use-chips
+                  accept=".png, .jpg, .jpeg"
                   style="padding-right: 300px; text-decoration: none"
                 >
                   <template v-slot:prepend>
