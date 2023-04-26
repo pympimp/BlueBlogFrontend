@@ -33,7 +33,6 @@
       >
         <q-fab
           glossy
-          v-model="fab2"
           label=""
           external-label
           vertical-actions-align="left"
@@ -281,7 +280,6 @@
       >
         <q-fab
           glossy
-          v-model="fab2"
           label=""
           external-label
           vertical-actions-align="left"
@@ -566,7 +564,6 @@
       >
         <q-fab
           glossy
-          v-model="fab2"
           label=""
           external-label
           vertical-actions-align="left"
