@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="flex flex-center"
+    class="background flex flex-center"
     style="display: flex; flex-direction: column"
   >
     <!-- Part Post -->
@@ -214,9 +214,10 @@
         >
           {{ t("AddComment") }}
         </p>
+
         <br />
         <!-- ช่องจัดรูปแบบของการเขียนคอมเมนต์ -->
-        <div class="q-pa-md justify-center" style="max-width: 700px">
+        <div class="q-pa-md justify-center" style="width: 680px">
           <q-input
             v-model="entityAdd.content"
             :label="t('ContentComment')"
@@ -225,39 +226,33 @@
           />
         </div>
 
-        <div style="display: flex">
-          <!-- ปุ่มเลือกไฟล์ -->
-          <q-file
-            color="pink"
-            v-model="imageFile"
-            :label="t('ChooseFile')"
-            borderless
-            use-chips
-            style="padding-right: 300px; text-decoration: none"
-          >
-            <template v-slot:prepend>
-              <q-icon name="attach_file" />
-            </template>
-          </q-file>
+        <div class="row q-mb-md">
+          <div class="col">
+            <!-- ปุ่มเลือกไฟล์ -->
+            <q-file
+              color="pink"
+              v-model="imageFile"
+              :label="t('ChooseFile')"
+              borderless
+              use-chips
+              style="text-decoration: none"
+            >
+              <template v-slot:prepend>
+                <q-icon name="attach_file" />
+              </template>
+            </q-file>
+          </div>
 
-          <!-- <q-uploader
-            v-model="imageFile"
-            :label="t('ChooseFile')"
-            color="purple"
-            square
-            flat
-            bordered
-            style="max-width: 300px"
-          /> -->
-
-          <!-- ปุ่มโพสต์ -->
-          <q-btn
-            color="pink"
-            glossy
-            type="submit"
-            :label="t('Submit')"
-            style="height: 5px; margin-top: 15px"
-          />
+          <div class="col flex justify-end">
+            <!-- ปุ่มโพสต์ -->
+            <q-btn
+              color="pink"
+              glossy
+              type="submit"
+              :label="t('Submit')"
+              style="height: 5px; margin-top: 15px"
+            />
+          </div>
         </div>
       </q-form>
     </div>
@@ -299,9 +294,16 @@
           />
           <!-- ส่วนของการ Pop up แจ้งเตือน -->
           <q-dialog v-model="alertEdit1">
-            <q-card style="padding: 20px 20px 20px 20px; border-radius: 20px">
+            <q-card
+              style="
+                padding: 20px 20px 20px 20px;
+                border-radius: 20px;
+                height: 310px;
+              "
+            >
               <!-- หัวข้อใหญ่ว่า "Add Comment" -->
               <p
+                class="q-mb-md"
                 style="
                   font-size: 25px;
                   font-weight: bolder;
@@ -311,7 +313,7 @@
               >
                 {{ t("EditComment") }}
               </p>
-              <div class="q-pa-md q-gutter-sm">
+              <div class="q-pa-md justify-center" style="width: 480px">
                 <q-input
                   v-model="entitycomment.content"
                   :label="t('ContentComment')"
@@ -320,31 +322,35 @@
                 />
               </div>
 
-              <div style="display: flex">
-                <!-- ปุ่มเลือกไฟล์ -->
-                <q-file
-                  color="pink"
-                  v-model="imageFile"
-                  :label="t('ChooseFile')"
-                  borderless
-                  use-chips
-                  style="padding-right: 300px; text-decoration: none"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="attach_file" />
-                  </template>
-                </q-file>
+              <div class="row">
+                <div class="col">
+                  <!-- ปุ่มเลือกไฟล์ -->
+                  <q-file
+                    color="pink"
+                    v-model="imageFile1"
+                    :label="t('ChooseFile')"
+                    borderless
+                    use-chips
+                    style="text-decoration: none"
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="attach_file" />
+                    </template>
+                  </q-file>
+                </div>
 
-                <!-- ปุ่มยืนยัน -->
-                <q-btn
-                  color="pink"
-                  glossy
-                  push
-                  type="submit"
-                  @click="onSubmit('edit')"
-                  :label="t('Submit')"
-                  style="height: 5px; margin-top: 15px"
-                />
+                <div class="col flex justify-end">
+                  <!-- ปุ่มยืนยัน -->
+                  <q-btn
+                    color="pink"
+                    glossy
+                    push
+                    type="submit"
+                    @click="onSubmit('edit')"
+                    :label="t('Submit')"
+                    style="height: 15px; margin-top: 15px"
+                  />
+                </div>
               </div>
             </q-card>
           </q-dialog>
@@ -428,7 +434,8 @@
           </q-img>
         </div>
         <br /><br />
-        <!-- ปุ่มไลก์คอมเมนต์ -->
+
+        <!-- ปุ่มไลก์คอมเมนต์1 -->
         <div class="comment-like2" style="display: flex">
           <div style="display: inline">
             <q-btn
@@ -503,7 +510,7 @@
                 </q-card-section>
               </q-card>
             </q-dialog>
-            <!-- จำนวนยอดไลก์คอมเมนต์ -->
+            <!-- จำนวนยอดไลก์คอมเมนต์1 -->
             <b
               style="
                 color: #b46f8f;
@@ -583,9 +590,16 @@
           />
           <!-- ส่วนของการ Pop up แจ้งเตือน -->
           <q-dialog v-model="alertEdit1">
-            <q-card style="padding: 20px 20px 20px 20px; border-radius: 20px">
+            <q-card
+              style="
+                padding: 20px 20px 20px 20px;
+                border-radius: 20px;
+                height: 310px;
+              "
+            >
               <!-- หัวข้อใหญ่ว่า "Add Comment" -->
               <p
+                class="q-mb-md"
                 style="
                   font-size: 25px;
                   font-weight: bolder;
@@ -595,7 +609,7 @@
               >
                 {{ t("EditComment") }}
               </p>
-              <div class="q-pa-md q-gutter-sm">
+              <div class="q-pa-md justify-center" style="width: 480px">
                 <q-input
                   v-model="entitycomment.content"
                   :label="t('ContentComment')"
@@ -604,83 +618,35 @@
                 />
               </div>
 
-              <div style="display: flex">
-                <!-- ปุ่มเลือกไฟล์ -->
-                <q-file
-                  color="pink"
-                  v-model="imageFile"
-                  :label="t('ChooseFile')"
-                  borderless
-                  use-chips
-                  style="padding-right: 300px; text-decoration: none"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="attach_file" />
-                  </template>
-                </q-file>
+              <div class="row">
+                <div class="col">
+                  <!-- ปุ่มเลือกไฟล์ -->
+                  <q-file
+                    color="pink"
+                    v-model="imageFile1"
+                    :label="t('ChooseFile')"
+                    borderless
+                    use-chips
+                    style="text-decoration: none"
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="attach_file" />
+                    </template>
+                  </q-file>
+                </div>
 
-                <!-- ปุ่มยืนยัน -->
-                <q-btn
-                  color="pink"
-                  glossy
-                  push
-                  type="submit"
-                  @click="onSubmit('edit')"
-                  :label="t('Submit')"
-                  style="height: 5px; margin-top: 15px"
-                />
-              </div>
-            </q-card>
-          </q-dialog>
-
-          <!-- ส่วนของการ Pop up แจ้งเตือน -->
-          <q-dialog v-model="alertEdit1">
-            <q-card style="padding: 20px 20px 20px 20px; border-radius: 20px">
-              <!-- หัวข้อใหญ่ว่า "Add Comment" -->
-              <p
-                style="
-                  font-size: 25px;
-                  font-weight: bolder;
-                  margin-bottom: -10px;
-                  color: #b03367;
-                "
-              >
-                {{ t("EditComment") }}
-              </p>
-              <div class="q-pa-md q-gutter-sm">
-                <q-input
-                  v-model="entitycomment.content"
-                  :label="t('ContentComment')"
-                  filled
-                  type="textarea"
-                />
-              </div>
-
-              <div style="display: flex">
-                <!-- ปุ่มเลือกไฟล์ -->
-                <q-file
-                  color="pink"
-                  v-model="imageFile"
-                  :label="t('ChooseFile')"
-                  borderless
-                  use-chips
-                  style="padding-right: 300px; text-decoration: none"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="attach_file" />
-                  </template>
-                </q-file>
-
-                <!-- ปุ่มยืนยัน -->
-                <q-btn
-                  color="pink"
-                  glossy
-                  push
-                  type="submit"
-                  @click="onSubmit('edit')"
-                  :label="t('Submit')"
-                  style="height: 5px; margin-top: 15px"
-                />
+                <div class="col flex justify-end">
+                  <!-- ปุ่มยืนยัน -->
+                  <q-btn
+                    color="pink"
+                    glossy
+                    push
+                    type="submit"
+                    @click="onSubmit('edit')"
+                    :label="t('Submit')"
+                    style="height: 15px; margin-top: 15px"
+                  />
+                </div>
               </div>
             </q-card>
           </q-dialog>
@@ -763,7 +729,7 @@
           </q-img>
         </div>
         <br /><br />
-        <!-- ปุ่มไลก์คอมเมนต์ -->
+        <!-- ปุ่มไลก์คอมเมนต์0 -->
         <div class="comment-like2" style="display: flex">
           <div style="display: inline">
             <q-btn
@@ -838,7 +804,7 @@
                 </q-card-section>
               </q-card>
             </q-dialog>
-            <!-- จำนวนยอดไลก์คอมเมนต์ -->
+            <!-- จำนวนยอดไลก์คอมเมนต์0 -->
             <b
               style="
                 color: #b46f8f;
@@ -958,6 +924,7 @@ let userPostId = "";
 // add comment
 const content = ref("");
 const imageFile = ref("");
+const imageFile1 = ref("");
 const entitycomment = ref({
   id: "",
   post_id: "",
@@ -1114,6 +1081,20 @@ const onSubmit = async (action) => {
       }
     }
   }
+  if (imageFile1.value) {
+    const fileNameResponse = await uploadImageApi(imageFile1.value);
+    console.log("uploadImageApi", fileNameResponse);
+    if (fileNameResponse && fileNameResponse.imageName) {
+      if (action === "edit") {
+        entitycomment.value.img_name = fileNameResponse.imageName;
+        entitycomment.value.haveNewImage = true;
+      } else {
+        entityAdd.value.img_name = fileNameResponse.imageName;
+        entityAdd.value.haveNewImage = true;
+      }
+    }
+  }
+
   console.log("onSubmit", entitycomment.value);
   if (action === "edit") {
     editProcess();
@@ -1615,7 +1596,7 @@ const refreshUnHideData = async () => {
 </script>
 
 <style scoped>
-.flex {
+.background {
   background-color: #d6e3ea;
   background-image: url(./public/background.jpg);
   background-size: cover;
@@ -1643,6 +1624,7 @@ const refreshUnHideData = async () => {
   flex-direction: column;
   opacity: 0.8;
   width: 750px;
+  height: 340px;
   padding: 50px 50px 50px 50px;
   margin-bottom: 30px;
   border-radius: 30px;
