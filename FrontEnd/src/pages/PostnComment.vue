@@ -233,12 +233,24 @@
             v-model="imageFile"
             :label="t('ChooseFile')"
             borderless
-            style="padding-right: 400px; text-decoration: none"
+            use-chips
+            style="padding-right: 300px; text-decoration: none"
           >
             <template v-slot:prepend>
               <q-icon name="attach_file" />
             </template>
           </q-file>
+
+          <!-- <q-uploader
+            v-model="imageFile"
+            :label="t('ChooseFile')"
+            color="purple"
+            square
+            flat
+            bordered
+            style="max-width: 300px"
+          /> -->
+
           <!-- ปุ่มโพสต์ -->
           <q-btn
             color="pink"
