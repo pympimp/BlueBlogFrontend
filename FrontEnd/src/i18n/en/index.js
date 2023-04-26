@@ -170,4 +170,10 @@ export default {
 
   // Noti
   Success: "Successfully !",
+
+  // comment
+  orderComment: "Order of Comments",
+
+  // changePW
+  passwordCurrentWrong: "Current password is incorrect",
 };

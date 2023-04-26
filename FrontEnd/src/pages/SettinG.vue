@@ -102,10 +102,12 @@ const updateProcess = async () => {
       message: response.message,
       type: "positive",
     });
-    window.location.replace("/");
+    setTimeout(() => {
+      window.location.replace("/");
+    }, 1000);
   } else {
     $q.notify({
-      message: response.message,
+      message: t("passwordCurrentWrong"),
       type: "negative",
     });
   }

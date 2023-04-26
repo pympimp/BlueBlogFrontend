@@ -400,7 +400,7 @@
           "
         >
           <!-- ID : {{ item.commentId }} status: {{ item.status }}  -->
-          ความคิดเห็นที่ {{ index + 1 }}
+          {{ t("orderComment") }} {{ index + 1 }}
         </p>
         <!-- เนื้อหาคอมเมนต์ -->
         <Content
@@ -736,7 +736,7 @@
           "
         >
           <!-- ID : {{ item.commentId }} status: {{ item.status }}  -->
-          ความคิดเห็นที่ {{ index + 1 }}
+          {{ t("orderComment") }} {{ index + 1 }}
         </p>
         <!-- เนื้อหาคอมเมนต์ -->
         <Content
