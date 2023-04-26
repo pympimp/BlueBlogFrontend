@@ -186,11 +186,17 @@
                   </p>
                 </div>
                 <div class="col self-end flex justify-end">
-                  <i class="fa-solid fa-heart" style="color: #880e4f"></i>
+                  <i
+                    class="fa-solid fa-heart self-center"
+                    style="color: #880e4f"
+                  ></i>
                   <i style="color: #880e4f; margin-right: 5px">{{
                     item.like_count
                   }}</i>
-                  <i class="fa-solid fa-comment" style="color: #880e4f"></i>
+                  <i
+                    class="fa-solid fa-comment self-center"
+                    style="color: #880e4f"
+                  ></i>
                   <i style="color: #880e4f; margin-right: 20px">{{
                     item.comment_count
                   }}</i>
