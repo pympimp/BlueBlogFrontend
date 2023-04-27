@@ -17,7 +17,7 @@
         <!-- {{ entityItem ? entityItem["user_id"] : "" }} -->
         {{ entityItem ? entityItem["title"] : "" }}
       </p>
-      <Content style="color: #5c6bc0" class="q-mb-md">
+      <Content style="color: #5c6bc0" class="q-mb-md q-mr-md">
         {{ entityItem ? entityItem["content"] : "" }}
       </Content>
 
@@ -259,35 +259,39 @@
           />
         </div>
 
-        <div style="display: flex">
-          <!-- ปุ่มเลือกไฟล์ -->
-          <q-file
-            color="pink"
-            v-model="imageFile"
-            :label="t('ChooseFile')"
-            borderless
-            use-chips
-            accept=".png, .jpg, .jpeg"
-            style="padding-right: 300px; text-decoration: none"
-            @change="previewImage"
-          >
-            <template v-slot:prepend>
-              <q-icon name="attach_file" />
-            </template>
-          </q-file>
+        <div class="row">
+          <div class="col">
+            <!-- ปุ่มเลือกไฟล์ -->
+            <q-file
+              color="pink"
+              v-model="imageFile"
+              :label="t('ChooseFile')"
+              borderless
+              use-chips
+              accept=".png, .jpg, .jpeg"
+              style="text-decoration: none"
+              @change="previewImage"
+            >
+              <template v-slot:prepend>
+                <q-icon name="attach_file" />
+              </template>
+            </q-file>
 
-          <div v-if="previewUrl">
-            <img :src="previewUrl" alt="preview image" />
+            <div v-if="previewUrl">
+              <img :src="previewUrl" alt="preview image" />
+            </div>
           </div>
 
-          <!-- ปุ่มโพสต์ -->
-          <q-btn
-            color="pink"
-            glossy
-            type="submit"
-            :label="t('Submit')"
-            style="height: 5px; margin-top: 15px"
-          />
+          <div class="col flex justify-end">
+            <!-- ปุ่มโพสต์ -->
+            <q-btn
+              color="pink"
+              glossy
+              type="submit"
+              :label="t('Submit')"
+              style="height: 5px; margin-top: 15px"
+            />
+          </div>
         </div>
       </q-form>
     </div>
@@ -357,33 +361,37 @@
                 />
               </div>
 
-              <div style="display: flex">
-                <!-- ปุ่มเลือกไฟล์ -->
-                <q-file
-                  color="pink"
-                  v-model="imageFile1"
-                  :label="t('ChooseFile')"
-                  borderless
-                  use-chips
-                  accept=".png, .jpg, .jpeg"
-                  style="padding-right: 300px; text-decoration: none"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="attach_file" />
-                  </template>
-                </q-file>
-
-                <div class="col flex justify-end">
-                  <!-- ปุ่มยืนยัน -->
-                  <q-btn
+              <div class="row">
+                <div class="col-10">
+                  <!-- ปุ่มเลือกไฟล์ -->
+                  <q-file
                     color="pink"
-                    glossy
-                    push
-                    type="submit"
-                    @click="onSubmit('edit')"
-                    :label="t('Submit')"
-                    style="height: 15px; margin-top: 15px"
-                  />
+                    v-model="imageFile1"
+                    :label="t('ChooseFile')"
+                    borderless
+                    use-chips
+                    accept=".png, .jpg, .jpeg"
+                    style="text-decoration: none"
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="attach_file" />
+                    </template>
+                  </q-file>
+                </div>
+
+                <div class="col">
+                  <div class="col flex justify-end">
+                    <!-- ปุ่มยืนยัน -->
+                    <q-btn
+                      color="pink"
+                      glossy
+                      push
+                      type="submit"
+                      @click="onSubmit('edit')"
+                      :label="t('Submit')"
+                      style="height: 15px; margin-top: 15px"
+                    />
+                  </div>
                 </div>
               </div>
             </q-card>
@@ -632,6 +640,7 @@
             v-if="item.userId === authenStore.auth.id"
           />
           <!-- ส่วนของการ Pop up แจ้งเตือน -->
+          <!-- ส่วนของการ Pop up แจ้งเตือน -->
           <q-dialog v-model="alertEdit1">
             <q-card
               style="
@@ -661,33 +670,37 @@
                 />
               </div>
 
-              <div style="display: flex">
-                <!-- ปุ่มเลือกไฟล์ -->
-                <q-file
-                  color="pink"
-                  v-model="imageFile1"
-                  :label="t('ChooseFile')"
-                  borderless
-                  use-chips
-                  accept=".png, .jpg, .jpeg"
-                  style="padding-right: 300px; text-decoration: none"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="attach_file" />
-                  </template>
-                </q-file>
-
-                <div class="col flex justify-end">
-                  <!-- ปุ่มยืนยัน -->
-                  <q-btn
+              <div class="row">
+                <div class="col-10">
+                  <!-- ปุ่มเลือกไฟล์ -->
+                  <q-file
                     color="pink"
-                    glossy
-                    push
-                    type="submit"
-                    @click="onSubmit('edit')"
-                    :label="t('Submit')"
-                    style="height: 15px; margin-top: 15px"
-                  />
+                    v-model="imageFile1"
+                    :label="t('ChooseFile')"
+                    borderless
+                    use-chips
+                    accept=".png, .jpg, .jpeg"
+                    style="text-decoration: none"
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="attach_file" />
+                    </template>
+                  </q-file>
+                </div>
+
+                <div class="col">
+                  <div class="col flex justify-end">
+                    <!-- ปุ่มยืนยัน -->
+                    <q-btn
+                      color="pink"
+                      glossy
+                      push
+                      type="submit"
+                      @click="onSubmit('edit')"
+                      :label="t('Submit')"
+                      style="height: 15px; margin-top: 15px"
+                    />
+                  </div>
                 </div>
               </div>
             </q-card>
@@ -1707,7 +1720,7 @@ const refreshUnHideData = async () => {
   flex-direction: column;
   opacity: 0.8;
   width: 750px;
-  height: 340px;
+  height: 330px;
   padding: 50px 50px 50px 50px;
   margin-bottom: 30px;
   border-radius: 30px;

@@ -15,8 +15,15 @@
           <q-scroll-area style="height: 380px; width: 700px">
             <!-- Post -->
             <!-- loop ข้อมูลโพสต์ -->
+            <div
+              v-if="!postList"
+              class="text-h4 text-center text-pink-10 absolute-center q-pb-xl"
+            >
+              {{ t("NoPost") }}
+            </div>
             <section
               class="post"
+              v-else
               v-for="(item, index) in postList"
               :key="index"
             >
@@ -89,7 +96,7 @@
             <!-- loading -->
             <div
               class="row justify-center q-my-md"
-              v-if="postList.length"
+              v-if="postList"
               v-intersection="handleScrolledToBottom"
             >
               <q-spinner-bars
