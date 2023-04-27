@@ -110,14 +110,20 @@ const Login = () => {
 const Saveinfo = async () => {
   const data = await registerUser(model.value.entity);
   if (data) {
-    const errors = data.errors;
-    errors.forEach((error) => {
-      if (error.field === "username" || error.field === "email") {
-        $q.notify({
-          message: error.message,
-        });
-      }
-    });
+    if (data.message === null) {
+      const errors = data.errors;
+      errors.forEach((error) => {
+        if (error.field === "username" || error.field === "email") {
+          $q.notify({
+            message: error.message,
+          });
+        }
+      });
+    } else {
+      $q.notify({
+        message: t("RegisSuc"),
+      });
+    }
     setTimeout(() => {
       window.location.replace("/#/auth/login");
     }, 500);
