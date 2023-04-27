@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center">
     <q-form @submit="onSubmit">
-      <div class="container q-mt-xl q-mb-xl">
+      <div class="container q-mt-xl q-mb-xl" style="width: 600px">
         <!-- ส่วนของหัวข้อ 'เพิ่มโพสต์ใหม่' -->
         <p style="font-size: 25px; font-weight: bolder; color: #1a237e">
           °˖ ✧◝
@@ -34,13 +34,14 @@
               stack-label
               :rules="[(val) => !!val || 'Field is required']"
               type="textarea"
+              style="width: 550px"
             />
           </div>
           <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
           <!-- ส่วนของรูปภาพของโพสต์ -->
           <div
-            class="q-col-gutter-md row items-start q-mb-xl"
+            class="q-col-gutter-md row items-start"
             v-if="route.params.action == 'edit'"
           >
             <div
@@ -56,10 +57,18 @@
                 @click="hideImage(postImg.id, index)"
               />
             </div>
+            <div class="q-mb-xl"></div>
+            <div class="q-mb-xl"></div>
+            <div class="q-mb-xl"></div>
+            <div class="q-mb-xl"></div>
+            <div class="q-mb-xl"></div>
+            <div class="q-mb-xl"></div>
+            <div class="q-mb-xl"></div>
+            <div class="q-mb-xl"></div>
+            <div class="q-mb-xl"></div>
           </div>
 
           <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
-
           <!-- ส่วนของการแทรกไฟล์รูปภาพ -->
           <div style="display: flex; justify-content: space-between">
             <!-- ปุ่มเลือกไฟล์ -->
@@ -73,6 +82,7 @@
               counter
               style="padding-right: 50px; text-decoration: none"
               accept=".png, .jpg, .jpeg"
+              class="q-mb-lg"
             >
               <template v-slot:prepend>
                 <q-icon name="attach_file" />
@@ -368,8 +378,7 @@ const deletePostImg = async (id) => {
   align-items: center;
   flex-direction: column;
   opacity: 0.8;
-  padding: 50px;
-  padding: 20px;
+  padding: 30px;
   border-radius: 30px;
   box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);
   background: white;
