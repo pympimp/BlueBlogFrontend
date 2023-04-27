@@ -113,6 +113,8 @@ export default {
   ChooseFile: "เลือกไฟล์รูปภาพ",
   ContentComment: "เนื้อหาความคิดเห็น",
   ContentPost: "เนื้อหาโพสต์",
+  CreatOn: "สร้างเมื่อ",
+  UpdateOn: "แก้ไขเมื่อ",
 
   //DashBoard
   TotalUser: "จำนวนผู้ใช้",

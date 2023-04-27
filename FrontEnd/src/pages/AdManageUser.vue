@@ -73,7 +73,6 @@
             </tr>
             <!-- มีข้อมูลให้แสดงผล -->
             <tr v-else v-for="(item, index) in filteredUserList" :key="index">
-              <!-- <tr v-for="(item, index) in filteredUserList" :key="index"> -->
               <td class="text-center">
                 <q-avatar size="35px" rounded v-if="item.picture">
                   <img :src="item.picture.x" />

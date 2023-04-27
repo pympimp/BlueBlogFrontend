@@ -400,7 +400,7 @@ const fetch = async () => {
   if (response) {
     stringUserOption.value = response.dataList;
   }
-  console.log("response", response);
+  console.log("response user", response);
 };
 // เรียกใช้ฟังก์ชัน fetch เมื่อ component ถูกสร้าง
 fetch();

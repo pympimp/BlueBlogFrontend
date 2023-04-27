@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center">
     <q-form @submit="onSubmit">
-      <div class="container">
+      <div class="container q-mt-xl q-mb-xl">
         <!-- ส่วนของหัวข้อ 'เพิ่มโพสต์ใหม่' -->
         <p style="font-size: 25px; font-weight: bolder; color: #1a237e">
           °˖ ✧◝
@@ -11,40 +11,38 @@
         <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
         <div class="column">
-          <div class="col self-center">
-            <!-- ส่วนของการใส่หัวข้อโพสต์ -->
+          <!-- ส่วนของการใส่หัวข้อโพสต์ -->
+          <q-input
+            outlined
+            v-model="entityItem.title"
+            :label="t('PostHead')"
+            color="indigo-10"
+            stack-label
+            style="color: #1a237e"
+            :rules="[(val) => !!val || 'Field is required']"
+          />
+          <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
+          <!-- ส่วนของการจัดรูปแบบเนื้อหาโพสต์ -->
+
+          <div class="column">
             <q-input
               outlined
-              v-model="entityItem.title"
-              :label="t('PostHead')"
+              v-model="entityItem.content"
+              :label="t('ContentPost')"
               color="indigo-10"
               stack-label
-              style="width: 600px; color: #1a237e"
               :rules="[(val) => !!val || 'Field is required']"
+              type="textarea"
             />
           </div>
           <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
 
-          <div class="col self-center">
-            <!-- ส่วนของการจัดรูปแบบเนื้อหาโพสต์ -->
-
-            <div class="q-pa-md" style="max-width: 800px; margin-top: -10px">
-              <q-input
-                outlined
-                v-model="entityItem.content"
-                :label="t('ContentPost')"
-                color="indigo-10"
-                stack-label
-                style="width: 600px; color: #1a237e"
-                :rules="[(val) => !!val || 'Field is required']"
-                type="textarea"
-              />
-            </div>
-          </div>
-          <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
-
           <!-- ส่วนของรูปภาพของโพสต์ -->
-          <div class="q-col-gutter-md row items-start q-mb-md">
+          <div
+            class="q-col-gutter-md row items-start q-mb-xl"
+            v-if="route.params.action == 'edit'"
+          >
             <div
               class="col-4"
               v-for="(postImg, index) in entityItem?.postImg"
@@ -54,7 +52,7 @@
               <q-btn
                 color="dark"
                 icon="mdi-delete"
-                class="q-ma-xs"
+                class="q-mt-sm"
                 @click="hideImage(postImg.id, index)"
               />
             </div>
@@ -74,6 +72,7 @@
               use-chips
               counter
               style="padding-right: 50px; text-decoration: none"
+              accept=".png, .jpg, .jpeg"
             >
               <template v-slot:prepend>
                 <q-icon name="attach_file" />
@@ -94,7 +93,8 @@
               push
               color="indigo-5"
               :label="t('Postbtn')"
-              style="height: 35px; width: 50px; margin-top: 20px"
+              style="height: 35px; width: 50px"
+              class="q-mb-lg"
               type="submit"
             />
           </div>
@@ -367,10 +367,9 @@ const deletePostImg = async (id) => {
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-width: 700px;
   opacity: 0.8;
-  padding: 50px 50px 50px 50px;
-  padding: 20px 20px 20px 20px;
+  padding: 50px;
+  padding: 20px;
   border-radius: 30px;
   box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);
   background: white;

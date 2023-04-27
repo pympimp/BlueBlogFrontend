@@ -33,6 +33,7 @@
                 Rounded
                 class="q-ml-lg"
                 style="max-width: 250px"
+                accept=".png, .jpg, .jpeg"
               >
                 <template v-slot:prepend>
                   <q-icon name="attachment" @click.stop.prevent />

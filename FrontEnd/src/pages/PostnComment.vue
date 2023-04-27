@@ -104,6 +104,7 @@
 
       <!-- ข้อมูลของผู้โพสต์ -->
       <div class="details-user">
+        <!-- Profile User Post -->
         <router-link
           :to="'/myprofile/' + (entityItem ? entityItem['user_id'] : '')"
         >
@@ -124,13 +125,20 @@
               entityItem ? entityItem["username"] : ""
             }}</b>
           </router-link>
-          <i style="color: #5c6bc0"
-            ><br />{{ entityItem ? entityItem["create_date"] : "" }}</i
+          <i
+            style="color: #5c6bc0"
+            v-if="entityItem && entityItem.update_date == null"
+            ><br />{{ t("CreatOn") }}
+            {{ entityItem ? entityItem["create_date"] : "" }}</i
+          >
+          <i style="color: #5c6bc0" v-else
+            ><br />{{ t("UpdateOn") }}
+            {{ entityItem ? entityItem["update_date"] : "" }}</i
           >
         </div>
 
         <!-- ปุ่มไลก์โพส -->
-        <div class="comment-like" style="display: flex; margin-left: 550px">
+        <div class="comment-like" style="display: flex; margin-left: 450px">
           <div style="display: inline">
             <q-btn
               ref="followBtn"
@@ -251,33 +259,35 @@
           />
         </div>
 
-        <div class="row q-mb-md">
-          <div class="col">
-            <!-- ปุ่มเลือกไฟล์ -->
-            <q-file
-              color="pink"
-              v-model="imageFile"
-              :label="t('ChooseFile')"
-              borderless
-              use-chips
-              style="text-decoration: none"
-            >
-              <template v-slot:prepend>
-                <q-icon name="attach_file" />
-              </template>
-            </q-file>
+        <div style="display: flex">
+          <!-- ปุ่มเลือกไฟล์ -->
+          <q-file
+            color="pink"
+            v-model="imageFile"
+            :label="t('ChooseFile')"
+            borderless
+            use-chips
+            accept=".png, .jpg, .jpeg"
+            style="padding-right: 300px; text-decoration: none"
+            @change="previewImage"
+          >
+            <template v-slot:prepend>
+              <q-icon name="attach_file" />
+            </template>
+          </q-file>
+
+          <div v-if="previewUrl">
+            <img :src="previewUrl" alt="preview image" />
           </div>
 
-          <div class="col flex justify-end">
-            <!-- ปุ่มโพสต์ -->
-            <q-btn
-              color="pink"
-              glossy
-              type="submit"
-              :label="t('Submit')"
-              style="height: 5px; margin-top: 15px"
-            />
-          </div>
+          <!-- ปุ่มโพสต์ -->
+          <q-btn
+            color="pink"
+            glossy
+            type="submit"
+            :label="t('Submit')"
+            style="height: 5px; margin-top: 15px"
+          />
         </div>
       </q-form>
     </div>
@@ -347,22 +357,21 @@
                 />
               </div>
 
-              <div class="row">
-                <div class="col">
-                  <!-- ปุ่มเลือกไฟล์ -->
-                  <q-file
-                    color="pink"
-                    v-model="imageFile1"
-                    :label="t('ChooseFile')"
-                    borderless
-                    use-chips
-                    style="text-decoration: none"
-                  >
-                    <template v-slot:prepend>
-                      <q-icon name="attach_file" />
-                    </template>
-                  </q-file>
-                </div>
+              <div style="display: flex">
+                <!-- ปุ่มเลือกไฟล์ -->
+                <q-file
+                  color="pink"
+                  v-model="imageFile1"
+                  :label="t('ChooseFile')"
+                  borderless
+                  use-chips
+                  accept=".png, .jpg, .jpeg"
+                  style="padding-right: 300px; text-decoration: none"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="attach_file" />
+                  </template>
+                </q-file>
 
                 <div class="col flex justify-end">
                   <!-- ปุ่มยืนยัน -->
@@ -650,22 +659,21 @@
                 />
               </div>
 
-              <div class="row">
-                <div class="col">
-                  <!-- ปุ่มเลือกไฟล์ -->
-                  <q-file
-                    color="pink"
-                    v-model="imageFile1"
-                    :label="t('ChooseFile')"
-                    borderless
-                    use-chips
-                    style="text-decoration: none"
-                  >
-                    <template v-slot:prepend>
-                      <q-icon name="attach_file" />
-                    </template>
-                  </q-file>
-                </div>
+              <div style="display: flex">
+                <!-- ปุ่มเลือกไฟล์ -->
+                <q-file
+                  color="pink"
+                  v-model="imageFile1"
+                  :label="t('ChooseFile')"
+                  borderless
+                  use-chips
+                  accept=".png, .jpg, .jpeg"
+                  style="padding-right: 300px; text-decoration: none"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="attach_file" />
+                  </template>
+                </q-file>
 
                 <div class="col flex justify-end">
                   <!-- ปุ่มยืนยัน -->
@@ -868,8 +876,17 @@
             </b>
           </router-link>
           <br />
-          <i style="margin-top: 12px; margin-left: -60px; color: #5c6bc0">
-            {{ item.create_date }}
+          <i
+            style="margin-top: 12px; margin-left: -60px; color: #5c6bc0"
+            v-if="item.update_date == null"
+          >
+            {{ t("CreatOn") }} {{ item.create_date }}
+          </i>
+          <i
+            style="margin-top: 12px; margin-left: -60px; color: #5c6bc0"
+            v-else
+          >
+            {{ t("UpdateOn") }} {{ item.update_date }}
           </i>
 
           <br />
@@ -959,6 +976,7 @@ let userPostId = "";
 const content = ref("");
 const imageFile = ref("");
 const imageFile1 = ref("");
+const previewUrl = ref("");
 const entitycomment = ref({
   id: "",
   post_id: "",
@@ -1025,15 +1043,6 @@ onMounted(() => {
       console.log("userPostID in Comment :", userPostId);
     }
   });
-
-  // if (postId.value) {
-  //   fethData();
-  //   fethLikePost();
-  //   fethDataComment();
-  //   CheckPost();
-  //   fetchCountPost();
-  //   fethCountComment();
-  // }
   console.log("get postId ", postId.value);
 });
 
@@ -1097,6 +1106,12 @@ const fethDataCommentStatus = async () => {
     entityCheckCommentStatus.value = respone.entity;
     CheckComment0();
     fetchCountCommentStatus();
+  }
+};
+
+const previewImage = () => {
+  if (imageFile.value) {
+    previewUrl.value = URL.createObjectURL(imageFile.value);
   }
 };
 
@@ -1322,10 +1337,40 @@ const alertEdit1 = ref(false);
 
 //ฟังก์ชั่นการแก้ไขคอมเมนต์
 const editProcess = async () => {
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  };
+
+  const date = new Date().toLocaleString("en-US", options);
+
+  // แปลงรูปแบบวันเวลาจาก "MM/DD/YYYY, HH:MM:SS" เป็น "YYYY-MM-DD HH:MM:SS"
+  const formattedDate = date.replace(
+    /(\d+)\/(\d+)\/(\d+), (\d+):(\d+):(\d+)/,
+    (match, p1, p2, p3, p4, p5, p6) => {
+      const hour = p4.padStart(2, "0");
+      const minute = p5.padStart(2, "0");
+      const second = p6.padStart(2, "0");
+      const year = p3;
+      const month = p1.padStart(2, "0");
+      const day = p2.padStart(2, "0");
+      return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+    }
+  );
+
+  // กำหนดค่า formattedDate ให้กับ property "update_date" ของ entitycomment
+  entitycomment.value.update_date = formattedDate;
+  // console.log(entitycomment.value.update_date);
+
   const response = await EditComment(entitycomment.value);
   console.log("updateUser", response);
   $q.notify({
-    message: response.message,
+    message: t("Success"),
     type: "positive",
   });
   if (
