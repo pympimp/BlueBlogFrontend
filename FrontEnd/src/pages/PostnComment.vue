@@ -138,7 +138,7 @@
         </div>
 
         <!-- ปุ่มไลก์โพส -->
-        <div class="comment-like" style="display: flex; margin-left: 550px">
+        <div class="comment-like" style="display: flex; margin-left: 450px">
           <div style="display: inline">
             <q-btn
               ref="followBtn"
@@ -259,39 +259,35 @@
           />
         </div>
 
-        <div class="row q-mb-md">
-          <div class="col">
-            <!-- ปุ่มเลือกไฟล์ -->
-            <q-file
-              color="pink"
-              v-model="imageFile"
-              :label="t('ChooseFile')"
-              borderless
-              use-chips
-              accept=".png, .jpg, .jpeg"
-              style="padding-right: 300px; text-decoration: none"
-              @change="previewImage"
-            >
-              <template v-slot:prepend>
-                <q-icon name="attach_file" />
-              </template>
-            </q-file>
-          </div>
+        <div style="display: flex">
+          <!-- ปุ่มเลือกไฟล์ -->
+          <q-file
+            color="pink"
+            v-model="imageFile"
+            :label="t('ChooseFile')"
+            borderless
+            use-chips
+            accept=".png, .jpg, .jpeg"
+            style="padding-right: 300px; text-decoration: none"
+            @change="previewImage"
+          >
+            <template v-slot:prepend>
+              <q-icon name="attach_file" />
+            </template>
+          </q-file>
 
           <div v-if="previewUrl">
             <img :src="previewUrl" alt="preview image" />
           </div>
 
-          <div class="col flex justify-end">
-            <!-- ปุ่มโพสต์ -->
-            <q-btn
-              color="pink"
-              glossy
-              type="submit"
-              :label="t('Submit')"
-              style="height: 5px; margin-top: 15px"
-            />
-          </div>
+          <!-- ปุ่มโพสต์ -->
+          <q-btn
+            color="pink"
+            glossy
+            type="submit"
+            :label="t('Submit')"
+            style="height: 5px; margin-top: 15px"
+          />
         </div>
       </q-form>
     </div>
@@ -361,23 +357,21 @@
                 />
               </div>
 
-              <div class="row">
-                <div class="col">
-                  <!-- ปุ่มเลือกไฟล์ -->
-                  <q-file
-                    color="pink"
-                    v-model="imageFile1"
-                    :label="t('ChooseFile')"
-                    borderless
-                    use-chips
-                    accept=".png, .jpg, .jpeg"
-                    style="padding-right: 300px; text-decoration: none"
-                  >
-                    <template v-slot:prepend>
-                      <q-icon name="attach_file" />
-                    </template>
-                  </q-file>
-                </div>
+              <div style="display: flex">
+                <!-- ปุ่มเลือกไฟล์ -->
+                <q-file
+                  color="pink"
+                  v-model="imageFile1"
+                  :label="t('ChooseFile')"
+                  borderless
+                  use-chips
+                  accept=".png, .jpg, .jpeg"
+                  style="padding-right: 300px; text-decoration: none"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="attach_file" />
+                  </template>
+                </q-file>
 
                 <div class="col flex justify-end">
                   <!-- ปุ่มยืนยัน -->
@@ -436,102 +430,73 @@
         </q-fab>
       </div>
       <!-- หัวข้อคอมเมนต์ -->
-
-      <p
-        style="
-          font-size: 15px;
-          font-weight: bolder;
-          margin-top: 10px;
-          color: #1a237e;
-        "
-      >
-        <!-- ID : {{ item.commentId }} status: {{ item.status }}  -->
-        {{ t("orderComment") }} {{ index + 1 }}
-      </p>
-      <!-- เนื้อหาคอมเมนต์ -->
-      <Content
-        style="margin-inline-end: auto; margin-left: 20px; color: #5c6bc0"
-      >
-        {{ item.content }}
-      </Content>
-
-      <!-- ส่วนของรูปภาพคอมเมนต์ -->
-      <div class="row justify-center q-my-md">
+      <div class="comment">
         <p
-          v-if="
-            item.commentimg.path ==
-            'http://localhost/php-rest-api/data/img/no_picture.jpg'
+          style="
+            font-size: 15px;
+            font-weight: bolder;
+            margin-top: 10px;
+            color: #1a237e;
           "
         >
-          <!-- no picture -->
+          <!-- ID : {{ item.commentId }} status: {{ item.status }}  -->
+          {{ t("orderComment") }} {{ index + 1 }}
         </p>
-        <q-img
-          class="q-mt-md"
-          :src="item.commentimg.path ? item.commentimg.path : ''"
-          style="width: 200px; height: 200px; border-radius: 15px"
-          v-else
+        <!-- เนื้อหาคอมเมนต์ -->
+        <Content
+          style="margin-inline-end: auto; margin-left: 20px; color: #5c6bc0"
         >
-        </q-img>
-      </div>
-
-      <!-- ปุ่มไลก์คอมเมนต์1 -->
-      <div class="row details-user fit q-pa-md">
-        <div class="col-8 row">
-          <router-link
-            :to="'/myprofile/' + (entityItem ? entityItem['user_id'] : '')"
+          {{ item.content }}
+        </Content>
+        <br />
+        <!-- ส่วนของรูปภาพคอมเมนต์ -->
+        <div class="row justify-center">
+          <p
+            v-if="
+              item.commentimg.path ==
+              'http://localhost/php-rest-api/data/img/no_picture.jpg'
+            "
           >
-            <ion-avatar class="profile" style="display: inline">
-              <img
-                :src="entityItem ? entityItem.picture.path : ''"
-                style="width: 30px; height: 30px"
-              />
-            </ion-avatar>
-          </router-link>
-          &nbsp;&nbsp;&nbsp;
-
-          <div>
-            <router-link
-              :to="'/myprofile/' + (entityItem ? entityItem['user_id'] : '')"
-            >
-              <b style="color: #1a237e">{{
-                entityItem ? entityItem["username"] : ""
-              }}</b>
-            </router-link>
-            <i style="color: #5c6bc0"
-              ><br />{{ entityItem ? entityItem["create_date"] : "" }}</i
-            >
-          </div>
+            <!-- no picture -->
+          </p>
+          <q-img
+            class="q-mt-md"
+            :src="item.commentimg.path ? item.commentimg.path : ''"
+            style="width: 200px; height: 200px; border-radius: 15px"
+            v-else
+          >
+          </q-img>
         </div>
+        <br /><br />
 
-        <!-- ปุ่มไลก์โพส -->
-        <div class="col row comment-like flex justify-end">
+        <!-- ปุ่มไลก์คอมเมนต์1 -->
+        <div class="comment-like2" style="display: flex">
           <div style="display: inline">
             <q-btn
               ref="followBtn"
               glossy
               push
               color="pink-9"
-              :icon="LikePostIcon"
-              @click="toggleLikePost(entityItem)"
+              :icon="
+                item.check === true
+                  ? (LikeCommentIcon = biHeartFill)
+                  : (LikeCommentIcon = biHeart)
+              "
+              @click="
+                toggleLikeComment(item.commentId, item.postId, item.check)
+              "
               style="height: 20px; margin-top: 5px; width: 40px"
             />
-
             &nbsp;
             <span
-              id="count"
-              @click="alertPost = true"
-              style="
-                display: inline;
-                color: #b46f8f;
-                text-weight: bolder;
-                cursor: pointer;
-              "
-              >{{ entityLikePost ? entityLikePost["TotalLikePost"] : "" }}
-
-              {{ t("Like") }}</span
+              id="count2"
+              @click="fethLikeComment(item.commentId)"
+              style="display: inline; color: #b46f8f; cursor: pointer"
             >
+              {{ item.CountLikeComment }}
+            </span>
             <!-- Pop up รายชื่อคนกดถูกใจ -->
-            <q-dialog v-model="alertPost">
+            <q-dialog v-model="alertComment">
               <q-card
                 style="
                   max-height: 400px;
@@ -545,16 +510,16 @@
                     class="text-h6"
                     style="font-weight: bold; color: #1a237e"
                   >
-                    {{ t("ListLikePost") }}
+                    {{ t("ListLikeComment") }}
                   </div>
                 </q-card-section>
 
                 <q-card-section
                   class="q-pt-none text-red"
-                  v-for="(item, index) in entityListLikePost"
+                  v-for="(item, index) in entityListLikeComment"
                   :key="index"
                 >
-                  <div v-if="entityLikePost.TotalLikePost > 0">
+                  <div v-if="entityListLikeComment[0]">
                     <ion-avatar>
                       <img
                         :src="item.picture.path"
@@ -571,34 +536,65 @@
                   </div>
                 </q-card-section>
                 <q-card-section
-                  v-if="entityLikePost.TotalLikePost == 0"
                   class="q-pb-xl text-center"
                   style="color: #1a237e; font-size: large"
+                  v-if="!entityListLikeComment[0]"
                 >
                   <q-item-label> {{ t("NotFound") }}</q-item-label>
                 </q-card-section>
-                <!-- ปุ่มโอเคของ Dialog -->
               </q-card>
             </q-dialog>
+            <!-- จำนวนยอดไลก์คอมเมนต์1 -->
+            <b
+              style="
+                color: #b46f8f;
+                margin-left: 10px;
+                margin-top: 10px;
+                font-size: 15px;
+              "
+            >
+              {{ t("Like") }}
+            </b>
           </div>
+
+          <!-- ข้อมูลผู้คอมเมนต์ -->
+          <div></div>
+          <ion-avatar class="profile">
+            <img
+              :src="item.picture.path"
+              style="width: 30px; height: 30px; margin-left: 369px"
+            />
+          </ion-avatar>
+          <router-link :to="'/myprofile/' + item.userId">
+            <b
+              style="
+                margin-top: -5px;
+                margin-left: 10px;
+                margin-right: -10px;
+                color: #1a237e;
+              "
+              >{{ item.username }}
+            </b>
+          </router-link>
+          <br />
+          <i
+            style="margin-top: 12px; margin-left: -60px; color: #5c6bc0"
+            v-if="item.update_date == null"
+          >
+            {{ t("CreatOn") }} {{ item.create_date }}
+          </i>
+          <i
+            style="margin-top: 12px; margin-left: -60px; color: #5c6bc0"
+            v-else
+          >
+            {{ t("UpdateOn") }} {{ item.update_date }}
+          </i>
+
           <br />
         </div>
         <br />
-
-        <!-- จำนวนยอดไลก์โพสต์ -->
-        <b
-          style="
-            color: #b03367;
-            margin-left: 10px;
-            margin-top: 10px;
-            font-size: 15px;
-          "
-        >
-        </b>
       </div>
     </div>
-
-    <br />
 
     <!-- Part Comment Status 0 -->
     <div
@@ -665,23 +661,21 @@
                 />
               </div>
 
-              <div class="row">
-                <div class="col">
-                  <!-- ปุ่มเลือกไฟล์ -->
-                  <q-file
-                    color="pink"
-                    v-model="imageFile1"
-                    :label="t('ChooseFile')"
-                    borderless
-                    use-chips
-                    accept=".png, .jpg, .jpeg"
-                    style="padding-right: 300px; text-decoration: none"
-                  >
-                    <template v-slot:prepend>
-                      <q-icon name="attach_file" />
-                    </template>
-                  </q-file>
-                </div>
+              <div style="display: flex">
+                <!-- ปุ่มเลือกไฟล์ -->
+                <q-file
+                  color="pink"
+                  v-model="imageFile1"
+                  :label="t('ChooseFile')"
+                  borderless
+                  use-chips
+                  accept=".png, .jpg, .jpeg"
+                  style="padding-right: 300px; text-decoration: none"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="attach_file" />
+                  </template>
+                </q-file>
 
                 <div class="col flex justify-end">
                   <!-- ปุ่มยืนยัน -->
