@@ -1166,6 +1166,7 @@ const createProcess = async (postId) => {
     // refresh page to display the latest data
     entityAdd.value.content = "";
     // fethDataComment();
+    imageFile.value = "";
   }
   // router.push(`/postncomment/${postId.value}`);
   fethData();
