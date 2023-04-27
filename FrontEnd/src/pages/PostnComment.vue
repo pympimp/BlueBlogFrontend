@@ -1113,7 +1113,8 @@ const createProcess = async (postId) => {
       type: "positive",
     });
     // refresh page to display the latest data
-    location.reload();
+    entityAdd.value.content = "";
+    fethDataComment();
   }
   // router.push(`/postncomment/${postId.value}`);
   fethData();

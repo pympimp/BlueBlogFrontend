@@ -37,14 +37,14 @@
             <q-input
               v-model="entityItem._p"
               filled
-              :type="isPwd ? 'password' : 'text'"
+              :type="isPwd1 ? 'password' : 'text'"
               style="width: 300px"
             >
               <template v-slot:append>
                 <q-icon
-                  :name="isPwd ? 'visibility_off' : 'visibility'"
+                  :name="isPwd1 ? 'visibility_off' : 'visibility'"
                   class="cursor-pointer"
-                  @click="isPwd = !isPwd"
+                  @click="isPwd1 = !isPwd1"
                 />
               </template>
             </q-input>
@@ -73,6 +73,7 @@ const { userChangePwd } = UserApi();
 const { localeList, t, locale } = useLang();
 
 const isPwd = ref(true);
+const isPwd1 = ref(true);
 const loading = ref(false);
 const $q = useQuasar();
 

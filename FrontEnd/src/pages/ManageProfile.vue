@@ -30,6 +30,7 @@
                 v-model="imageFile"
                 :label="t('ImageFile')"
                 counter
+                Rounded
                 class="q-ml-lg"
                 style="max-width: 250px"
               >
