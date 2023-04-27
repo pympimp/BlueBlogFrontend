@@ -104,11 +104,19 @@ const Login = () => {
   router.push("/signin/");
 };
 
+// แกะข้อมูลจาก jsondata ด้วยการ loop ผ่าน array ของ errors
+// แล้วตรวจสอบค่า field ว่าเป็น "username" หรือ "email"
+// แล้วนำ message ไปแสดงผล
 const Saveinfo = async () => {
   const data = await registerUser(model.value.entity);
   if (data) {
-    $q.notify({
-      message: t("RegisSuc"),
+    const errors = data.errors;
+    errors.forEach((error) => {
+      if (error.field === "username" || error.field === "email") {
+        $q.notify({
+          message: error.message,
+        });
+      }
     });
     setTimeout(() => {
       window.location.replace("/#/auth/login");
