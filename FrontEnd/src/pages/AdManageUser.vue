@@ -1,42 +1,48 @@
 <template>
-  <q-page class="flex flex-center column">
+  <q-page class="background flex flex-center column">
     <!-- ส่วนข้อมูลเพิ่มเติมของผู้ใช้ -->
     <div class="container">
-      <!-- ส่วนของหัวข้อ  'จัดการรายชื่อผู้ใช้งาน (Manage User)' -->
-      <p
-        style="
-          font-size: 25px;
-          font-weight: bolder;
-          margin-left: 20px;
-          margin-bottom: -10px;
-          position: absolute;
-          color: #880e4f;
-        "
-      >
-        {{ t("ManageUser") }}
-      </p>
+      <div class="row">
+        <!-- ส่วนของหัวข้อ  'จัดการรายชื่อผู้ใช้งาน (Manage User)' -->
+        <div class="col">
+          <p
+            style="
+              font-size: 25px;
+              font-weight: bolder;
+              margin-left: 20px;
+              margin-bottom: -10px;
+              position: absolute;
+              color: #880e4f;
+            "
+          >
+            {{ t("ManageUser") }}
+          </p>
+        </div>
 
-      <!-- ส่วนของเสิร์ชบาร์ -->
-      <q-input
-        v-model="search"
-        filled
-        dense
-        type="search"
-        style="width: 250px; position: absolute; right: 500px"
-      >
-        <template v-slot:append>
-          <q-icon name="search" color="pink" />
-        </template>
-      </q-input>
+        <div class="col flex justify-end q-mr-md">
+          <!-- ส่วนของเสิร์ชบาร์ -->
+          <q-input
+            v-model="search"
+            filled
+            dense
+            type="search"
+            style="width: 250px"
+          >
+            <template v-slot:append>
+              <q-icon name="search" color="pink" />
+            </template>
+          </q-input>
+        </div>
 
-      <!-- ส่วนของปุ่มเพิ่มผู้ใช้งาน (Add) -->
-      <q-btn
-        to="adadduser"
-        glossy
-        color="pink"
-        :label="t('Add')"
-        style="bottom: -3px; left: 645px; margin-bottom: 5px"
-      />
+        <!-- ส่วนของปุ่มเพิ่มผู้ใช้งาน (Add) -->
+        <q-btn
+          to="adadduser"
+          glossy
+          color="pink"
+          :label="t('Add')"
+          style="bottom: -3px; margin-bottom: 5px"
+        />
+      </div>
 
       <!-- ส่วนของหัวข้ออย่างเช่น ID Username etc. -->
       <q-scroll-area style="height: 380px">
@@ -215,7 +221,7 @@ const deleteProcess = async (index) => {
 </script>
 
 <style scoped>
-.flex {
+.background {
   background-color: #d6e3ea;
   background-image: url(./public/background.jpg);
   background-size: cover;

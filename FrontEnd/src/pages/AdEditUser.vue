@@ -44,41 +44,40 @@
           /></q-card-section>
 
           <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+          <div class="row">
+            <div class="col-6">
+              <!-- ปุ่ม toggle เปิด-ปิดสถานะผู้ใช้งาน -->
+              <i style="color: #5c6bc0">{{ t("UserStatus") }}</i>
+              <br />
+              <q-toggle
+                v-model="toggle"
+                checked-icon="check"
+                color="green"
+                unchecked-icon="clear"
+              />
+            </div>
+            <!-- สร้าง Toggle และกำหนด v-model ให้น้อง -->
 
-          <!-- ปุ่ม toggle เปิด-ปิดสถานะผู้ใช้งาน -->
-          <i style="color: #5c6bc0; margin-left: 15px">{{ t("UserStatus") }}</i>
-          <br />
-          <q-toggle
-            v-model="toggle"
-            checked-icon="check"
-            color="green"
-            unchecked-icon="clear"
-          />
-          <!-- สร้าง Toggle และกำหนด v-model ให้น้อง -->
-
-          <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
-
-          <!-- ส่วนของปุ่ม Submit -->
-          <q-btn
-            type="submit"
-            glossy
-            push
-            color="indigo-10"
-            style="margin-top: -20px; margin-left: 80px"
-            >{{ $t("okay") }}</q-btn
-          >
-
-          <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
-
-          <!-- ส่วนของปุ่มยกเลิก -->
-          <q-btn
-            to="/admanageuser"
-            glossy
-            push
-            color="indigo-10"
-            style="margin-top: -20px; margin-left: 10px"
-            >{{ $t("cancel") }}</q-btn
-          >
+            <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+            <div class="col-3 self-center text-right">
+              <!-- ส่วนของปุ่ม Submit -->
+              <q-btn type="submit" glossy push color="indigo-10">{{
+                $t("okay")
+              }}</q-btn>
+            </div>
+            <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+            <div class="col-3 self-center">
+              <!-- ส่วนของปุ่มยกเลิก -->
+              <q-btn
+                to="/admanageuser"
+                glossy
+                push
+                color="indigo-10"
+                style="margin-left: 10px"
+                >{{ $t("cancel") }}</q-btn
+              >
+            </div>
+          </div>
         </template>
       </q-form>
     </div>
@@ -178,7 +177,7 @@ const updateProcess = async () => {
   margin-bottom: 10px;
   border-radius: 30px;
   box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);
-  padding: 25px 50px 25px 50px;
+  padding: 25px 40px 25px 40px;
   background: white;
 }
 </style>

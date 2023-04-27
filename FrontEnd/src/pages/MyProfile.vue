@@ -3,7 +3,7 @@
     <!-- ส่วนข้อมูลหลักของผู้ใช้ -->
     <div class="container-header" @click="toggleBtn">
       <div class="row fit">
-        <div class="col self-start flex justify-start">
+        <div class="col-8 self-start flex justify-start">
           <!-- รูปโปรไฟล์ -->
           <q-avatar size="65px" class="shadow-5">
             <q-img :src="UserData ? UserData.picture.path : ''" />
@@ -93,7 +93,7 @@
                   </ion-avatar>
                   &nbsp;
                   <router-link
-                    :to="'/myprofile/' + item.id"
+                    :to="'/myprofile/' + item.user_id"
                     style="text-decoration: none; color: #1d1917"
                   >
                     {{ item.username }}

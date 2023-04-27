@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="flex flex-center"
+    class="background flex flex-center"
     style="display: flex; flex-direction: column"
   >
     <!-- Part Post -->
@@ -17,7 +17,7 @@
         <!-- {{ entityItem ? entityItem["user_id"] : "" }} -->
         {{ entityItem ? entityItem["title"] : "" }}
       </p>
-      <Content style="color: #5c6bc0">
+      <Content style="color: #5c6bc0" class="q-mb-md">
         {{ entityItem ? entityItem["content"] : "" }}
       </Content>
 
@@ -65,17 +65,39 @@
       </div>
 
       <!-- ส่วนของรูปภาพของโพสต์ -->
-      <div class="row">
-        <template v-for="(postImg, index) in entityItem?.postImg" :key="index">
-          <div class="col-4">
-            <q-img
-              :src="postImg.postimg.path"
-              class="img q-mt-lg"
-              style="border-radius: 20px"
-            ></q-img>
-          </div>
-          <br />
-        </template>
+      <!-- v-for="(postImg, index) in entityItem?.postImg" :key="index" -->
+
+      <!-- <q-img
+          :src="postImg.postimg.path"
+          class="img q-mt-lg"
+          style="border-radius: 20px"
+        ></q-img> -->
+
+      <div
+        class=""
+        style="width: 700px; height: 400px"
+        v-if="entityItem?.postImg[0]"
+      >
+        <q-carousel
+          swipeable
+          animated
+          v-model="slide"
+          thumbnails
+          infinite
+          padding
+          :fit="cover"
+          style="border-radius: 20px"
+        >
+          <!-- :src="item.commentimg.path ? item.commentimg.path : ''" -->
+          <q-carousel-slide
+            :name="index"
+            :img-src="postImg.postimg.path"
+            v-for="(postImg, index) in entityItem?.postImg"
+            :key="index"
+            img-width="60"
+            img-height="40"
+          />
+        </q-carousel>
       </div>
 
       <br />
@@ -225,9 +247,10 @@
         >
           {{ t("AddComment") }}
         </p>
+
         <br />
         <!-- ช่องจัดรูปแบบของการเขียนคอมเมนต์ -->
-        <div class="q-pa-md justify-center" style="max-width: 700px">
+        <div class="q-pa-md justify-center" style="width: 680px">
           <q-input
             v-model="entityAdd.content"
             :label="t('ContentComment')"
@@ -306,9 +329,16 @@
           />
           <!-- ส่วนของการ Pop up แจ้งเตือน -->
           <q-dialog v-model="alertEdit1">
-            <q-card style="padding: 20px 20px 20px 20px; border-radius: 20px">
+            <q-card
+              style="
+                padding: 20px 20px 20px 20px;
+                border-radius: 20px;
+                height: 310px;
+              "
+            >
               <!-- หัวข้อใหญ่ว่า "Add Comment" -->
               <p
+                class="q-mb-md"
                 style="
                   font-size: 25px;
                   font-weight: bolder;
@@ -318,7 +348,7 @@
               >
                 {{ t("EditComment") }}
               </p>
-              <div class="q-pa-md q-gutter-sm">
+              <div class="q-pa-md justify-center" style="width: 480px">
                 <q-input
                   v-model="entitycomment.content"
                   :label="t('ContentComment')"
@@ -343,16 +373,18 @@
                   </template>
                 </q-file>
 
-                <!-- ปุ่มยืนยัน -->
-                <q-btn
-                  color="pink"
-                  glossy
-                  push
-                  type="submit"
-                  @click="onSubmit('edit')"
-                  :label="t('Submit')"
-                  style="height: 5px; margin-top: 15px"
-                />
+                <div class="col flex justify-end">
+                  <!-- ปุ่มยืนยัน -->
+                  <q-btn
+                    color="pink"
+                    glossy
+                    push
+                    type="submit"
+                    @click="onSubmit('edit')"
+                    :label="t('Submit')"
+                    style="height: 15px; margin-top: 15px"
+                  />
+                </div>
               </div>
             </q-card>
           </q-dialog>
@@ -436,7 +468,8 @@
           </q-img>
         </div>
         <br /><br />
-        <!-- ปุ่มไลก์คอมเมนต์ -->
+
+        <!-- ปุ่มไลก์คอมเมนต์1 -->
         <div class="comment-like2" style="display: flex">
           <div style="display: inline">
             <q-btn
@@ -511,7 +544,7 @@
                 </q-card-section>
               </q-card>
             </q-dialog>
-            <!-- จำนวนยอดไลก์คอมเมนต์ -->
+            <!-- จำนวนยอดไลก์คอมเมนต์1 -->
             <b
               style="
                 color: #b46f8f;
@@ -600,9 +633,16 @@
           />
           <!-- ส่วนของการ Pop up แจ้งเตือน -->
           <q-dialog v-model="alertEdit1">
-            <q-card style="padding: 20px 20px 20px 20px; border-radius: 20px">
+            <q-card
+              style="
+                padding: 20px 20px 20px 20px;
+                border-radius: 20px;
+                height: 310px;
+              "
+            >
               <!-- หัวข้อใหญ่ว่า "Add Comment" -->
               <p
+                class="q-mb-md"
                 style="
                   font-size: 25px;
                   font-weight: bolder;
@@ -612,7 +652,7 @@
               >
                 {{ t("EditComment") }}
               </p>
-              <div class="q-pa-md q-gutter-sm">
+              <div class="q-pa-md justify-center" style="width: 480px">
                 <q-input
                   v-model="entitycomment.content"
                   :label="t('ContentComment')"
@@ -637,68 +677,18 @@
                   </template>
                 </q-file>
 
-                <!-- ปุ่มยืนยัน -->
-                <q-btn
-                  color="pink"
-                  glossy
-                  push
-                  type="submit"
-                  @click="onSubmit('edit')"
-                  :label="t('Submit')"
-                  style="height: 5px; margin-top: 15px"
-                />
-              </div>
-            </q-card>
-          </q-dialog>
-
-          <!-- ส่วนของการ Pop up แจ้งเตือน -->
-          <q-dialog v-model="alertEdit1">
-            <q-card style="padding: 20px 20px 20px 20px; border-radius: 20px">
-              <!-- หัวข้อใหญ่ว่า "Add Comment" -->
-              <p
-                style="
-                  font-size: 25px;
-                  font-weight: bolder;
-                  margin-bottom: -10px;
-                  color: #b03367;
-                "
-              >
-                {{ t("EditComment") }}
-              </p>
-              <div class="q-pa-md q-gutter-sm">
-                <q-input
-                  v-model="entitycomment.content"
-                  :label="t('ContentComment')"
-                  filled
-                  type="textarea"
-                />
-              </div>
-
-              <div style="display: flex">
-                <!-- ปุ่มเลือกไฟล์ -->
-                <q-file
-                  color="pink"
-                  v-model="imageFile"
-                  :label="t('ChooseFile')"
-                  borderless
-                  use-chips
-                  style="padding-right: 300px; text-decoration: none"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="attach_file" />
-                  </template>
-                </q-file>
-
-                <!-- ปุ่มยืนยัน -->
-                <q-btn
-                  color="pink"
-                  glossy
-                  push
-                  type="submit"
-                  @click="onSubmit('edit')"
-                  :label="t('Submit')"
-                  style="height: 5px; margin-top: 15px"
-                />
+                <div class="col flex justify-end">
+                  <!-- ปุ่มยืนยัน -->
+                  <q-btn
+                    color="pink"
+                    glossy
+                    push
+                    type="submit"
+                    @click="onSubmit('edit')"
+                    :label="t('Submit')"
+                    style="height: 15px; margin-top: 15px"
+                  />
+                </div>
               </div>
             </q-card>
           </q-dialog>
@@ -781,7 +771,7 @@
           </q-img>
         </div>
         <br /><br />
-        <!-- ปุ่มไลก์คอมเมนต์ -->
+        <!-- ปุ่มไลก์คอมเมนต์0 -->
         <div class="comment-like2" style="display: flex">
           <div style="display: inline">
             <q-btn
@@ -856,7 +846,7 @@
                 </q-card-section>
               </q-card>
             </q-dialog>
-            <!-- จำนวนยอดไลก์คอมเมนต์ -->
+            <!-- จำนวนยอดไลก์คอมเมนต์0 -->
             <b
               style="
                 color: #b46f8f;
@@ -979,6 +969,8 @@ const entityItemComment = ref([]);
 // ตัวแปรแสดงข้อมูลคอมเมนต์ทั้งหมด status =0
 const entityItemCommentStatus = ref([]);
 
+const slide = ref(0);
+
 // User Post
 let userPostId = "";
 
@@ -1062,7 +1054,7 @@ const fethData = async () => {
   if (respone) {
     entityItem.value = respone.entity;
     userPostId = entityItem.value.user_id;
-    console.log("User Post ID", userPostId);
+    console.log("User Post ID", respone);
     CheckPost();
     fetchCountPost();
     fetchCountComment();
@@ -1139,6 +1131,20 @@ const onSubmit = async (action) => {
       }
     }
   }
+  if (imageFile1.value) {
+    const fileNameResponse = await uploadImageApi(imageFile1.value);
+    console.log("uploadImageApi", fileNameResponse);
+    if (fileNameResponse && fileNameResponse.imageName) {
+      if (action === "edit") {
+        entitycomment.value.img_name = fileNameResponse.imageName;
+        entitycomment.value.haveNewImage = true;
+      } else {
+        entityAdd.value.img_name = fileNameResponse.imageName;
+        entityAdd.value.haveNewImage = true;
+      }
+    }
+  }
+
   console.log("onSubmit", entitycomment.value);
   if (action === "edit") {
     editProcess();
@@ -1157,7 +1163,8 @@ const createProcess = async (postId) => {
       type: "positive",
     });
     // refresh page to display the latest data
-    location.reload();
+    entityAdd.value.content = "";
+    // fethDataComment();
   }
   // router.push(`/postncomment/${postId.value}`);
   fethData();
@@ -1670,7 +1677,7 @@ const refreshUnHideData = async () => {
 </script>
 
 <style scoped>
-.flex {
+.background {
   background-color: #d6e3ea;
   background-image: url(./public/background.jpg);
   background-size: cover;
@@ -1698,6 +1705,7 @@ const refreshUnHideData = async () => {
   flex-direction: column;
   opacity: 0.8;
   width: 750px;
+  height: 340px;
   padding: 50px 50px 50px 50px;
   margin-bottom: 30px;
   border-radius: 30px;
@@ -1734,10 +1742,10 @@ p {
 }
 
 /* ขนาดรูปภาพที่แนบ */
-.flex .container-post .img {
+/* .flex .container-post .img {
   width: 250px;
   height: 250px;
-}
+} */
 
 /* set up รูปโปรไฟล์ */
 .flex .container-post .profile {
