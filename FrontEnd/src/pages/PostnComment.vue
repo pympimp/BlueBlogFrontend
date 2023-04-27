@@ -65,20 +65,24 @@
       </div>
 
       <!-- ส่วนของรูปภาพของโพสต์ -->
-
-      <template v-for="(postImg, index) in entityItem?.postImg" :key="index">
-        <q-img
-          :src="postImg.postimg.path"
-          class="img q-mt-lg"
-          style="border-radius: 20px"
-        ></q-img>
-        <br />
-      </template>
+      <div class="row">
+        <template v-for="(postImg, index) in entityItem?.postImg" :key="index">
+          <div class="col-4">
+            <q-img
+              :src="postImg.postimg.path"
+              class="img q-mt-lg"
+              style="border-radius: 20px"
+            ></q-img>
+          </div>
+          <br />
+        </template>
+      </div>
 
       <br />
 
       <!-- ข้อมูลของผู้โพสต์ -->
       <div class="details-user">
+        <!-- Profile User Post -->
         <router-link
           :to="'/myprofile/' + (entityItem ? entityItem['user_id'] : '')"
         >
@@ -99,13 +103,20 @@
               entityItem ? entityItem["username"] : ""
             }}</b>
           </router-link>
-          <i style="color: #5c6bc0"
-            ><br />{{ entityItem ? entityItem["create_date"] : "" }}</i
+          <i
+            style="color: #5c6bc0"
+            v-if="entityItem && entityItem.update_date == null"
+            ><br />{{ t("CreatOn") }}
+            {{ entityItem ? entityItem["create_date"] : "" }}</i
+          >
+          <i style="color: #5c6bc0" v-else
+            ><br />{{ t("UpdateOn") }}
+            {{ entityItem ? entityItem["update_date"] : "" }}</i
           >
         </div>
 
         <!-- ปุ่มไลก์โพส -->
-        <div class="comment-like" style="display: flex; margin-left: 550px">
+        <div class="comment-like" style="display: flex; margin-left: 450px">
           <div style="display: inline">
             <q-btn
               ref="followBtn"
@@ -235,21 +246,16 @@
             use-chips
             accept=".png, .jpg, .jpeg"
             style="padding-right: 300px; text-decoration: none"
+            @change="previewImage"
           >
             <template v-slot:prepend>
               <q-icon name="attach_file" />
             </template>
           </q-file>
 
-          <!-- <q-uploader
-            v-model="imageFile"
-            :label="t('ChooseFile')"
-            color="purple"
-            square
-            flat
-            bordered
-            style="max-width: 300px"
-          /> -->
+          <div v-if="previewUrl">
+            <img :src="previewUrl" alt="preview image" />
+          </div>
 
           <!-- ปุ่มโพสต์ -->
           <q-btn
@@ -538,8 +544,17 @@
             </b>
           </router-link>
           <br />
-          <i style="margin-top: 12px; margin-left: -60px; color: #5c6bc0">
-            {{ item.create_date }}
+          <i
+            style="margin-top: 12px; margin-left: -60px; color: #5c6bc0"
+            v-if="item.update_date == null"
+          >
+            {{ t("CreatOn") }} {{ item.create_date }}
+          </i>
+          <i
+            style="margin-top: 12px; margin-left: -60px; color: #5c6bc0"
+            v-else
+          >
+            {{ t("UpdateOn") }} {{ item.update_date }}
           </i>
 
           <br />
@@ -873,8 +888,17 @@
             </b>
           </router-link>
           <br />
-          <i style="margin-top: 12px; margin-left: -60px; color: #5c6bc0">
-            {{ item.create_date }}
+          <i
+            style="margin-top: 12px; margin-left: -60px; color: #5c6bc0"
+            v-if="item.update_date == null"
+          >
+            {{ t("CreatOn") }} {{ item.create_date }}
+          </i>
+          <i
+            style="margin-top: 12px; margin-left: -60px; color: #5c6bc0"
+            v-else
+          >
+            {{ t("UpdateOn") }} {{ item.update_date }}
           </i>
 
           <br />
@@ -961,6 +985,7 @@ let userPostId = "";
 // add comment
 const content = ref("");
 const imageFile = ref("");
+const previewUrl = ref("");
 const entitycomment = ref({
   id: "",
   post_id: "",
@@ -1027,15 +1052,6 @@ onMounted(() => {
       console.log("userPostID in Comment :", userPostId);
     }
   });
-
-  // if (postId.value) {
-  //   fethData();
-  //   fethLikePost();
-  //   fethDataComment();
-  //   CheckPost();
-  //   fetchCountPost();
-  //   fethCountComment();
-  // }
   console.log("get postId ", postId.value);
 });
 
@@ -1099,6 +1115,12 @@ const fethDataCommentStatus = async () => {
     entityCheckCommentStatus.value = respone.entity;
     CheckComment0();
     fetchCountCommentStatus();
+  }
+};
+
+const previewImage = () => {
+  if (imageFile.value) {
+    previewUrl.value = URL.createObjectURL(imageFile.value);
   }
 };
 
@@ -1309,10 +1331,40 @@ const alertEdit1 = ref(false);
 
 //ฟังก์ชั่นการแก้ไขคอมเมนต์
 const editProcess = async () => {
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  };
+
+  const date = new Date().toLocaleString("en-US", options);
+
+  // แปลงรูปแบบวันเวลาจาก "MM/DD/YYYY, HH:MM:SS" เป็น "YYYY-MM-DD HH:MM:SS"
+  const formattedDate = date.replace(
+    /(\d+)\/(\d+)\/(\d+), (\d+):(\d+):(\d+)/,
+    (match, p1, p2, p3, p4, p5, p6) => {
+      const hour = p4.padStart(2, "0");
+      const minute = p5.padStart(2, "0");
+      const second = p6.padStart(2, "0");
+      const year = p3;
+      const month = p1.padStart(2, "0");
+      const day = p2.padStart(2, "0");
+      return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+    }
+  );
+
+  // กำหนดค่า formattedDate ให้กับ property "update_date" ของ entitycomment
+  entitycomment.value.update_date = formattedDate;
+  // console.log(entitycomment.value.update_date);
+
   const response = await EditComment(entitycomment.value);
   console.log("updateUser", response);
   $q.notify({
-    message: response.message,
+    message: t("Success"),
     type: "positive",
   });
   if (
