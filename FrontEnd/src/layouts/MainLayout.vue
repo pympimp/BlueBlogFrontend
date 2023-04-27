@@ -81,7 +81,7 @@
                         "
                       >
                         <div style="font-weight: bolder; color: #1a237e">
-                          {{ opt.id }} - {{ opt.username }}
+                          {{ opt.username }}
                         </div>
                         <div style="color: gray">{{ opt.email }}</div>
                         <div style="color: gray">{{ opt.bio }}</div>
@@ -110,7 +110,7 @@
                         "
                       >
                         <div style="font-weight: bolder; color: #1a237e">
-                          {{ opt.id }} - {{ opt.username }}
+                          {{ opt.username }}
                         </div>
                         <div style="color: gray">{{ opt.email }}</div>
                         <div style="color: gray">{{ opt.bio }}</div>
@@ -119,7 +119,7 @@
                   </router-link>
                   <div class="q-pa-md q-gutter-sm">
                     <div style="display: inline">
-                      {{ opt.id }} - {{ opt.username }}
+                      {{ opt.username }}
                     </div>
                     {{ opt.email }}
                   </div>
