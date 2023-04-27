@@ -361,7 +361,7 @@
                 <!-- ปุ่มเลือกไฟล์ -->
                 <q-file
                   color="pink"
-                  v-model="imageFile"
+                  v-model="imageFile1"
                   :label="t('ChooseFile')"
                   borderless
                   use-chips
@@ -665,7 +665,7 @@
                 <!-- ปุ่มเลือกไฟล์ -->
                 <q-file
                   color="pink"
-                  v-model="imageFile"
+                  v-model="imageFile1"
                   :label="t('ChooseFile')"
                   borderless
                   use-chips
@@ -977,6 +977,7 @@ let userPostId = "";
 // add comment
 const content = ref("");
 const imageFile = ref("");
+const imageFile1 = ref("");
 const previewUrl = ref("");
 const entitycomment = ref({
   id: "",
