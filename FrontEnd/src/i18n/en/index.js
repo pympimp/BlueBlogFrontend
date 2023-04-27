@@ -98,6 +98,8 @@ export default {
 
   //PostnComment
   Like: "Like",
+  CreatOn: "Created On",
+  UpdateOn: "Update on",
 
   // SideBar
   MainPage: "Main Page",
