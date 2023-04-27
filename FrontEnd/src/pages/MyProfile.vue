@@ -156,7 +156,7 @@
                   font-weight: bolder;
                   color: #1a237e;
                 "
-                >{{ item.id }} {{ item.title }}</router-link
+                >{{ item.title }}</router-link
               ><br />
               <Content style="color: #5c6bc0">{{ item.content }}</Content
               ><br />
@@ -181,8 +181,14 @@
                     {{ item.username }} </router-link
                   >&nbsp;
 
-                  <p style="display: inline; color: #5c6bc0">
+                  <p
+                    style="display: inline; color: #5c6bc0"
+                    v-if="item.update_date == null"
+                  >
                     {{ item.create_date }}
+                  </p>
+                  <p style="display: inline; color: #5c6bc0" v-else>
+                    {{ item.update_date }}
                   </p>
                 </div>
                 <div class="col self-end flex justify-end">

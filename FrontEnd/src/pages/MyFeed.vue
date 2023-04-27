@@ -28,7 +28,8 @@
                   font-weight: bolder;
                   color: #1a237e;
                 "
-                >{{ item.postId }} {{ item.title }}
+              >
+                {{ item.title }}
               </router-link>
               <br />
               <Content style="color: #5c6bc0"> {{ item.content }} </Content
@@ -54,8 +55,14 @@
                     {{ item.postUserUsername }}
                   </router-link>
                   &nbsp;
-                  <p style="display: inline; color: #5c6bc0">
-                    {{ item.create_date }}
+                  <p
+                    style="display: inline; color: #5c6bc0"
+                    v-if="item.update_date == null"
+                  >
+                    {{ t("CreatOn") }} {{ item.create_date }}
+                  </p>
+                  <p style="display: inline; color: #5c6bc0" v-else>
+                    {{ t("UpdateOn") }} {{ item.update_date }}
                   </p>
                 </div>
                 <!-- ส่วนของไลก์และคอมเมนต์ -->
