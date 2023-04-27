@@ -1,132 +1,149 @@
 <template>
   <q-page class="background flex flex-center">
     <div class="container">
-      <div class="q-pa-md">
-        <p
-          style="
-            font-size: 25px;
-            font-weight: bolder;
-            margin-bottom: -10px;
-            color: #880e4f;
-          "
-        >
-          🏠&nbsp; {{ $t("MainPage") }}
-        </p>
+      <div class="q-pa-md column fit">
+        <div class="row fit">
+          <div class="col-9">
+            <p
+              style="
+                font-size: 25px;
+                font-weight: bolder;
+                margin-bottom: -10px;
+                margin-left: 20px;
+                color: #880e4f;
+              "
+            >
+              🏠&nbsp; {{ $t("MainPage") }}
+            </p>
+          </div>
 
-        <q-btn-dropdown
-          split
-          glossy
-          color="pink"
-          rounded
-          :label="t('FilterPost')"
-          style="display: inline; margin-bottom: 20px; margin-left: 580px"
-        >
-          <q-list>
-            <q-item clickable v-close-popup @click="change('CreateDateASC')">
-              <q-item-section>
-                <q-item-label>{{ $t("PostOld") }}</q-item-label>
-              </q-item-section>
-            </q-item>
+          <div class="col justify-end q-ml-md">
+            <q-btn-dropdown
+              split
+              glossy
+              color="pink"
+              rounded
+              :label="t('FilterPost')"
+            >
+              <q-list>
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="change('CreateDateASC')"
+                >
+                  <q-item-section>
+                    <q-item-label>{{ $t("PostOld") }}</q-item-label>
+                  </q-item-section>
+                </q-item>
 
-            <q-item clickable v-close-popup @click="change('CreateDateDesc')">
-              <q-item-section>
-                <q-item-label>{{ $t("PostNew") }}</q-item-label>
-              </q-item-section>
-            </q-item>
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="change('CreateDateDesc')"
+                >
+                  <q-item-section>
+                    <q-item-label>{{ $t("PostNew") }}</q-item-label>
+                  </q-item-section>
+                </q-item>
 
-            <q-item clickable v-close-popup @click="change('PopularAsc')">
-              <q-item-section>
-                <q-item-label>{{ $t("PopLess") }}</q-item-label>
-              </q-item-section>
-            </q-item>
+                <q-item clickable v-close-popup @click="change('PopularAsc')">
+                  <q-item-section>
+                    <q-item-label>{{ $t("PopLess") }}</q-item-label>
+                  </q-item-section>
+                </q-item>
 
-            <q-item clickable v-close-popup @click="change('PopularDesc')">
-              <q-item-section>
-                <q-item-label>{{ $t("PopMore") }}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-btn-dropdown>
+                <q-item clickable v-close-popup @click="change('PopularDesc')">
+                  <q-item-section>
+                    <q-item-label>{{ $t("PopMore") }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
+          </div>
+        </div>
 
         <!-- ----------------------------------------------------------------------------------------------------------- -->
-        <div class="q-pa-md">
+        <div class="q-pa-md column fit items-center">
           <!-- <q-infinite-scroll :distance="1" :disable="currentPage >= totalPage"> -->
-          <q-scroll-area style="height: 380px">
+          <q-scroll-area style="height: 380px; width: 670px">
             <!-- Post -->
             <!-- loop ข้อมูลโพสต์ -->
 
-            <section
-              class="post"
-              v-for="(item, index) in postList"
-              :key="index"
-            >
-              <router-link
-                :to="'/postncomment/' + item.id"
-                style="
-                  text-decoration: none;
-                  color: black;
-                  font-weight: bolder;
-                  color: #1a237e;
-                "
+            <div class="row">
+              <section
+                class="post"
+                v-for="(item, index) in postList"
+                :key="index"
+                style="max-width: 650px"
               >
-                {{ item.title }}
-              </router-link>
-              <br />
-              <Content style="color: #5c6bc0"> {{ item.content }} </Content
-              ><br />
-              <div class="row items-start q-mt-sm">
-                <div class="col self-end">
-                  <ion-avatar>
-                    <img
-                      :src="item.picture.path"
-                      style="width: 30px; height: 30px"
-                    />
-                  </ion-avatar>
-                  &nbsp;
-                  <router-link
-                    :to="'/myprofile/' + item.user_id"
-                    style="
-                      text-decoration: none;
-                      color: black;
-                      font-weight: bolder;
-                      color: #1a237e;
-                    "
-                  >
-                    {{ item.username }}
-                  </router-link>
-                  &nbsp;
-                  <!-- ส่วนของเวลาที่โพสต์ -->
-                  <p
-                    style="display: inline; color: #5c6bc0"
-                    v-if="item.update_date == null"
-                  >
-                    {{ t("CreatOn") }} {{ item.create_date }}
-                  </p>
-                  <p style="display: inline; color: #5c6bc0" v-else>
-                    {{ t("UpdateOn") }} {{ item.update_date }}
-                  </p>
-                </div>
+                <router-link
+                  :to="'/postncomment/' + item.id"
+                  style="
+                    text-decoration: none;
+                    color: black;
+                    font-weight: bolder;
+                    color: #1a237e;
+                  "
+                >
+                  {{ item.title }}
+                </router-link>
+                <br />
+                <Content style="color: #5c6bc0"> {{ item.content }} </Content
+                ><br />
+                <div class="row items-start q-mt-sm">
+                  <div class="col-10 self-end">
+                    <ion-avatar>
+                      <img
+                        :src="item.picture.path"
+                        style="width: 30px; height: 30px"
+                      />
+                    </ion-avatar>
+                    &nbsp;
+                    <router-link
+                      :to="'/myprofile/' + item.user_id"
+                      style="
+                        text-decoration: none;
+                        color: black;
+                        font-weight: bolder;
+                        color: #1a237e;
+                      "
+                    >
+                      {{ item.username }}
+                    </router-link>
+                    &nbsp;
+                    <!-- ส่วนของเวลาที่โพสต์ -->
+                    <p
+                      style="display: inline; color: #5c6bc0"
+                      v-if="item.update_date == null"
+                    >
+                      {{ t("CreatOn") }} {{ item.create_date }}
+                    </p>
+                    <p style="display: inline; color: #5c6bc0" v-else>
+                      {{ t("UpdateOn") }} {{ item.update_date }}
+                    </p>
+                  </div>
 
-                <!-- ส่วนของยอดไลก์และคอมเมนต์ -->
-                <div class="col self-end flex justify-end">
-                  <i
-                    class="fa-solid fa-heart self-center"
-                    style="color: #880e4f"
-                  ></i>
-                  <i style="color: #880e4f; margin-right: 5px">
-                    {{ item.like_count }}
-                  </i>
-                  <i
-                    class="fa-solid fa-comment self-center"
-                    style="color: #880e4f"
-                  ></i>
-                  <i style="color: #880e4f; margin-right: 40px">
-                    {{ item.comment_count }}
-                  </i>
+                  <!-- ส่วนของยอดไลก์และคอมเมนต์ -->
+                  <div class="col row self-end flex justify-end">
+                    <i
+                      class="fa-solid fa-heart self-center"
+                      style="color: #880e4f"
+                    ></i>
+                    <i style="color: #880e4f; margin-right: 5px">
+                      {{ item.like_count }}
+                    </i>
+                    <i
+                      class="fa-solid fa-comment self-center"
+                      style="color: #880e4f"
+                    ></i>
+                    <i style="color: #880e4f">
+                      {{ item.comment_count }}
+                    </i>
+                  </div>
                 </div>
-              </div>
-              <hr style="width: 650px" />
-            </section>
+                <hr style="width: 650px" />
+              </section>
+            </div>
             <!-- post -->
 
             <!-- loading -->
@@ -289,8 +306,8 @@ const handleScrolledToBottom = (isVisible) => {
   align-items: center;
   flex-direction: column;
   opacity: 0.8;
-  width: 800px;
-  padding: 50px 50px 50px 50px;
+  width: 740px;
+  padding: 50px;
   border-radius: 30px;
   box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.75);
   padding: 10px;

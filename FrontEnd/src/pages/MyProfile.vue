@@ -161,7 +161,7 @@
               <Content style="color: #5c6bc0">{{ item.content }}</Content
               ><br />
               <div class="row items-start q-mt-sm">
-                <div class="col">
+                <div class="col-10">
                   <ion-avatar>
                     <img
                       :src="item.picture.path"
