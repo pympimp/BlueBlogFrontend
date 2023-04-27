@@ -138,7 +138,7 @@
         </div>
 
         <!-- ปุ่มไลก์โพส -->
-        <div class="comment-like" style="display: flex; margin-left: 450px">
+        <div class="comment-like" style="display: flex; margin-left: 550px">
           <div style="display: inline">
             <q-btn
               ref="followBtn"
@@ -259,35 +259,39 @@
           />
         </div>
 
-        <div style="display: flex">
-          <!-- ปุ่มเลือกไฟล์ -->
-          <q-file
-            color="pink"
-            v-model="imageFile"
-            :label="t('ChooseFile')"
-            borderless
-            use-chips
-            accept=".png, .jpg, .jpeg"
-            style="padding-right: 300px; text-decoration: none"
-            @change="previewImage"
-          >
-            <template v-slot:prepend>
-              <q-icon name="attach_file" />
-            </template>
-          </q-file>
+        <div class="row q-mb-md">
+          <div class="col">
+            <!-- ปุ่มเลือกไฟล์ -->
+            <q-file
+              color="pink"
+              v-model="imageFile"
+              :label="t('ChooseFile')"
+              borderless
+              use-chips
+              accept=".png, .jpg, .jpeg"
+              style="padding-right: 300px; text-decoration: none"
+              @change="previewImage"
+            >
+              <template v-slot:prepend>
+                <q-icon name="attach_file" />
+              </template>
+            </q-file>
+          </div>
 
           <div v-if="previewUrl">
             <img :src="previewUrl" alt="preview image" />
           </div>
 
-          <!-- ปุ่มโพสต์ -->
-          <q-btn
-            color="pink"
-            glossy
-            type="submit"
-            :label="t('Submit')"
-            style="height: 5px; margin-top: 15px"
-          />
+          <div class="col flex justify-end">
+            <!-- ปุ่มโพสต์ -->
+            <q-btn
+              color="pink"
+              glossy
+              type="submit"
+              :label="t('Submit')"
+              style="height: 5px; margin-top: 15px"
+            />
+          </div>
         </div>
       </q-form>
     </div>
@@ -357,21 +361,23 @@
                 />
               </div>
 
-              <div style="display: flex">
-                <!-- ปุ่มเลือกไฟล์ -->
-                <q-file
-                  color="pink"
-                  v-model="imageFile1"
-                  :label="t('ChooseFile')"
-                  borderless
-                  use-chips
-                  accept=".png, .jpg, .jpeg"
-                  style="padding-right: 300px; text-decoration: none"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="attach_file" />
-                  </template>
-                </q-file>
+              <div class="row">
+                <div class="col">
+                  <!-- ปุ่มเลือกไฟล์ -->
+                  <q-file
+                    color="pink"
+                    v-model="imageFile1"
+                    :label="t('ChooseFile')"
+                    borderless
+                    use-chips
+                    accept=".png, .jpg, .jpeg"
+                    style="padding-right: 300px; text-decoration: none"
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="attach_file" />
+                    </template>
+                  </q-file>
+                </div>
 
                 <div class="col flex justify-end">
                   <!-- ปุ่มยืนยัน -->
@@ -659,21 +665,23 @@
                 />
               </div>
 
-              <div style="display: flex">
-                <!-- ปุ่มเลือกไฟล์ -->
-                <q-file
-                  color="pink"
-                  v-model="imageFile1"
-                  :label="t('ChooseFile')"
-                  borderless
-                  use-chips
-                  accept=".png, .jpg, .jpeg"
-                  style="padding-right: 300px; text-decoration: none"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="attach_file" />
-                  </template>
-                </q-file>
+              <div class="row">
+                <div class="col">
+                  <!-- ปุ่มเลือกไฟล์ -->
+                  <q-file
+                    color="pink"
+                    v-model="imageFile1"
+                    :label="t('ChooseFile')"
+                    borderless
+                    use-chips
+                    accept=".png, .jpg, .jpeg"
+                    style="padding-right: 300px; text-decoration: none"
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="attach_file" />
+                    </template>
+                  </q-file>
+                </div>
 
                 <div class="col flex justify-end">
                   <!-- ปุ่มยืนยัน -->

@@ -81,7 +81,7 @@
               <td class="text-center">{{ item.id }}</td>
               <td class="text-center">{{ item.username }}</td>
               <td class="text-center">{{ item.email }}</td>
-              <td class="text-center">{{ item.userRoles }}</td>
+              <td class="text-center">{{ item.rolesText }}</td>
               <td class="text-center">{{ item.status }}</td>
               <td>
                 <q-btn
