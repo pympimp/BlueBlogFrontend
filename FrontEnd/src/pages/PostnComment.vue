@@ -17,7 +17,7 @@
         <!-- {{ entityItem ? entityItem["user_id"] : "" }} -->
         {{ entityItem ? entityItem["title"] : "" }}
       </p>
-      <Content style="color: #5c6bc0">
+      <Content style="color: #5c6bc0" class="q-mb-md">
         {{ entityItem ? entityItem["content"] : "" }}
       </Content>
 
@@ -65,15 +65,40 @@
       </div>
 
       <!-- ส่วนของรูปภาพของโพสต์ -->
+      <!-- v-for="(postImg, index) in entityItem?.postImg" :key="index" -->
 
-      <template v-for="(postImg, index) in entityItem?.postImg" :key="index">
-        <q-img
+      <!-- <q-img
           :src="postImg.postimg.path"
           class="img q-mt-lg"
           style="border-radius: 20px"
-        ></q-img>
-        <br />
-      </template>
+        ></q-img> -->
+
+      <div
+        class=""
+        style="width: 700px; height: 400px"
+        v-if="entityItem?.postImg[0]"
+      >
+        <q-carousel
+          swipeable
+          animated
+          v-model="slide"
+          thumbnails
+          infinite
+          padding
+          :fit="cover"
+          style="border-radius: 20px"
+        >
+          <!-- :src="item.commentimg.path ? item.commentimg.path : ''" -->
+          <q-carousel-slide
+            :name="index"
+            :img-src="postImg.postimg.path"
+            v-for="(postImg, index) in entityItem?.postImg"
+            :key="index"
+            img-width="60"
+            img-height="40"
+          />
+        </q-carousel>
+      </div>
 
       <br />
 
@@ -918,6 +943,8 @@ const entityItemComment = ref([]);
 // ตัวแปรแสดงข้อมูลคอมเมนต์ทั้งหมด status =0
 const entityItemCommentStatus = ref([]);
 
+const slide = ref(0);
+
 // User Post
 let userPostId = "";
 
@@ -1010,7 +1037,7 @@ const fethData = async () => {
   if (respone) {
     entityItem.value = respone.entity;
     userPostId = entityItem.value.user_id;
-    console.log("User Post ID", userPostId);
+    console.log("User Post ID", respone);
     CheckPost();
     fetchCountPost();
     fetchCountComment();
@@ -1114,7 +1141,7 @@ const createProcess = async (postId) => {
     });
     // refresh page to display the latest data
     entityAdd.value.content = "";
-    fethDataComment();
+    // fethDataComment();
   }
   // router.push(`/postncomment/${postId.value}`);
   fethData();
@@ -1662,10 +1689,10 @@ p {
 }
 
 /* ขนาดรูปภาพที่แนบ */
-.flex .container-post .img {
+/* .flex .container-post .img {
   width: 250px;
   height: 250px;
-}
+} */
 
 /* set up รูปโปรไฟล์ */
 .flex .container-post .profile {
