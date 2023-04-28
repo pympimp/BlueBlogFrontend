@@ -438,7 +438,7 @@
         </q-fab>
       </div>
       <!-- หัวข้อคอมเมนต์ -->
-      <div class="comment">
+      <div class="comment fit">
         <p
           style="
             font-size: 15px;
@@ -477,11 +477,27 @@
         </div>
         <br /><br />
 
-        <!-- ปุ่มไลก์คอมเมนต์1 -->
-        <div class="comment-like2" style="display: flex">
-          <div style="display: inline">
+        <div class="comment-like2 row fit">
+          <!-- ข้อมูลผู้คอมเมนต์ -->
+          <div class="row justify-start q-pa-sm">
+            <ion-avatar class="profile">
+              <img :src="item.picture.path" style="width: 30px; height: 30px" />
+            </ion-avatar>
+            <div class="column q-ml-sm">
+              <router-link :to="'/myprofile/' + item.userId">
+                <b style="color: #1a237e">{{ item.username }} </b>
+              </router-link>
+              <i style="color: #5c6bc0" v-if="item.update_date == null">
+                {{ t("CreatOn") }} {{ item.create_date }}
+              </i>
+              <i style="color: #5c6bc0" v-else>
+                {{ t("UpdateOn") }} {{ item.update_date }}
+              </i>
+            </div>
+          </div>
+
+          <div class="col flex justify-end q-pa-sm self-center">
             <q-btn
-              ref="followBtn"
               glossy
               push
               color="pink-9"
@@ -500,6 +516,7 @@
               id="count2"
               @click="fethLikeComment(item.commentId)"
               style="display: inline; color: #b46f8f; cursor: pointer"
+              class="self-center q-ml-sm"
             >
               {{ item.CountLikeComment }}
             </span>
@@ -564,43 +581,7 @@
               {{ t("Like") }}
             </b>
           </div>
-
-          <!-- ข้อมูลผู้คอมเมนต์ -->
-          <div></div>
-          <ion-avatar class="profile">
-            <img
-              :src="item.picture.path"
-              style="width: 30px; height: 30px; margin-left: 369px"
-            />
-          </ion-avatar>
-          <router-link :to="'/myprofile/' + item.userId">
-            <b
-              style="
-                margin-top: -5px;
-                margin-left: 10px;
-                margin-right: -10px;
-                color: #1a237e;
-              "
-              >{{ item.username }}
-            </b>
-          </router-link>
-          <br />
-          <i
-            style="margin-top: 12px; margin-left: -60px; color: #5c6bc0"
-            v-if="item.update_date == null"
-          >
-            {{ t("CreatOn") }} {{ item.create_date }}
-          </i>
-          <i
-            style="margin-top: 12px; margin-left: -60px; color: #5c6bc0"
-            v-else
-          >
-            {{ t("UpdateOn") }} {{ item.update_date }}
-          </i>
-
-          <br />
         </div>
-        <br />
       </div>
     </div>
 
@@ -747,7 +728,7 @@
         </q-fab>
       </div>
       <!-- หัวข้อคอมเมนต์ -->
-      <div class="comment">
+      <div class="comment fit">
         <p
           style="
             font-size: 15px;
@@ -784,11 +765,31 @@
           </q-img>
         </div>
         <br /><br />
-        <!-- ปุ่มไลก์คอมเมนต์0 -->
-        <div class="comment-like2" style="display: flex">
-          <div style="display: inline">
+
+        <!-- ข้อมูลผู้คอมเมนต์ -->
+        <div class="comment-like2 row fit">
+          <div class="row justify-start q-pa-sm">
+            <ion-avatar class="profile">
+              <img :src="item.picture.path" style="width: 30px; height: 30px" />
+            </ion-avatar>
+            <div class="column q-ml-sm">
+              <router-link :to="'/myprofile/' + item.userId">
+                <b style="margin-top: -5px; color: #1a237e"
+                  >{{ item.username }}
+                </b>
+              </router-link>
+              <i style="color: #5c6bc0" v-if="item.update_date == null">
+                {{ t("CreatOn") }} {{ item.create_date }}
+              </i>
+              <i style="color: #5c6bc0" v-else>
+                {{ t("UpdateOn") }} {{ item.update_date }}
+              </i>
+            </div>
+          </div>
+
+          <!-- ปุ่มไลก์คอมเมนต์0 -->
+          <div class="col flex justify-end q-pa-sm self-center">
             <q-btn
-              ref="followBtn"
               glossy
               push
               color="pink-9"
@@ -807,6 +808,7 @@
               id="count2"
               @click="fethLikeComment(item.commentId)"
               style="display: inline; color: #b46f8f; cursor: pointer"
+              class="self-center q-ml-sm"
             >
               {{ item.CountLikeComment }}
             </span>
@@ -871,42 +873,7 @@
               {{ t("Like") }}
             </b>
           </div>
-
-          <!-- ข้อมูลผู้คอมเมนต์ -->
-          <ion-avatar class="profile">
-            <img
-              :src="item.picture.path"
-              style="width: 30px; height: 30px; margin-left: 369px"
-            />
-          </ion-avatar>
-          <router-link :to="'/myprofile/' + item.userId">
-            <b
-              style="
-                margin-top: -5px;
-                margin-left: 10px;
-                margin-right: -10px;
-                color: #1a237e;
-              "
-              >{{ item.username }}
-            </b>
-          </router-link>
-          <br />
-          <i
-            style="margin-top: 12px; margin-left: -60px; color: #5c6bc0"
-            v-if="item.update_date == null"
-          >
-            {{ t("CreatOn") }} {{ item.create_date }}
-          </i>
-          <i
-            style="margin-top: 12px; margin-left: -60px; color: #5c6bc0"
-            v-else
-          >
-            {{ t("UpdateOn") }} {{ item.update_date }}
-          </i>
-
-          <br />
         </div>
-        <br />
       </div>
     </div>
   </q-page>

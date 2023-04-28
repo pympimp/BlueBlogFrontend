@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="background flex flex-center">
     <div class="container">
       <q-form @submit="onSubmit">
         <!-- หัวข้อ Edit Profile -->
@@ -20,7 +20,12 @@
 
         <br />
         <!-- ส่วนของการเปลี่ยนอีเมล -->
-        <q-spinner v-if="loading == true" color="primary" size="3em" />
+        <q-spinner
+          v-if="loading == true"
+          color="primary"
+          size="3em"
+          class="self-center flex justify-center"
+        />
         <template v-else>
           <q-card-section v-if="entityItem">
             <i style="color: #5c6bc0">{{ t("Email") }} :</i>
@@ -164,7 +169,7 @@ const updateProcess = async () => {
 </script>
 
 <style scoped>
-.flex {
+.background {
   background-color: #d6e3ea;
   background-image: url(./public/background.jpg);
   background-size: cover;

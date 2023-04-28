@@ -172,18 +172,21 @@ const onSubmit = async () => {
 };
 
 const updateProcess = async () => {
-  loading.value = true;
+  console.log("updateUser", entityItem.value);
   const response = await updateUser(entityItem.value);
-  console.log("updateUser", response);
   if (response) {
     $q.notify({
-      message: response.message,
+      message: "no",
+      type: "positive",
+    });
+  } else {
+    $q.notify({
+      message: "Deadline",
       type: "positive",
     });
   }
-  loading.value = false;
-  fetchUserData();
-  window.location.replace("/#/");
+  // fetchUserData();
+  // window.location.replace("/#/");
 };
 
 const { localeList, t, locale } = useLang();
