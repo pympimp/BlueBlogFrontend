@@ -32,7 +32,7 @@
                 counter
                 Rounded
                 class="q-ml-lg"
-                style="max-width: 250px"
+                style="width: 250px"
                 accept=".png, .jpg, .jpeg"
               >
                 <template v-slot:prepend>
@@ -175,15 +175,22 @@ const updateProcess = async () => {
   console.log("updateUser", entityItem.value);
   const response = await updateUser(entityItem.value);
   if (response) {
-    $q.notify({
-      message: "no",
-      type: "positive",
-    });
-  } else {
-    $q.notify({
-      message: "Deadline",
-      type: "positive",
-    });
+    if (response.message === null) {
+      const errors = response.errors;
+      errors.forEach((error) => {
+        if (error.field === "username" || error.field === "email") {
+          $q.notify({
+            message: error.message,
+          });
+        }
+      });
+    } else {
+      $q.notify({
+        message: response.message,
+        type: "positive",
+      });
+      window.location.replace("/#/");
+    }
   }
   // fetchUserData();
   // window.location.replace("/#/");

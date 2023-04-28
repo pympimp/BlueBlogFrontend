@@ -33,7 +33,6 @@
               push
               color="pink-9"
               :label="t('EditProfile')"
-              @click="toggleFollow"
               style="height: 20px; margin-top: 5px"
             />
             <p
