@@ -116,12 +116,14 @@ const Saveinfo = async () => {
         if (error.field === "username" || error.field === "email") {
           $q.notify({
             message: error.message,
+            type: "negative",
           });
         }
       });
     } else {
       $q.notify({
         message: t("RegisSuc"),
+        type: "positive",
       });
     }
     setTimeout(() => {
