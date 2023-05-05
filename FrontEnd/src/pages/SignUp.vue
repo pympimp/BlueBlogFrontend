@@ -48,7 +48,7 @@
 
         <br />
         <section style="margin-top: -5px; margin-bottom: 10px">
-          <p style="display: inline">{{ t("NoAccount") }}</p>
+          <p style="display: inline">{{ t("HaveAccount") }}</p>
           <router-link to="/auth/login">&nbsp; {{ t("Click") }}</router-link>
         </section>
 
@@ -125,10 +125,10 @@ const Saveinfo = async () => {
         message: t("RegisSuc"),
         type: "positive",
       });
+      setTimeout(() => {
+        window.location.replace("/#/auth/login");
+      }, 500);
     }
-    setTimeout(() => {
-      window.location.replace("/#/auth/login");
-    }, 500);
   }
 };
 </script>
