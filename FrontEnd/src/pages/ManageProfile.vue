@@ -192,8 +192,6 @@ const updateProcess = async () => {
       window.location.replace("/#/");
     }
   }
-  // fetchUserData();
-  // window.location.replace("/#/");
 };
 
 const { localeList, t, locale } = useLang();
